@@ -4,144 +4,152 @@
 
 <h1 align="center">Jenkins Installation Guide</h1>
 
-This guide provides step-by-step instructions to install **Jenkins** on multiple platforms:  
-- Debian/Ubuntu (Linux)  
-- WSL (Windows Subsystem for Linux)  
-- Windows  
-- macOS  
+This guide provides step-by-step instructions to install **Jenkins** across multiple platforms:
+
+- **Debian/Ubuntu (Linux)**
+- **WSL (Windows Subsystem for Linux)**
+- **Windows**
+- **macOS**
 
 ---
 
 ## 1. Install Jenkins on Debian/Ubuntu
 
-### Step 1: Update system
-```bash
-sudo apt update
-sudo apt upgrade -y
-````
+### Option A: Manual Installation
 
-### Step 2: Install Java (required for Jenkins)
+1. **Update system**
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+    ```
 
-```bash
-sudo apt install openjdk-17-jdk -y
-```
+2. **Install Java (required for Jenkins)**
 
-Verify installation:
+   ```bash
+   sudo apt install openjdk-17-jdk -y
+   java -version
+   ```
 
-```bash
-java -version
-```
+3. **Add Jenkins repository**
 
-### Step 3: Add Jenkins repository
+   ```bash
+   curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key \
+     | sudo tee /usr/share/keyrings/jenkins-keyring.asc >/dev/null
+   echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+     https://pkg.jenkins.io/debian-stable binary/ \
+     | sudo tee /etc/apt/sources.list.d/jenkins.list >/dev/null
+   ```
 
-```bash
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-```
+4. **Install Jenkins**
 
-### Step 4: Install Jenkins
+   ```bash
+   sudo apt update && sudo apt install jenkins -y
+   ```
 
-```bash
-sudo apt update
-sudo apt install jenkins -y
-```
+5. **Start and enable Jenkins**
 
-### Step 5: Start and enable Jenkins
+   ```bash
+   sudo systemctl enable jenkins
+   sudo systemctl start jenkins
+   ```
 
-```bash
-sudo systemctl enable jenkins
-sudo systemctl start jenkins
-```
+6. **Access Jenkins**
 
-### Step 6: Access Jenkins
+   * Open: `http://localhost:8080`
+   * Retrieve initial admin password:
 
-* Open browser: `http://localhost:8080`
-* Retrieve initial password:
+     ```bash
+     sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+     ```
 
-```bash
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-```
+---
+
+### Option B: Automated Installation via Script
+
+A streamlined way to install Jenkins on Ubuntu or WSL using a prebuilt script:
+
+1. Download the script from GitHub:
+
+   ```bash
+   curl -O https://raw.githubusercontent.com/itspriyanshuks17/jenkins-install/main/install_jenkins.sh
+   ```
+
+2. Make it executable:
+
+   ```bash
+   chmod +x install_jenkins.sh
+   ```
+
+3. Run the script:
+
+   ```bash
+   ./install_jenkins.sh
+   ```
+
+4. When complete, open:
+
+   ```
+   http://localhost:8080
+   ```
+
+5. Retrieve the initial admin password:
+
+   ```bash
+   sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+   ```
 
 ---
 
 ## 2. Install Jenkins on WSL (Windows Subsystem for Linux)
 
-Since WSL runs Debian/Ubuntu-like environments, follow the **same steps as above** for Debian/Ubuntu.
-
-> ⚠️ Jenkins runs inside WSL, so access it via `http://localhost:8080` in your Windows browser.
+Use either **Option A: Manual** or **Option B: Automated** installation above. Jenkins runs inside WSL and is accessed via `http://localhost:8080` from your Windows browser.
 
 ---
 
 ## 3. Install Jenkins on Windows
 
-### Step 1: Download Jenkins
+1. **Download** the `.msi` installer from the [Jenkins website](https://www.jenkins.io/download/).
+2. **Run** the `.msi` and follow the wizard—it installs as a Windows service.
+3. **Access** Jenkins at: `http://localhost:8080`
+4. **Retrieve** the initial admin password from:
 
-* Go to [Jenkins Windows Installer](https://www.jenkins.io/download/)
-* Download the `.msi` installer.
-
-### Step 2: Run installer
-
-* Double-click `.msi` file
-* Follow setup wizard
-* Jenkins will install as a **Windows service**.
-
-### Step 3: Start Jenkins
-
-* Jenkins runs automatically after installation.
-* Access Jenkins at: [http://localhost:8080](http://localhost:8080)
-
-### Step 4: Get initial password
-
-Check file:
-
-```
-C:\Program Files\Jenkins\secrets\initialAdminPassword
-```
+   ```
+   C:\Program Files\Jenkins\secrets\initialAdminPassword
+   ```
 
 ---
 
 ## 4. Install Jenkins on macOS
 
-### Option 1: Using Homebrew (Recommended)
+**Option 1: Homebrew (Recommended)**
 
 ```bash
 brew update
 brew install jenkins-lts
-```
-
-Start Jenkins:
-
-```bash
 brew services start jenkins-lts
 ```
 
-### Option 2: Manual Download
+**Option 2: Manual Download**
 
-* Download `.war` from [Jenkins official site](https://www.jenkins.io/download/).
-* Run:
+1. Download the `.war` file from [Jenkins official site](https://www.jenkins.io/download/).
+2. Run:
 
-```bash
-java -jar jenkins.war
-```
+   ```bash
+   java -jar jenkins.war
+   ```
 
-### Access Jenkins
-
-Open [http://localhost:8080](http://localhost:8080) in your browser.
+Access Jenkins: `http://localhost:8080`
 
 ---
 
 ## Verification
 
-After installation on any platform, open:
+Once installed, check:
 
 ```
 http://localhost:8080
 ```
 
-Use the **initial admin password** from your system to unlock Jenkins and complete setup.
+Use the initial admin password to unlock Jenkins and complete the setup wizard.
 
 ---
 
@@ -149,4 +157,3 @@ Use the **initial admin password** from your system to unlock Jenkins and comple
 
 * [Jenkins Official Downloads](https://www.jenkins.io/download/)
 * [Jenkins Documentation](https://www.jenkins.io/doc/)
-
