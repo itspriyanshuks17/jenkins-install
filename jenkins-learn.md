@@ -77,50 +77,154 @@ Types of jobs:
 
 ---
 
-## 📝 Jenkins Pipeline
+## 🔒 Groovy Sandbox
 
-Two types:
+* **Security mechanism** that restricts Groovy script execution in Jenkins pipelines.
+* Prevents malicious code from accessing system resources or Jenkins internals.
+* **Enabled by default** for pipeline scripts to ensure safe execution.
+* Allows only **approved methods and classes** to be used in scripts.
+* Administrators can approve/reject script methods via **Script Security Plugin**.
 
-1. **Declarative Pipeline** (simpler, structured):
+### Key Points:
+* Scripts run in sandbox cannot access file system directly
+* Cannot execute arbitrary system commands without approval
+* Provides **whitelist of safe operations**
+* Can be disabled for trusted scripts (not recommended)
 
-   ```groovy
-   pipeline {
-       agent any
-       stages {
-           stage('Build') {
-               steps {
-                   echo 'Building...'
-               }
-           }
-           stage('Test') {
-               steps {
-                   echo 'Testing...'
-               }
-           }
-           stage('Deploy') {
-               steps {
-                   echo 'Deploying...'
-               }
-           }
-       }
-   }
-   ```
+---
 
-2. **Scripted Pipeline** (more flexible, Groovy based):
+## 📝 Declarative Pipeline
 
-   ```groovy
-   node {
-       stage('Build') {
-           echo 'Building...'
-       }
-       stage('Test') {
-           echo 'Testing...'
-       }
-       stage('Deploy') {
-           echo 'Deploying...'
-       }
-   }
-   ```
+**Structured, simpler syntax** with predefined sections:
+
+```groovy
+pipeline {
+    agent any
+    
+    environment {
+        DEPLOY_ENV = 'staging'
+    }
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building application...'
+                sh 'mvn clean compile'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/test-reports/*.xml'
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Deploying to staging...'
+                sh 'docker build -t myapp .'
+            }
+        }
+    }
+    
+    post {
+        failure {
+            mail to: 'team@company.com',
+                 subject: 'Build Failed',
+                 body: 'Pipeline failed'
+        }
+    }
+}
+```
+
+### Features:
+* **Predefined structure** (pipeline, agent, stages, steps)
+* Built-in **error handling** with `post` blocks
+* **Conditional execution** with `when` directive
+* **Environment variables** support
+* **Easier to read** and maintain
+
+---
+
+## 🛠️ Scripted Pipeline
+
+**Flexible, Groovy-based** with full programming capabilities:
+
+```groovy
+node('linux') {
+    try {
+        def buildNumber = env.BUILD_NUMBER
+        def gitCommit
+        
+        stage('Checkout') {
+            gitCommit = checkout(scm).GIT_COMMIT
+            echo "Building commit: ${gitCommit}"
+        }
+        
+        stage('Build') {
+            if (env.BRANCH_NAME == 'main') {
+                sh 'mvn clean package -Pprod'
+            } else {
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('Test') {
+            parallel (
+                'Unit Tests': {
+                    sh 'mvn test'
+                },
+                'Integration Tests': {
+                    sh 'mvn integration-test'
+                }
+            )
+        }
+        
+        stage('Deploy') {
+            if (env.BRANCH_NAME == 'main') {
+                input message: 'Deploy to production?', ok: 'Deploy'
+                sh "docker run -d -p 8080:8080 myapp:${buildNumber}"
+            }
+        }
+        
+    } catch (Exception e) {
+        currentBuild.result = 'FAILURE'
+        throw e
+    } finally {
+        cleanWs()
+    }
+}
+```
+
+### Features:
+* **Full Groovy syntax** (variables, loops, conditions)
+* **Dynamic pipeline creation**
+* **Exception handling** with try-catch
+* **Parallel execution** support
+* **More complex logic** possible
+* **Greater flexibility** but harder to maintain
+
+---
+
+## 🆚 Declarative vs Scripted Pipeline
+
+| Feature | Declarative | Scripted |
+|---------|-------------|----------|
+| **Syntax** | Structured, YAML-like | Groovy programming |
+| **Learning Curve** | Easier | Steeper |
+| **Flexibility** | Limited but sufficient | Full programming power |
+| **Error Handling** | Built-in `post` blocks | Manual try-catch |
+| **Validation** | Better syntax validation | Runtime errors |
+| **Recommended For** | Most CI/CD use cases | Complex, dynamic pipelines |
 
 ---
 
@@ -201,6 +305,167 @@ Two types:
 
 ---
 
+## 🖥️ Jenkins Nodes & EC2 Agents
+
+### Creating Jenkins Nodes
+
+1. **Navigate to Manage Jenkins**
+   * Dashboard → Manage Jenkins → Manage Nodes and Clouds
+
+2. **Add New Node**
+   * Click "New Node"
+   * Enter node name (e.g., `ec2-agent-1`)
+   * Select "Permanent Agent"
+   * Click "Create"
+
+3. **Configure Node Settings**
+   ```
+   Name: ec2-agent-1
+   Description: EC2 Ubuntu Agent
+   Number of executors: 2
+   Remote root directory: /home/ubuntu/jenkins
+   Labels: linux ubuntu ec2
+   Usage: Use this node as much as possible
+   Launch method: Launch agents via SSH
+   ```
+
+### EC2 Instance Setup
+
+1. **Launch EC2 Instance**
+   * AMI: Ubuntu 22.04 LTS
+   * Instance Type: t3.medium (minimum)
+   * Security Group: Allow SSH (22) and custom port if needed
+   * Key Pair: Create/select existing
+
+2. **Install Java on EC2**
+   ```bash
+   sudo apt update
+   sudo apt install openjdk-17-jdk -y
+   java -version
+   ```
+
+3. **Create Jenkins User**
+   ```bash
+   sudo useradd -m -s /bin/bash jenkins
+   sudo mkdir -p /home/jenkins/.ssh
+   sudo chown jenkins:jenkins /home/jenkins/.ssh
+   ```
+
+4. **Setup SSH Key Authentication**
+   
+   **On Jenkins Master:**
+   ```bash
+   ssh-keygen -t rsa -b 4096 -f ~/.ssh/jenkins_agent
+   cat ~/.ssh/jenkins_agent.pub
+   ```
+   
+   **On EC2 Agent:**
+   ```bash
+   sudo nano /home/jenkins/.ssh/authorized_keys
+   # Paste the public key content
+   sudo chown jenkins:jenkins /home/jenkins/.ssh/authorized_keys
+   sudo chmod 600 /home/jenkins/.ssh/authorized_keys
+   ```
+
+### Configure SSH Connection in Jenkins
+
+1. **Add SSH Credentials**
+   * Manage Jenkins → Manage Credentials
+   * Add Credentials → SSH Username with private key
+   ```
+   ID: ec2-ssh-key
+   Username: jenkins
+   Private Key: [Paste private key content]
+   ```
+
+2. **Configure Node Launch Method**
+   ```
+   Host: [EC2-PUBLIC-IP]
+   Credentials: ec2-ssh-key
+   Host Key Verification Strategy: Non verifying
+   ```
+
+3. **Advanced SSH Settings**
+   ```
+   Port: 22
+   JavaPath: /usr/bin/java
+   JVM Options: -Xmx1024m
+   ```
+
+### Launch Agent
+
+1. **Save Configuration** and click "Launch agent"
+2. **Check Agent Status** - should show "Agent successfully connected"
+3. **Verify in Build Executor Status** on Jenkins dashboard
+
+### Using Agents in Pipeline
+
+**Declarative Pipeline:**
+```groovy
+pipeline {
+    agent {
+        label 'ec2'
+    }
+    stages {
+        stage('Build on EC2') {
+            steps {
+                sh 'echo "Running on EC2 agent"'
+                sh 'hostname'
+            }
+        }
+    }
+}
+```
+
+**Scripted Pipeline:**
+```groovy
+node('ubuntu') {
+    stage('Build') {
+        sh 'echo "Building on Ubuntu agent"'
+    }
+}
+```
+
+### Troubleshooting Agent Connection
+
+**Common Issues:**
+
+1. **SSH Connection Failed**
+   ```bash
+   # Test SSH manually
+   ssh -i ~/.ssh/jenkins_agent jenkins@[EC2-IP]
+   ```
+
+2. **Java Not Found**
+   ```bash
+   # Check Java path on agent
+   which java
+   # Update JavaPath in node configuration
+   ```
+
+3. **Permission Denied**
+   ```bash
+   # Fix SSH permissions
+   sudo chmod 700 /home/jenkins/.ssh
+   sudo chmod 600 /home/jenkins/.ssh/authorized_keys
+   ```
+
+4. **Agent Offline**
+   * Check EC2 instance status
+   * Verify security group rules
+   * Check Jenkins logs: Manage Jenkins → System Log
+
+### Best Practices
+
+* **Use IAM roles** instead of hardcoded credentials
+* **Label agents** appropriately (os, tools, environment)
+* **Monitor agent capacity** and scale as needed
+* **Use spot instances** for cost optimization
+* **Backup agent configurations**
+* **Keep agents updated** with security patches
+
+---
+
 
 ### How to Fix “sudo: a terminal is required” in Jenkins
 
@@ -239,8 +504,10 @@ Two types:
        }
    }
    ```
+   
 
    👉 This works but is insecure because your password is stored in plain text.
+
 
 3. **Best Practice: Use Jenkins user with privileges**
 
