@@ -1,151 +1,116 @@
-# Install Java (Required)
+```bash id="p8dx4m"
+#!/bin/bash
 
-[Jenkins Official Website](https://www.jenkins.io/?utm_source=chatgpt.com)
+# Jenkins Installation Script for Fedora
+# Includes:
+# - Java 17
+# - Jenkins
+# - Firewall Configuration
+# - Docker Permission for Jenkins
 
-Jenkins needs Java 17 or 21.
+set -e
 
-Install OpenJDK:
+echo "======================================="
+echo " Updating Fedora System"
+echo "======================================="
+sudo dnf update -y
 
-```bash id="v9x2pl"
+echo "======================================="
+echo " Installing Java 17"
+echo "======================================="
 sudo dnf install -y java-17-openjdk java-17-openjdk-devel
-```
 
-Verify:
-
-```bash id="t5cw8k"
+echo "======================================="
+echo " Checking Java Version"
+echo "======================================="
 java -version
-```
 
----
-
-# Add Jenkins Repository
-
-```bash id="g7mq1d"
+echo "======================================="
+echo " Adding Jenkins Repository"
+echo "======================================="
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
 https://pkg.jenkins.io/redhat-stable/jenkins.repo
-```
 
-Import key:
-
-```bash id="r2bn6f"
+echo "======================================="
+echo " Importing Jenkins GPG Key"
+echo "======================================="
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-```
 
----
-
-# Install Jenkins
-
-```bash id="n4hv8q"
+echo "======================================="
+echo " Installing Jenkins"
+echo "======================================="
 sudo dnf install -y jenkins
-```
 
----
-
-# Start Jenkins Service
-
-```bash id="k8zu3w"
+echo "======================================="
+echo " Starting Jenkins Service"
+echo "======================================="
 sudo systemctl enable --now jenkins
-```
 
-Check status:
-
-```bash id="y1cf5s"
-systemctl status jenkins
-```
-
----
-
-# Allow Firewall Port
-
-Jenkins runs on port `8080`.
-
-```bash id="q6ae2m"
+echo "======================================="
+echo " Configuring Firewall"
+echo "======================================="
 sudo firewall-cmd --permanent --add-port=8080/tcp
-```
-
-```bash id="u7rw4n"
 sudo firewall-cmd --reload
-```
 
----
+echo "======================================="
+echo " Adding Jenkins User to Docker Group"
+echo "======================================="
+sudo usermod -aG docker jenkins || true
 
-# Access Jenkins
+echo "======================================="
+echo " Restarting Jenkins"
+echo "======================================="
+sudo systemctl restart jenkins
 
-Open browser:
+echo "======================================="
+echo " Jenkins Status"
+echo "======================================="
+systemctl status jenkins --no-pager
 
-```text id="f3ld8y"
-http://localhost:8080
-```
-
-or
-
-```text id="j2ks5v"
-http://YOUR-IP:8080
-```
-
----
-
-# Get Initial Admin Password
-
-```bash id="o5np1z"
+echo "======================================="
+echo " Initial Jenkins Admin Password"
+echo "======================================="
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+echo ""
+echo "======================================="
+echo " Jenkins Installation Complete!"
+echo "======================================="
+echo ""
+echo "Access Jenkins at:"
+echo "http://localhost:8080"
+echo ""
+echo "Or:"
+echo "http://YOUR-IP:8080"
+echo ""
+echo "Useful Commands:"
+echo "sudo systemctl status jenkins"
+echo "sudo systemctl restart jenkins"
+echo "journalctl -u jenkins -f"
 ```
 
-Copy password → paste in browser.
+Save it:
 
----
+```bash id="r4kw2n"
+nano install-jenkins-fedora.sh
+```
 
-# Recommended Plugins For You
+Make executable:
 
-Since you work with:
-
-* Kubernetes
-* Docker
-* Cloud research
-* GitHub projects
-
-Install these plugins during setup:
-
-* Docker
-* Docker Pipeline
-* Kubernetes
-* GitHub Integration
-* Blue Ocean
-* Pipeline
-* SSH Agent
-* NodeJS
-* Terraform
-
----
-
-# Verify Jenkins User Can Access Docker
-
-Very important for CI/CD pipelines.
+```bash id="v7hz9q"
+chmod +x install-jenkins-fedora.sh
+```
 
 Run:
 
-```bash id="l9qx7r"
-sudo usermod -aG docker jenkins
+```bash id="m2pc8x"
+./install-jenkins-fedora.sh
 ```
 
-Restart Jenkins:
+After installation, open:
 
-```bash id="c1ut6p"
-sudo systemctl restart jenkins
+```text id="s5lt1y"
+http://localhost:8080
 ```
 
----
-
-# Test Docker Inside Jenkins
-
-```bash id="b8zk4m"
-sudo su - jenkins
-```
-
-Then:
-
-```bash id="d3fw9n"
-docker ps
-```
-
-If no permission error appears, Jenkins can build containers successfully.
+Paste the generated admin password and complete setup.
