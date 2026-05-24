@@ -759,6 +759,289 @@ pipeline {
     ]
 )
 
+# 9-A. declarative-keywords
+add_note(
+    "declarative-keywords", "09-A", "Declarative Pipeline Keywords", "pipelines",
+    "Complete breakdown of every keyword used in a Declarative Pipeline — pipeline, agent, stages, stage, steps, sh, echo, environment, parameters, when, post — plus how to define and use variables.",
+    ["Declarative", "Keywords", "Variables"],
+    "declarative pipeline keywords agent stages stage steps sh echo environment parameters when post variables env",
+    [
+        {
+            "type": "lead",
+            "text": "A Declarative Pipeline is built from a fixed set of structured keywords. Each keyword has a specific role and must appear in the correct place. Understanding each one is the foundation for writing real-world CI/CD pipelines."
+        },
+        {
+            "type": "ascii",
+            "label": "Declarative Pipeline Keyword Structure",
+            "diagram": """
+pipeline {                        ← root wrapper block
+  agent any                       ← where to run
+  environment { KEY = "value" }   ← global vars
+  parameters { ... }             ← user inputs
+  stages {                        ← list of stages
+    stage('Name') {               ← one stage
+      when { ... }                ← conditional
+      steps {                     ← commands to run
+        sh 'command'
+        echo 'message'
+      }
+      post { ... }                ← stage-level outcomes
+    }
+  }
+  post {                          ← pipeline-level outcomes
+    success { ... }
+    failure { ... }
+    always  { ... }
+  }
+}
+"""
+        },
+        {
+            "type": "grid",
+            "items": [
+                {
+                    "title": "pipeline { }",
+                    "text": "The mandatory outermost block. Every Declarative Pipeline must start with 'pipeline {'. Nothing can live outside this block."
+                },
+                {
+                    "title": "agent",
+                    "text": "'agent any' runs on any available node. 'agent none' defers agent selection to individual stages. 'agent { label \"linux\" }' targets a specific labelled node."
+                },
+                {
+                    "title": "stages { }",
+                    "text": "A container that holds all your stage() blocks. There must be at least one stage inside stages. Stages run sequentially by default."
+                },
+                {
+                    "title": "stage('Name') { }",
+                    "text": "Represents one logical unit of work (e.g. Build, Test, Deploy). Each stage has a name shown in the pipeline visualization graph."
+                },
+                {
+                    "title": "steps { }",
+                    "text": "Lives inside a stage. Contains the actual commands: sh, echo, checkout, script, etc. All shell work and plugin steps go here."
+                },
+                {
+                    "title": "post { }",
+                    "text": "Defines what happens after stages complete. Blocks: always, success, failure, unstable, cleanup. Can be at pipeline level or inside a stage."
+                }
+            ]
+        },
+        {
+            "type": "code",
+            "title": "Step Commands Inside steps { } — Complete Reference",
+            "code": """pipeline {
+    agent any
+    stages {
+        stage('Step Commands Demo') {
+            steps {
+                // Print a message to console output
+                echo 'Starting build process...'
+
+                // Run a single shell command
+                sh 'npm install'
+
+                // Run multiple shell commands in one block
+                sh '''
+                    npm run build
+                    npm run lint
+                    npm test
+                '''
+
+                // Checkout source code from SCM (Git)
+                checkout scm
+
+                // Read a file into a variable
+                def content = readFile('config.json')
+
+                // Write content to a file
+                writeFile file: 'output.txt', text: 'Build complete'
+
+                // Sleep / wait for N seconds
+                sleep 5
+
+                // Run a script block for Groovy logic inside steps
+                script {
+                    def result = sh(script: 'cat version.txt', returnStdout: true).trim()
+                    echo "App version: ${result}"
+                }
+            }
+        }
+    }
+}""",
+            "explanation": [
+                { "keyword": "echo", "detail": "Prints a plain text string to the Jenkins console output log." },
+                { "keyword": "sh 'cmd'", "detail": "Runs a single shell command on a Unix/Linux agent. Use triple quotes (sh ''') for multi-line blocks." },
+                { "keyword": "checkout scm", "detail": "Pulls source code from the SCM configured in the job (e.g. GitHub). Shorthand for a full git checkout step." },
+                { "keyword": "readFile / writeFile", "detail": "Built-in pipeline steps to read from and write to files in the workspace directory." },
+                { "keyword": "script { }", "detail": "Escape hatch inside steps that allows free-form Groovy scripting — useful for conditional logic and variable capture." },
+                { "keyword": "returnStdout: true", "detail": "When used with sh(), captures the shell command output as a return value instead of just printing it." }
+            ]
+        },
+        {
+            "type": "code",
+            "title": "environment { } — Defining and Using Variables",
+            "code": """pipeline {
+    agent any
+
+    environment {
+        // Static string variable — available throughout the pipeline
+        APP_NAME    = "my-web-app"
+        DEPLOY_ENV  = "production"
+
+        // Use a shell command to set a variable at runtime
+        GIT_COMMIT_SHORT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+
+        // Reference a Jenkins credential stored securely in Credentials Manager
+        DOCKER_PASS = credentials('docker-hub-password')
+    }
+
+    stages {
+        stage('Use Variables') {
+            steps {
+                // Access environment variables using ${env.VAR_NAME}
+                echo "App: ${env.APP_NAME}"
+                echo "Env: ${env.DEPLOY_ENV}"
+                echo "Git SHA: ${env.GIT_COMMIT_SHORT}"
+
+                // Built-in Jenkins environment variables
+                echo "Build #:    ${env.BUILD_NUMBER}"
+                echo "Job Name:   ${env.JOB_NAME}"
+                echo "Workspace:  ${env.WORKSPACE}"
+                echo "Node Name:  ${env.NODE_NAME}"
+                echo "Build URL:  ${env.BUILD_URL}"
+
+                // Use vars inside sh commands with double-quotes
+                sh "docker build -t ${env.APP_NAME}:${env.BUILD_NUMBER} ."
+            }
+        }
+
+        stage('Stage-level Variable') {
+            environment {
+                // Stage-scoped variable — only available in this stage
+                STAGE_SECRET = credentials('stage-api-key')
+            }
+            steps {
+                echo "Stage secret is masked in logs: ${env.STAGE_SECRET}"
+            }
+        }
+    }
+}""",
+            "explanation": [
+                { "keyword": "environment { }", "detail": "Defines key=value variables scoped to the whole pipeline. Also supports credentials() to inject secrets safely." },
+                { "keyword": "env.VAR_NAME", "detail": "The standard way to access any environment variable inside a Groovy string (${env.VAR_NAME})." },
+                { "keyword": "credentials('id')", "detail": "Injects a Jenkins-stored secret (password, token, SSH key) into a variable without exposing it in logs." },
+                { "keyword": "env.BUILD_NUMBER", "detail": "Built-in variable: sequential number of the current build run (e.g. 42)." },
+                { "keyword": "env.WORKSPACE", "detail": "Built-in variable: absolute path to the current job's workspace directory on the agent." },
+                { "keyword": "env.BUILD_URL", "detail": "Built-in variable: full HTTP URL link to the current build's console/status page in Jenkins." }
+            ]
+        },
+        {
+            "type": "code",
+            "title": "parameters { } — User Input at Build Time",
+            "code": """pipeline {
+    agent any
+
+    parameters {
+        // Text input — user types a string value
+        string(name: 'VERSION', defaultValue: '1.0.0', description: 'Release version to deploy')
+
+        // Dropdown selection
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'production'], description: 'Target environment')
+
+        // Boolean toggle — true/false checkbox
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run test suite before deploy?')
+
+        // Password — hidden in the UI
+        password(name: 'API_SECRET', defaultValue: '', description: 'API secret key')
+    }
+
+    stages {
+        stage('Deploy') {
+            steps {
+                // Access parameters via params.NAME
+                echo "Deploying version: ${params.VERSION}"
+                echo "Target env:        ${params.ENVIRONMENT}"
+
+                script {
+                    if (params.RUN_TESTS) {
+                        sh 'npm test'
+                    }
+                    sh "deploy.sh --env ${params.ENVIRONMENT} --version ${params.VERSION}"
+                }
+            }
+        }
+    }
+}""",
+            "explanation": [
+                { "keyword": "parameters { }", "detail": "Declares user-facing input fields shown on 'Build with Parameters' page before the build starts." },
+                { "keyword": "string()", "detail": "Creates a free-text input field. Args: name, defaultValue, description." },
+                { "keyword": "choice()", "detail": "Creates a dropdown select. The 'choices' array defines available options; first item is the default." },
+                { "keyword": "booleanParam()", "detail": "Creates a checkbox. Returns true/false, useful for toggling optional pipeline stages." },
+                { "keyword": "params.NAME", "detail": "How you read a parameter value inside the pipeline. Note: use params., not env., for parameters." }
+            ]
+        },
+        {
+            "type": "code",
+            "title": "when { } — Conditional Stage Execution",
+            "code": """pipeline {
+    agent any
+    parameters {
+        choice(name: 'BRANCH', choices: ['main', 'dev', 'feature'], description: 'Branch to build')
+    }
+    stages {
+        stage('Build') {
+            steps { sh 'npm run build' }
+        }
+
+        // Only runs when building the main branch
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Deploying to production...'
+            }
+        }
+
+        // Only runs when a parameter equals a specific value
+        stage('Integration Tests') {
+            when {
+                expression { params.BRANCH == 'main' }
+            }
+            steps {
+                sh 'npm run test:integration'
+            }
+        }
+
+        // Combines multiple conditions (all must be true)
+        stage('Release') {
+            when {
+                allOf {
+                    branch 'main'
+                    expression { params.BRANCH != 'feature' }
+                }
+            }
+            steps {
+                sh './scripts/release.sh'
+            }
+        }
+    }
+}""",
+            "explanation": [
+                { "keyword": "when { }", "detail": "Conditional block inside a stage. The stage only runs if the condition is met." },
+                { "keyword": "branch 'main'", "detail": "Built-in condition that checks if the current Git branch matches the given name." },
+                { "keyword": "expression { }", "detail": "Evaluates any Groovy boolean expression. The stage runs only if it returns true." },
+                { "keyword": "allOf { }", "detail": "Logical AND — all inner conditions must be true for the stage to execute." },
+                { "keyword": "anyOf { }", "detail": "Logical OR — the stage runs if at least one inner condition is true." }
+            ]
+        },
+        {
+            "type": "callout",
+            "tone": "tip",
+            "html": "<strong>Variable scoping rules:</strong> Variables defined in <code>environment { }</code> are accessible via <code>env.NAME</code>. Variables defined with <code>def</code> inside a <code>script { }</code> block are local to that block only. Parameters are accessed via <code>params.NAME</code>, never <code>env.NAME</code>."
+        }
+    ]
+)
+
 # 10. scripted
 add_note(
     "scripted", "10", "Scripted Pipeline", "pipelines",
