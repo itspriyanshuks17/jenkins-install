@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jenkins Projects | One Shot Notes</title>
+  <meta name="description" content="Three Jenkins DevOps projects from the Jenkins In One Shot Hindi notes site.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Jenkins Notes home">
+      <span class="brand-mark" style="background:var(--jenkins); color:white;">jk</span>
+      <span>Jenkins Notes</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+      <svg viewBox="0 0 18 18" aria-hidden="true">
+        <line x1="1" y1="4" x2="17" y2="4"/>
+        <line x1="1" y1="9" x2="17" y2="9"/>
+        <line x1="1" y1="14" x2="17" y2="14"/>
+      </svg>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
+      <a href="index.html">Notes</a>
+      <a class="active" href="projects.html">Projects</a>
+      <a href="cheat-sheet.html">Cheat Sheet</a>
+      <a href="https://www.youtube.com/watch?v=XaSdKR2fOU4" target="_blank" rel="noreferrer">Video</a>
+      <a href="https://github.com/itspriyanshuks17/jenkins-install" target="_blank" rel="noreferrer">Repo</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero">
+      <p class="eyebrow">Live DevOps Projects</p>
+      <h1>Practice Jenkins by building real AWS infrastructure.</h1>
+      <p>These projects map the notes to the folders in this repository: Simple Node.js CI, Docker integration, and AWS EC2 automated deployments.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-kicker">Project Map</span>
+        <h2 class="section-title">Three guided builds</h2>
+        <span class="section-count">3 projects</span>
+      </div>
+      <div class="project-grid" id="projectGrid"></div>
+    </section>
+
+    <section id="projectDetails" aria-label="Project details"></section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Jenkins One Shot Projects</span>
+    <span>Created by: <strong>Priyanshu K. Sharma</strong></span>
+    <span><a href="https://github.com/itspriyanshuks17/jenkins-install" target="_blank" rel="noreferrer">Source repository</a></span>
+    <span><a href="cheat-sheet.html">CLI cheat sheet</a></span>
+  </footer>
+
+  <script src="assets/js/jenkins-notes.js"></script>
+  <script src="assets/js/projects.js"></script>
+  <script src="assets/js/nav-toggle.js"></script>
+</body>
+</html>
