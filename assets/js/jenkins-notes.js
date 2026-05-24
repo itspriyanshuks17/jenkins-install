@@ -57,7 +57,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Jenkins Ecosystem & Flow",
-        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌─────────────────────────┐\n│ Git / GitHub │ ───> │   Jenkins Controller    │\n└──────────────┘      │                         │\n                      │  (Orchestrator/Sched)   │\n                      └─────────────────────────┘\n                                   │\n                     ┌─────────────┴──────────────┐\n                     ▼                            ▼\n        ┌─────────────────────────┐ ┌─────────────────────────┐\n        │     Jenkins Agent 1     │ │     Jenkins Agent 2     │\n        │  (Runs Docker Build)    │ │   (Runs Unit Tests)     │\n        └─────────────────────────┘ └─────────────────────────┘\n                     │                           │\n                     └─────────────┬─────────────┘\n                                   ▼\n                      ┌─────────────────────────┐\n                      │    Staging / Prod       │\n                      │  (Deploy Environments)  │\n                      └─────────────────────────┘\n"
+        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌─────────────────────────┐\n│ Git / GitHub │ ───> │   Jenkins Controller    │\n└──────────────┘      │                         │\n                      │  (Orchestrator/Sched)   │\n                      └─────────────────────────┘\n                                   │\n                     ┌─────────────┴─────────────┐\n                     ▼                           ▼\n        ┌─────────────────────────┐ ┌─────────────────────────┐\n        │     Jenkins Agent 1     │ │     Jenkins Agent 2     │\n        │  (Runs Docker Build)    │ │   (Runs Unit Tests)     │\n        └─────────────────────────┘ └─────────────────────────┘\n                     │                           │\n                     └─────────────┬─────────────┘\n                                   ▼\n                      ┌─────────────────────────┐\n                      │    Staging / Prod       │\n                      │  (Deploy Environments)  │\n                      └─────────────────────────┘\n"
       },
       {
         "type": "grid",
@@ -221,6 +221,88 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "aws_ec2_setup",
+    "num": "03-A",
+    "title": "Jenkins on AWS EC2",
+    "category": "introduction",
+    "description": "Detailed guide to provision an AWS EC2 VM, configure Security Groups, install Java and Jenkins natively, and unlock the administration dashboard.",
+    "tags": [
+      "AWS",
+      "EC2",
+      "Setup",
+      "VM"
+    ],
+    "search": "aws ec2 setup virtual machine security group ports ubuntu install java setup initialadminpassword systemctl",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Deploying Jenkins on a cloud VM like AWS EC2 provides absolute control over build resources, storage mounts, and network access control lists."
+      },
+      {
+        "type": "ascii",
+        "label": "AWS EC2 Setup & Architecture",
+        "diagram": "\n┌─────────────────────────────────────────────────────────────────┐\n│                           AWS Cloud                             │\n│  ┌───────────────────────────────────────────────────────────┐  │\n│  │                     EC2 Virtual Machine                   │  │\n│  │  ┌─────────────────────────┐   ┌───────────────────────┐  │  │\n│  │  │  Security Group (Rules) │   │     Ubuntu OS VM      │  │  │\n│  │  │  - Port 22   (SSH)      │ ─>│   - Installs JDK 17   │  │  │\n│  │  │  - Port 8080 (Web UI)   │   │   - Installs Jenkins  │  │  │\n│  │  └─────────────────────────┘   └───────────┬───────────┘  │  │\n│  └────────────────────────────────────────────┼──────────────┘  │\n└───────────────────────────────────────────────┼─────────────────┘\n                                                ▼\n                                    ┌───────────────────────┐\n                                    │  http://<IP>:8080     │\n                                    └───────────────────────┘\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "AWS Security Group",
+            "text": "Must explicitly configure Inbound rules: TCP Port 8080 (for Web UI) and TCP Port 22 (for SSH remote terminal access)."
+          },
+          {
+            "title": "Instance Sizing",
+            "text": "Use at least a t3.medium or t2.medium instance type in production (minimum 2 vCPUs and 4GB RAM) for smooth execution."
+          },
+          {
+            "title": "Elastic IP Allocation",
+            "text": "Associate an Elastic IP to your EC2 instance so that the public URL address doesn't change when rebooting the host VM."
+          },
+          {
+            "title": "Storage (EBS)",
+            "text": "Provision at least 30GB+ of gp3 EBS SSD storage. Build caches, Docker layers, and logs consume disk space rapidly."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "AWS EC2 Setup & Provisioning Script",
+        "code": "# Connect to your freshly provisioned AWS EC2 Instance\nssh -i web-key.pem ubuntu@54.210.85.99\n\n# Run the automated setup commands\nsudo apt update -y\nsudo apt install openjdk-17-jre -y\n\n# Import the GPG key to verify package signatures safely\nsudo mkdir -p /etc/apt/keyrings\ncurl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \\\n  /usr/share/keyrings/jenkins-keyring.asc > /dev/null\n\n# Configure the official Jenkins repository source list\necho \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \\\n  https://pkg.jenkins.io/debian-stable binary/\" | sudo tee \\\n  /etc/apt/sources.list.d/jenkins.list > /dev/null\n\n# Install the Jenkins server package\nsudo apt update -y\nsudo apt install jenkins -y\n\n# Launch and register the background service process\nsudo systemctl start jenkins\nsudo systemctl enable jenkins\n\n# View the dynamic admin password to unlock the portal\nsudo cat /var/lib/jenkins/secrets/initialAdminPassword",
+        "explanation": [
+          {
+            "keyword": "ubuntu@54.210.85.99",
+            "detail": "SSH user and public IP address used to authenticate and connect to your EC2 instance."
+          },
+          {
+            "keyword": "openjdk-17-jre",
+            "detail": "The Java Runtime Environment 17. Jenkins is compiled in Java and requires JDK/JRE 11 or 17."
+          },
+          {
+            "keyword": "/usr/share/keyrings/jenkins-keyring.asc",
+            "detail": "The keyring location holding GPG keys to establish safe cryptographic package downloads."
+          },
+          {
+            "keyword": "/etc/apt/sources.list.d/jenkins.list",
+            "detail": "Registers the official Debian-stable Jenkins package repository on your system."
+          },
+          {
+            "keyword": "systemctl start jenkins",
+            "detail": "Starts the active background Jenkins system service process under systemd supervision."
+          },
+          {
+            "keyword": "initialAdminPassword",
+            "detail": "A secure bootstrap pass-token printed to the console workspace, used to configure the admin account."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "info",
+        "html": "<strong>Initial Unlock Note:</strong> Once the installation script completes, navigate to <code>http://&lt;EC2_PUBLIC_IP&gt;:8080</code> in your browser. Copy the output of the <code>initialAdminPassword</code> command to unlock your Jenkins portal."
+      }
+    ]
+  },
+  {
     "id": "ui",
     "num": "04",
     "title": "Jenkins UI Tour",
@@ -240,7 +322,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Jenkins UI Mockup Map",
-        "diagram": "\n┌────────────────────────────────────────────────────────┐\n│ Jenkins Logo  [Searchbox...]             [User Profile]│\n├────────────────────────────────────────────────────────┤\n│ ┌───────────────┐ ┌──────────────────────────────────┐ │\n│ │  New Item     │ │  Dashboard > All Jobs            │ │\n│ │  People       │ ├──────────────────────────────────┤ │\n│ │  Build History│ │ Job Name  Status  Last Success   │ │\n│ │ Manage Jenkins│ │ my-app-ci  [Green] 2 minsago     │ │\n│ │               │ │ test-db    [Red]   1 hour ago    │ │\n│ │ ───────────── │ └──────────────────────────────────┘ │\n│ │ Build Executor│ ┌──────────────────────────────────┐ │\n│ │ [Master Idle] │ │  Console Output Logs             │ │\n│ │ [Agent Busy ] │ │  + git fetch --tags              │ │\n│ └───────────────┘ └──────────────────────────────────┘ │\n└────────────────────────────────────────────────────────┘\n"
+        "diagram": "\n┌────────────────────────────────────────────────────────┐\n│ Jenkins Logo  [Searchbox...]               [User Profile]│\n├────────────────────────────────────────────────────────┤\n│ ┌───────────────┐ ┌──────────────────────────────────┐ │\n│ │  New Item     │ │  Dashboard > All Jobs            │ │\n│ │  People       │ ├──────────────────────────────────┤ │\n│ │  Build History│ │ Job Name  Status  Last Success   │ │\n│ │  Manage Jenkins│ │ my-app-ci  [Green] 2 mins ago     │ │\n│ │               │ │ test-db    [Red]   1 hour ago      │ │\n│ │ ───────────── │ └──────────────────────────────────┘ │\n│ │ Build Executor│ ┌──────────────────────────────────┐ │\n│ │ [Master Idle] │ │  Console Output Logs             │ │\n│ │ [Agent Busy ] │ │  + git fetch --tags              │ │\n│ └───────────────┘ └──────────────────────────────────┘ │\n└────────────────────────────────────────────────────────┘\n"
       },
       {
         "type": "grid",
@@ -368,6 +450,50 @@ window.JENKINS_NOTES = [
         ]
       },
       {
+        "type": "grid",
+        "items": [
+          {
+            "title": "GUI Input Parameters",
+            "text": "Supports interactive user inputs on build triggers: String (custom version/commit), Choice (select branch/environment), and Boolean (force deploy toggle)."
+          },
+          {
+            "title": "Build Triggers",
+            "text": "Automates execution: 'Poll SCM' (scans Git changes), 'Build Periodically' (runs custom cron schedules e.g., 'H/15 * * * *'), or 'GitHub Hook' (webhook triggers)."
+          },
+          {
+            "title": "Upstream/Downstream",
+            "text": "Chains multiple jobs together. Triggering another project ('Build other projects') dynamically based on success, failure, or unstable status."
+          },
+          {
+            "title": "Post-Build Publishers",
+            "text": "Automates post-execution reports: archiving compiled binaries, sending Slack/Email updates, or registering JUnit XML test outcomes."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Production Freestyle Execute Shell Build Script Example",
+        "code": "# --- Build Step: Execute Shell ---\n# Clean workspace target directories\nrm -rf dist/ build/\nmkdir -p dist\n\n# Install dependencies and compile assets\nnpm install\nnpm run build\n\n# Run quality check suites\nnpm run lint\nnpm run test -- --passWithNoTests\n\n# Package the release bundle\ntar -czf dist/app-package.tar.gz public/ package.json node_modules/\n\n# Print completion stats\necho \"Freestyle build compiled successfully.\"\necho \"Bundle size: $(du -sh dist/app-package.tar.gz | cut -f1)",
+        "explanation": [
+          {
+            "keyword": "rm -rf dist/",
+            "detail": "Recursively deletes old build artifacts to guarantee clean compilation runs."
+          },
+          {
+            "keyword": "npm install",
+            "detail": "Downloads standard project dependencies based on the packages.json file definition."
+          },
+          {
+            "keyword": "tar -czf",
+            "detail": "Compresses folders recursively into a compact tarball archive ready for deployment."
+          },
+          {
+            "keyword": "du -sh",
+            "detail": "Calculates and prints disk usage information of target files in human-readable sizes."
+          }
+        ]
+      },
+      {
         "type": "callout",
         "tone": "warn",
         "html": "<strong>Why Freestyle is discouraged in production:</strong> Changes to Freestyle jobs are immediate and unversioned. There is no Git audit trail for who edited a configuration, and no code review process."
@@ -394,7 +520,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Structure Comparison",
-        "diagram": "\n┌───────────────────────────────┐ ┌───────────────────────────────┐\n│      Declarative Syntax       │ │        Scripted Syntax        │\n├───────────────────────────────┤ ├───────────────────────────────┤\n│ pipeline {                    │ │ node('linux') {               │\n│   agent any                   │ │   stage('Build') {            │\n│   stages {                    │ │     sh 'make'                 │\n│     stage('Build') {          │ │   }                           │\n│       steps {                 │ │   if (isRelease) {            │\n│         sh 'make'             │ │     stage('Deploy') { ... }   │\n│       }                       │ │   }                           │\n│     }                         │ │ }                             │\n│   }                           │ │                               │\n│ }                             │ │                               │\n└───────────────────────────────┘ └───────────────────────────────┘\n"
+        "diagram": "\n┌───────────────────────────────┐ ┌───────────────────────────────┐\n│      Declarative Syntax       │ │        Scripted Syntax        │\n├───────────────────────────────┤ ├───────────────────────────────┤\n│ pipeline {                    │ │ node('linux') {               │\n│   agent any                   │ │   stage('Build') {            │\n│   stages {                    │ │     sh 'make'                 │\n│     stage('Build') {          │ │   }                           │\n│       steps {                 │ │   if (isRelease) {            │\n│         sh 'make'             │ │     stage('Deploy') { ... }   │\n│       }                       │ │   }                           │\n│     }                         │ │ }                               │\n│   }                           │ │                               │\n│ }                             │ │                               │\n└───────────────────────────────┘ └───────────────────────────────┘\n"
       },
       {
         "type": "table",
@@ -448,7 +574,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Pipeline-as-Code Workflow",
-        "diagram": "\n ┌──────────────┐\n │ Developer    │ ── (Pushes Jenkinsfile) ──> ┌────────────────┐\n └──────────────┘                             │ Git Repository │\n                                              └───────┬────────┘\n                                                      │ (Triggers Build)\n                                                      ▼\n ┌──────────────┐                             ┌────────────────┐\n │ Jenkins Agent│ <─── (Parses Jenkinsfile) ──│ Jenkins Master │\n └──────────────┘                             └────────────────┘\n"
+        "diagram": "\n ┌──────────────┐\n │ Developer    │ ── (Pushes Jenkinsfile) ──> ┌────────────────┐\n └──────────────┘                             │ Git Repository │\n                                              └───────+────────┘\n                                                      │ (Triggers Build)\n                                                      ▼\n ┌──────────────┐                             ┌────────────────┐\n │ Jenkins Agent│ <─── (Parses Jenkinsfile) ──│ Jenkins Master │\n └──────────────┘                             └────────────────┘\n"
       },
       {
         "type": "code",
@@ -512,32 +638,24 @@ window.JENKINS_NOTES = [
       },
       {
         "type": "code",
-        "title": "Full-Featured Declarative Pipeline Blueprint",
-        "code": "pipeline {\n    agent { label 'linux-executor' }\n\n    environment {\n        DEPLOY_PORT = \"8080\"\n        REGISTRY_URL = \"docker.io/myprofile\"\n    }\n\n    options {\n        timeout(time: 30, unit: 'MINUTES')\n        retry(3)\n        timestamps()\n    }\n\n    parameters {\n        string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Target Env')\n        booleanParam(name: 'SCAN_IMAGES', defaultValue: true, description: 'Trivy Scan')\n    }\n\n    triggers {\n        cron('H 4 * * 1-5') // Build nightly Mon-Fri\n    }\n\n    stages {\n        stage('Pull SCM') {\n            steps {\n                checkout scm\n            }\n        }\n        stage('Security Analysis') {\n            when {\n                expression { return params.SCAN_IMAGES == true }\n            }\n            steps {\n                sh 'echo \"Scanning workspace vulnerabilities...\"'\n            }\n        }\n        stage('Deploy') {\n            when {\n                branch 'main'\n            }\n            steps {\n                sh \"echo Deploying to port ${env.DEPLOY_PORT} on environment ${params.DEPLOY_ENV}\"\n            }\n        }\n    }\n\n    post {\n        always {\n            echo \"Pipeline run completed.\"\n        }\n        success {\n            echo \"Deployment fully executed!\"\n        }\n        failure {\n            echo \"Critical Pipeline Failure. Triggering rollback procedures.\"\n        }\n    }\n}",
+        "title": "Enterprise-Grade Declarative Pipeline Reference Configuration",
+        "code": "pipeline {\n    agent { label 'production-runner' }\n\n    tools {\n        nodejs 'node-18'\n        jdk 'java-17'\n    }\n\n    parameters {\n        choice(name: 'DEPLOY_ENV', choices: ['development', 'staging', 'production'], description: 'Target Deploy Environment')\n        string(name: 'VERSION_TAG', defaultValue: '1.0.0', description: 'Application Version override')\n        booleanParam(name: 'FORCE_DEPLOY', defaultValue: false, description: 'Force deployment execution on failure')\n    }\n\n    environment {\n        APP_NAME = \"payment-gateway\"\n        DB_CREDENTIALS = credentials('prod-database-credentials')\n        DEPLOY_PATH = \"/var/www/apps/${env.APP_NAME}\"\n    }\n\n    stages {\n        stage('Pull SCM Source') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Verify & Test') {\n            steps {\n                sh 'npm ci'\n                sh 'npm run test -- --coverage'\n            }\n        }\n        \n        stage('SonarQube Security Scan') {\n            steps {\n                withSonarQubeEnv('SonarQube-Server') {\n                    sh 'npm run sonar-scan'\n                }\n            }\n        }\n        \n        stage('Package Container & Release') {\n            when {\n                expression {\n                    return (currentBuild.result == 'SUCCESS' || params.FORCE_DEPLOY == true)\n                }\n            }\n            steps {\n                sh \"docker build -t ${env.APP_NAME}:${params.VERSION_TAG} .\"\n                sh \"docker tag ${env.APP_NAME}:${params.VERSION_TAG} ${env.APP_NAME}:latest\"\n            }\n        }\n    }\n\n    post {\n        always {\n            cleanWs()\n        }\n        success {\n            slackSend(color: '#2eb886', message: \"SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} is live on ${params.DEPLOY_ENV}!\")\n        }\n        failure {\n            slackSend(color: '#a30200', message: \"CRITICAL: ${env.JOB_NAME} #${env.BUILD_NUMBER} has failed during execution stages!\")\n        }\n    }\n}",
         "explanation": [
           {
-            "keyword": "agent { label 'linux-executor' }",
-            "detail": "Explicitly binds this build run to agents containing the label 'linux-executor'."
+            "keyword": "tools",
+            "detail": "Installs and registers predefined compiler configurations directly on the agent's active execution path."
           },
           {
-            "keyword": "environment",
-            "detail": "Stores static or dynamic pipeline-wide environment variables."
+            "keyword": "credentials('id')",
+            "detail": "Retrieves encrypted passwords or credentials from the Jenkins storage vault cleanly without printing logs."
           },
           {
-            "keyword": "parameters",
-            "detail": "Accepts user inputs (string, boolean, choice) during parameterized builds."
+            "keyword": "currentBuild.result",
+            "detail": "Native object tracking the current execution state of pipeline steps (e.g. SUCCESS, FAILURE)."
           },
           {
-            "keyword": "triggers { cron(...) }",
-            "detail": "Automates pipeline scheduling using unix crontab scheduling commands."
-          },
-          {
-            "keyword": "when { expression { ... } }",
-            "detail": "Conditional stage wrapper. Runs the stage ONLY if the expression evaluates to true."
-          },
-          {
-            "keyword": "checkout scm",
-            "detail": "Clones the code repository associated with the Jenkins build trigger automatically."
+            "keyword": "withSonarQubeEnv",
+            "detail": "A custom plugin environment wrapper injecting server configs and secrets dynamically to execute quality audits."
           }
         ]
       }
@@ -730,6 +848,29 @@ window.JENKINS_NOTES = [
           {
             "keyword": "args",
             "detail": "Standard CLI parameters passed during container startup, such as directory mappings (`-v`)."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Configuring a Remote Jenkins SSH Worker Node",
+        "code": "# =================================================================\n# STEP 1: On the Jenkins CONTROLLER Node\n# =================================================================\n# Generate dynamic high-security SSH key pair for agent authorization\nssh-keygen -t ed25519 -f ~/.ssh/jenkins_agent_key -N \"\"\n\n# Print the public key string to manually append to target agent\ncat ~/.ssh/jenkins_agent_key.pub\n\n# =================================================================\n# STEP 2: On the Remote Jenkins AGENT Worker Node\n# =================================================================\n# Create a dedicated system user group and user for execution\nsudo groupadd -g 10000 jenkins\nsudo useradd -u 10000 -g jenkins -m -d /var/jenkins -s /bin/bash jenkins\n\n# Provision target SSH directories with secure permissions\nsudo mkdir -p /var/jenkins/.ssh\nsudo chmod 700 /var/jenkins/.ssh\n\n# Authorize the controller key for non-interactive connections\necho \"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...\" | sudo tee -a /var/jenkins/.ssh/authorized_keys\nsudo chmod 600 /var/jenkins/.ssh/authorized_keys\nsudo chown -R jenkins:jenkins /var/jenkins\n\n# Install Java JDK (Must match controller system JRE version)\nsudo apt update && sudo apt install openjdk-17-jdk -y",
+        "explanation": [
+          {
+            "keyword": "ssh-keygen -t ed25519",
+            "detail": "Generates a highly secure Ed25519 dynamic asymmetric cryptographic SSH key pair."
+          },
+          {
+            "keyword": "/var/jenkins",
+            "detail": "The designated system user workspace directory on the worker agent node."
+          },
+          {
+            "keyword": "authorized_keys",
+            "detail": "SSH authorization file that stores public keys permitted to connect natively without password requests."
+          },
+          {
+            "keyword": "openjdk-17-jdk",
+            "detail": "Java Development Kit. Required so the Agent slave JAR processes execute compiler requests locally."
           }
         ]
       },
@@ -981,6 +1122,79 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "rbac_user_management",
+    "num": "17-A",
+    "title": "Role-Based Access Control (RBAC)",
+    "category": "integrations",
+    "description": "Comprehensive guide to configure Role-based Authorization Strategy, define Global & Project roles, and assign user policies.",
+    "tags": [
+      "Security",
+      "RBAC",
+      "User Management"
+    ],
+    "search": "rbac user management role based access control security authorization strategy authorization global project roles pattern matching",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Role-Based Access Control (RBAC) in Jenkins provides a secure, granular way to configure authorization permissions using the <strong>Role-based Authorization Strategy</strong> plugin."
+      },
+      {
+        "type": "ascii",
+        "label": "Jenkins Authorization Map",
+        "diagram": "\n┌─────────────────────────────────────────────────────────────────┐\n│                    Jenkins Authorization Map                    │\n├─────────────────────────────────────────────────────────────────┤\n│                                                                 │\n│             ┌──────────────┐         ┌──────────────────┐       │\n│             │ Active Users │ ──────> │   Assigned Roles │       │\n│             └──────────────┘         └────────┬─────────┘       │\n│                                               │                 │\n│                      ┌────────────────────────┴─────────┐       │\n│                      ▼                                  ▼       │\n│           ┌────────────────────┐             ┌────────────────┐ │\n│           │    Global Roles    │             │  Project Roles │ │\n│           │ - Admin: Full      │             │ - Dev: dev-*   │ │\n│           │ - ReadOnly: Read   │             │ - QA: qa-*     │ │\n│           └────────────────────┘             └────────────────┘ │\n└─────────────────────────────────────────────────────────────────┘\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Global Roles",
+            "text": "System-wide roles like 'admin' (full access) or 'readonly' (overall read/view permissions across all pages)."
+          },
+          {
+            "title": "Item Roles (Project)",
+            "text": "Granular roles matching specific projects using regular expression filters like 'dev-.*' or 'qa-.*' to limit job actions."
+          },
+          {
+            "title": "Agent Roles",
+            "text": "Restricts execution rights, slave node administration, and agent triggering behaviors to specific operators."
+          },
+          {
+            "title": "User Mappings",
+            "text": "Assigns local Jenkins accounts or external corporate LDAP/Active Directory group profiles to configured roles."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Programmatic Groovy Strategy for Jenkins RBAC",
+        "code": "// Jenkins Role-Based Access Control Setup Logic\nclass JenkinsRBACConfiguration {\n    static void configureStrategy() {\n        // 1. Enable Role-Based Authorization Strategy programmatically\n        def authStrategy = new com.michelin.cio.hudson.plugins.rolestrategy.RoleBasedAuthorizationStrategy()\n        jenkins.model.Jenkins.instance.setAuthorizationStrategy(authStrategy)\n        \n        // 2. Define Global Roles (Overall Permissions)\n        authStrategy.addRole(\"globalRoles\", new Role(\"admin\", \"Overall/Administer\"))\n        authStrategy.addRole(\"globalRoles\", new Role(\"readonly\", \"Overall/Read, Job/Read\"))\n        \n        // 3. Define Project-Scoped (Item) Roles with regex matching pattern\n        authStrategy.addRole(\"projectRoles\", new Role(\"developer\", \"Job/Read, Job/Build, Job/Cancel\", \"dev-.*\"))\n        authStrategy.addRole(\"projectRoles\", new Role(\"tester\", \"Job/Read, Job/Discover\", \"qa-.*\"))\n        \n        // 4. Map active users to their respective roles\n        authStrategy.assignRole(\"globalRoles\", \"admin\", \"admin_user\")\n        authStrategy.assignRole(\"projectRoles\", \"developer\", \"john_dev\")\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "RoleBasedAuthorizationStrategy",
+            "detail": "The core Java class provided by the RBAC plugin to replace default security systems."
+          },
+          {
+            "keyword": "globalRoles",
+            "detail": "Role category that handles server-wide actions like plugin management, configuration, and audit logs."
+          },
+          {
+            "keyword": "dev-.*",
+            "detail": "A regex pattern matching any job name that starts with 'dev-' to apply developers permissions."
+          },
+          {
+            "keyword": "assignRole",
+            "detail": "Associates a defined user account or security group with a specific global or project role."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "info",
+        "html": "<strong>GUI Configuration Tip:</strong> Always make sure to define at least one <code>admin</code> global role containing the <code>Overall/Administer</code> permission before enabling the Role-Based Strategy globally, otherwise you may lock yourself out of the system."
+      }
+    ]
+  },
+  {
     "id": "plugins",
     "num": "18",
     "title": "Essential Plugins",
@@ -1045,6 +1259,80 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "devsecops_pipeline",
+    "num": "18-A",
+    "title": "DevSecOps Security Scanning",
+    "category": "integrations",
+    "description": "Comprehensive guide to integrate SonarQube SAST, OWASP Dependency SCA, and Trivy container audits directly in Jenkins files.",
+    "tags": [
+      "Security",
+      "DevSecOps",
+      "Trivy",
+      "SonarQube"
+    ],
+    "search": "devsecops pipeline security scanning owasp dependency check trivy docker scan sonarqube quality gates vulnerabilities static code analysis",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "<strong>DevSecOps</strong> shifts security left by running automated static code analysis (SonarQube SAST), software composition analysis (OWASP Dependency-Check SCA), and container audits (Trivy) on every build stage."
+      },
+      {
+        "type": "ascii",
+        "label": "DevSecOps Pipeline Scan Architecture",
+        "diagram": "\n┌─────────────────────────────────────────────────────────────────┐\n│                     DevSecOps Scanning Flow                     │\n├─────────────────────────────────────────────────────────────────┤\n│                                                                 │\n│  ┌──────────────┐      ┌──────────────┐      ┌───────────────┐  │\n│  │ SonarQube    │ ───> │ OWASP Check  │ ───> │ Trivy Image   │  │\n│  │ (SAST Scan)  │      │ (SCA Scan)   │      │ (Container)   │  │\n│  └──────────────┘      └──────────────┘      └───────────────┘  │\n│                                                                 │\n│           ┌─────────────────────────────────────────┐           │\n│           │            Jenkins Pipeline             │           │\n│           │       (Enforces Quality Gates)          │           │\n│           └─────────────────────────────────────────┘           │\n└─────────────────────────────────────────────────────────────────┘\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "SonarQube SAST",
+            "text": "Static Application Security Testing. Analyzes your source code lines to detect security hotspots, bugs, and code smells."
+          },
+          {
+            "title": "OWASP Dependency-Check",
+            "text": "Software Composition Analysis (SCA). Scans application packages and dependencies against known vulnerability databases."
+          },
+          {
+            "title": "Trivy Container Scan",
+            "text": "Fast, high-fidelity security scanner. Audits Docker base images and layers for system-level package leaks."
+          },
+          {
+            "title": "Quality Gate Enforcement",
+            "text": "Pipeline automatically aborts build if severity boundaries are violated or quality levels fall below threshold standards."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Enterprise-Grade DevSecOps Pipeline Configuration",
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        SCANNER_HOME = tool 'SonarQube-Scanner'\n        IMAGE_NAME = \"enterprise-app:latest\"\n    }\n    \n    stages {\n        stage('Checkout Code') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('SonarQube SAST Audit') {\n            steps {\n                withSonarQubeEnv('SonarQube-Server') {\n                    sh \"\\${env.SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectName=enterprise-app\"\n                }\n                timeout(time: 10, unit: 'MINUTES') {\n                    script {\n                        def qg = waitForQualityGate()\n                        if (qg.status != 'OK') {\n                            error \"SonarQube Quality Gate failed! Aborting build.\"\n                        }\n                    }\n                }\n            }\n        }\n        \n        stage('OWASP Dependency Check (SCA)') {\n            steps {\n                // Run library vulnerability audits and output XML/HTML reports\n                dependencyCheck additionalArguments: '--format XML --format HTML', odocName: 'dependency-check-report'\n                dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'\n            }\n        }\n        \n        stage('Docker Compile') {\n            steps {\n                sh \"docker build -t \\${env.IMAGE_NAME} .\"\n            }\n        }\n        \n        stage('Trivy Container Scan') {\n            steps {\n                // Scan Docker container image for security CVE leaks and fail the build on HIGH/CRITICAL\n                sh \"trivy image --severity HIGH,CRITICAL --format table --exit-code 1 \\${env.IMAGE_NAME}\"\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "waitForQualityGate",
+            "detail": "Built-in webhook listener that pauses pipeline until SonarQube returns standard green quality check status."
+          },
+          {
+            "keyword": "dependencyCheck",
+            "detail": "OWASP scanner plugin utility scanning client jar files and package locks against CVE catalogs."
+          },
+          {
+            "keyword": "trivy image",
+            "detail": "A lightweight standalone security scan command assessing target containers directly before push staging."
+          },
+          {
+            "keyword": "--exit-code 1",
+            "detail": "Tells Trivy scanner to return system failure exit code 1 if matching high/critical severity security flaws are found."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>DevSecOps Tip:</strong> Run vulnerability audits before compiling the Docker container. This keeps base builds clean, avoids waste, and prevents developers from shipping unsecured packages."
+      }
+    ]
+  },
+  {
     "id": "shared-libs",
     "num": "19",
     "title": "Shared Libraries",
@@ -1097,6 +1385,85 @@ window.JENKINS_NOTES = [
           {
             "keyword": "buildDocker",
             "detail": "Triggers the custom step script compiled in the shared library vars folder directly."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Enterprise Shared Library Wrapper: vars/standardPipeline.groovy",
+        "code": "// vars/standardPipeline.groovy\ndef call(Map config = [:]) {\n    pipeline {\n        agent { label config.agentLabel ?: 'any' }\n        \n        stages {\n            stage('Initialize App') {\n                steps {\n                    echo \"Starting build pipeline for application ${config.appName}\"\n                }\n            }\n            stage('Compile & Test') {\n                steps {\n                    sh config.buildScript ?: 'npm run build'\n                }\n            }\n            stage('Trigger Deployment') {\n                when { branch 'main' }\n                steps {\n                    echo \"Deploying application to environment: ${config.environment ?: 'staging'}\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "def call(Map config)",
+            "detail": "Declares a parametrized global function trigger block that acts as the pipeline template engine."
+          },
+          {
+            "keyword": "config.agentLabel",
+            "detail": "Dynamic map variable parsed at runtime to specify which dynamic agent handles target builds."
+          },
+          {
+            "keyword": "when { branch 'main' }",
+            "detail": "Enforces a release guard ensuring deployment processes trigger only on the main Git branch."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Invoking the Enterprise Pipeline Template in a Jenkinsfile",
+        "code": "// Import the enterprise shared library pipeline template\n@Library('enterprise-shared-library@v1.2') _\n\nstandardPipeline(\n    appName: 'inventory-service',\n    agentLabel: 'kubernetes-runner',\n    buildScript: 'mvn clean package -DskipTests=true',\n    environment: 'production'\n)",
+        "explanation": [
+          {
+            "keyword": "@Library('enterprise-shared-library@v1.2')",
+            "detail": "Safely locks standard pipeline templates to a specific version tag or release branch."
+          },
+          {
+            "keyword": "standardPipeline",
+            "detail": "Invokes the global pipeline step wrapper which automatically structures stages, tests, and guards."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Real-time Slack Notification Step: vars/notifySlack.groovy",
+        "code": "// vars/notifySlack.groovy\ndef call(String buildStatus) {\n    def color = '#A30200' // Red for failures\n    def emoji = '❌'\n    \n    if (buildStatus == 'SUCCESS') {\n        color = '#2EB886' // Green for success\n        emoji = '✅'\n    } else if (buildStatus == 'UNSTABLE') {\n        color = '#DAA038' // Yellow for unstable\n        emoji = '⚠️'\n    }\n    \n    slackSend(\n        color: color,\n        message: \"\\${emoji} *Build #\\${env.BUILD_NUMBER}* for *\\${env.JOB_NAME}*\\n\" +\n                 \"Status: *\\${buildStatus}*\\n\" +\n                 \"Commit: \\`\\${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}\\`\"\n    )\n}",
+        "explanation": [
+          {
+            "keyword": "buildStatus",
+            "detail": "Active string parameter indicating the current state of build outcomes (SUCCESS, FAILURE)."
+          },
+          {
+            "keyword": "slackSend",
+            "detail": "Plugin command dispatching formatted messages directly to integrated team messaging channels."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Real-time Quality Gates Step: vars/runStaticAnalysis.groovy",
+        "code": "// vars/runStaticAnalysis.groovy\ndef call(Map config = [:]) {\n    def sonarHost = config.sonarHost ?: 'http://sonarqube.internal:9000'\n    \n    echo \"Starting static code analysis with SonarQube...\"\n    withSonarQubeEnv(config.serverName ?: 'SonarQube-Server') {\n        sh \"mvn sonar:sonar -Dsonar.host.url=\\${sonarHost} -Dsonar.projectName=\\${config.projectName}\"\n    }\n    \n    timeout(time: 10, unit: 'MINUTES') {\n        def qg = waitForQualityGate()\n        if (qg.status != 'OK') {\n            error \"Pipeline aborted due to SonarQube Quality Gate failure: \\${qg.status}\"\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "withSonarQubeEnv",
+            "detail": "Secure scope injecting configured server authentication details without logs leaks."
+          },
+          {
+            "keyword": "waitForQualityGate",
+            "detail": "Blocks progress programmatically until SonarQube server replies with gate test feedback."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Comprehensive Shared Library Demo Pipeline",
+        "code": "// Import the global enterprise shared library\n@Library('enterprise-shared-library@main') _\n\npipeline {\n    agent { label 'docker-executor' }\n    \n    stages {\n        stage('Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n        stage('Quality Gates') {\n            steps {\n                // Call reusable SonarQube scan step\n                runStaticAnalysis(\n                    projectName: 'order-service-api',\n                    sonarHost: 'https://sonar.company.com'\n                )\n            }\n        }\n        stage('Docker Compile') {\n            steps {\n                // Call custom reusable Docker build step\n                buildDocker(\n                    imageName: 'order-service-api',\n                    imageTag: \"\\${env.BUILD_NUMBER}\"\n                )\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Call reusable Slack notification step\n            notifySlack(currentBuild.result ?: 'SUCCESS')\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "runStaticAnalysis",
+            "detail": "Invokes the static analysis shared helper, ensuring strict code gates are verified."
+          },
+          {
+            "keyword": "notifySlack",
+            "detail": "Triggers the dynamic status notification wrapper block to dispatch post-build success/failure logs."
           }
         ]
       }
@@ -1335,7 +1702,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "AWS Deployment Pipeline",
-        "diagram": "\n ┌──────────────────┐\n │  Jenkins Server  │ ────── (Deploy Trigger) ───┐\n └──────────────────┘                            │\n                                                 ▼\n ┌──────────────────────────────────────────────────────────────────┐\n │                       AWS EC2 Instance                           │\n │  ┌──────────────────────┐            ┌───────────────────────┐   │\n │  │       SSH Port 22    │ ─────────> │   Docker Deployment   │   │\n │  └──────────────────────┘            └───────────────────────┘   │\n └──────────────────────────────────────────────────────────────────┘\n"
+        "diagram": "\n ┌──────────────────┐\n │  Jenkins Server  │ ────── (Deploy Trigger) ───┐\n └──────────────────┘                            │\n                                                 ▼\n ┌──────────────────────────────────────────────────────────────────┐\n │                       AWS EC2 Instance                           │\n │  ┌──────────────────────┐            ┌───────────────────────┐  │\n │  │      SSH Port 22     │ ─────────> │   Docker Deployment   │  │\n │  └──────────────────────┘            └───────────────────────┘  │\n └──────────────────────────────────────────────────────────────────┘\n"
       },
       {
         "type": "code",
@@ -1359,6 +1726,59 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "project4",
+    "num": "P4",
+    "title": "Kubernetes & ArgoCD GitOps",
+    "category": "projects",
+    "description": "Project 4: Complete GitOps continuous delivery pipeline targeting Kubernetes clusters, automated syncs with ArgoCD, and Prometheus monitoring.",
+    "tags": [
+      "Project",
+      "Kubernetes",
+      "ArgoCD",
+      "GitOps"
+    ],
+    "search": "project 4 kubernetes argocd prometheus gitops cd deployment pipeline sync cluster k8s manifest",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "<strong>Project 4 Objective:</strong> Build a state-of-the-art enterprise GitOps workflow. Jenkins builds application containers, updates manifest Git repositories, auto-deploys via ArgoCD to Kubernetes, and monitors health using Prometheus."
+      },
+      {
+        "type": "ascii",
+        "label": "K8s, ArgoCD & Prometheus GitOps Workflow",
+        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │  Docker Registry│\n└──────────────┘      │(Builds/Tests/Pushes│      │  (Docker Hub)  │\n                      └─────────┬──────────┘      └────────────────┘\n                                │ (Updates Manifest Tag)\n                                ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  ArgoCD Sync │ <─── │   Git (Manifest)   │ <────│   Kubernetes   │\n│  (Auto-Sync) │      └────────────────────┘      │ (Monitored by  │\n└──────┬───────┘                                  │  Prometheus)   │\n       │                                          └────────────────┘\n       └─────────────── (Deploys Pods to Cluster) ───────┘\n"
+      },
+      {
+        "type": "code",
+        "title": "Jenkinsfile GitOps Pipeline (Automated Manifest Promotion)",
+        "code": "pipeline {\n    agent { label 'k8s-agent' }\n    \n    environment {\n        DOCKER_HUB_REGISTRY = \"docker.io/enterprise-dev\"\n        APP_NAME = \"order-processor-api\"\n        GIT_OPS_REPO = \"github.com/enterprise-dev/gitops-infra-config.git\"\n        CRED_DOCKER = credentials('docker-hub-credentials')\n        CRED_GITHUB = credentials('github-gitops-token')\n    }\n    \n    stages {\n        stage('Initialize Workspace') {\n            steps {\n                script {\n                    env.COMMIT_SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()\n                }\n            }\n        }\n        \n        stage('Dockerize Build & Push') {\n            steps {\n                sh \"docker build -t ${env.DOCKER_HUB_REGISTRY}/${env.APP_NAME}:${env.COMMIT_SHA} .\"\n                sh \"echo ${env.CRED_DOCKER_PASS} | docker login -u ${env.CRED_DOCKER_USER} --password-stdin\"\n                sh \"docker push ${env.DOCKER_HUB_REGISTRY}/${env.APP_NAME}:${env.COMMIT_SHA}\"\n            }\n        }\n        \n        stage('Prometheus Instrumentation Check') {\n            steps {\n                // Ensure prometheus scrape annotations exist in deployment template\n                sh \"grep -q 'prometheus.io/scrape' k8s/deployment.yaml || (echo 'Missing Prometheus scrape annotation!' && exit 1)\"\n            }\n        }\n        \n        stage('GitOps Manifest Update') {\n            steps {\n                // Clone the separate GitOps configuration infrastructure repo\n                sh \"git clone https://${env.CRED_GITHUB_USR}:${env.CRED_GITHUB_PSW}@${env.GIT_OPS_REPO} gitops-config\"\n                \n                dir('gitops-config') {\n                    // Update deployment manifest image reference using sed\n                    sh \"sed -i 's|image: ${env.DOCKER_HUB_REGISTRY}/${env.APP_NAME}:.*|image: ${env.DOCKER_HUB_REGISTRY}/${env.APP_NAME}:${env.COMMIT_SHA}|g' apps/${env.APP_NAME}/deployment.yaml\"\n                    \n                    // Commit and push manifest update back to trigger ArgoCD Sync\n                    sh \"git config user.name 'Jenkins CI/CD Bot'\"\n                    sh \"git config user.email 'jenkins-bot@enterprise.com'\"\n                    sh \"git add .\"\n                    sh \"git commit -m 'Auto-promoted ${env.APP_NAME} to version ${env.COMMIT_SHA} [Skip CI]'\"\n                    sh \"git push origin main\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "git rev-parse --short HEAD",
+            "detail": "Retrieves the short Git commit hash of the current checkout code branch to use as immutable image version."
+          },
+          {
+            "keyword": "gitops-infra-config.git",
+            "detail": "A dedicated, isolated infrastructure configuration repository containing the Kubernetes manifest templates."
+          },
+          {
+            "keyword": "sed -i",
+            "detail": "Stream editor command executing inline substitution replacement of image tag values dynamically."
+          },
+          {
+            "keyword": "ArgoCD Sync",
+            "detail": "The GitOps agent process monitors this config repo and immediately schedules rolling Kubernetes Pod updates."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "success",
+        "html": "<strong>Prometheus Monitoring Tip:</strong> Include the annotations <code>prometheus.io/scrape: 'true'</code> and <code>prometheus.io/port: '8080'</code> inside your pod templates so Prometheus can auto-discover your services and collect performance metrics."
+      }
+    ]
+  },
+  {
     "id": "commands",
     "num": "R1",
     "title": "CLI & Commands",
@@ -1378,7 +1798,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Jenkins CLI Mechanism",
-        "diagram": "\n  ┌─────────────────┐\n  │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]\n  │ (jar file tool) │                                 │\n  └─────────────────┘                         (Performs Action)\n                                                      │\n                                                      ▼\n                                              [ System Restart ]\n"
+        "diagram": "\n  ┌─────────────────┐\n  │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]\n  │  (jar file tool) │                                │\n  └─────────────────┘                         (Performs Action)\n                                                      │\n                                                      ▼\n                                              [ System Restart ]\n"
       },
       {
         "type": "code",
@@ -1575,5 +1995,13 @@ window.JENKINS_PROJECTS = [
     "description": "A comprehensive continuous deployment pipeline targeting cloud infrastructures. Set up SSH authorizations to run commands securely on remote AWS servers.",
     "level": "Advanced",
     "tags": ["AWS", "EC2", "SSH", "Production"]
+  },
+  {
+    "id": "project4",
+    "num": "P4",
+    "title": "Project 4 — GitOps CI/CD with Kubernetes, ArgoCD & Prometheus",
+    "description": "Architect a modern GitOps pipeline that builds application containers, updates manifest Git repositories, auto-deploys via ArgoCD to Kubernetes, and monitors health using Prometheus metrics.",
+    "level": "Advanced",
+    "tags": ["Kubernetes", "ArgoCD", "Prometheus", "GitOps"]
   }
 ];
