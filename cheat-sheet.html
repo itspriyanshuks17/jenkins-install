@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jenkins Cheat Sheet | One Shot Notes</title>
+  <meta name="description" content="Jenkins CLI cheat sheet for the Jenkins In One Shot Hindi notes site.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Jenkins Notes home">
+      <span class="brand-mark" style="background:var(--jenkins); color:white;">jk</span>
+      <span>Jenkins Notes</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+      <svg viewBox="0 0 18 18" aria-hidden="true">
+        <line x1="1" y1="4" x2="17" y2="4"/>
+        <line x1="1" y1="9" x2="17" y2="9"/>
+        <line x1="1" y1="14" x2="17" y2="14"/>
+      </svg>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
+      <a href="index.html">Notes</a>
+      <a href="projects.html">Projects</a>
+      <a class="active" href="cheat-sheet.html">Cheat Sheet</a>
+      <a href="https://www.youtube.com/watch?v=XaSdKR2fOU4" target="_blank" rel="noreferrer">Video</a>
+      <a href="https://github.com/itspriyanshuks17/jenkins-install" target="_blank" rel="noreferrer">Repo</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero">
+      <p class="eyebrow">CLI Reference</p>
+      <h1>The Jenkins workflow, short enough to keep open while practicing.</h1>
+      <p>Use this page while working through the hands-on AWS labs. It keeps the important commands close without digging through the full notes.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-kicker">Workflow</span>
+        <h2 class="section-title">Standard command loop</h2>
+      </div>
+      <div class="quick-grid">
+        <a class="quick-card" href="note.html?id=cli">
+          <div class="quick-label">01</div>
+          <h3>systemctl start jenkins</h3>
+          <p>Start the Jenkins service on Linux.</p>
+          <span class="arrow">-&gt;</span>
+        </a>
+        <a class="quick-card" href="note.html?id=cli">
+          <div class="quick-label">02</div>
+          <h3>cat initialAdminPassword</h3>
+          <p>Get the initial admin password from /var/lib/jenkins/secrets.</p>
+          <span class="arrow">-&gt;</span>
+        </a>
+        <a class="quick-card" href="note.html?id=cli">
+          <div class="quick-label">03</div>
+          <h3>Jenkins CLI</h3>
+          <p>Use java -jar jenkins-cli.jar to interact via command line.</p>
+          <span class="arrow">-&gt;</span>
+        </a>
+        <a class="quick-card" href="note.html?id=cli">
+          <div class="quick-label">04</div>
+          <h3>Trigger Build</h3>
+          <p>Trigger a job remotely using curl POST with API token.</p>
+          <span class="arrow">-&gt;</span>
+        </a>
+        <a class="quick-card" href="note.html?id=cli">
+          <div class="quick-label">05</div>
+          <h3>Pipeline Syntax</h3>
+          <p>Use the Jenkins Pipeline Syntax generator for steps.</p>
+          <span class="arrow">-&gt;</span>
+        </a>
+        <a class="quick-card" href="note.html?id=cli">
+          <div class="quick-label">06</div>
+          <h3>Clean Workspace</h3>
+          <p>Use cleanWs() in the post block to clear the workspace.</p>
+          <span class="arrow">-&gt;</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <div class="code-card">
+        <div class="code-title">
+          <span>Daily Jenkins commands</span>
+          <button class="copy-btn" data-copy-btn aria-label="Copy code to clipboard">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5" y="2" width="9" height="11" rx="1.5"/><rect x="2" y="5" width="9" height="11" rx="1.5"/></svg>
+            <span>Copy</span>
+          </button>
+        </div>
+        <pre><code>sudo systemctl status jenkins
+sudo systemctl enable jenkins
+cat /var/lib/jenkins/secrets/initialAdminPassword
+java -jar jenkins-cli.jar -s http://localhost:8080/ help
+curl -X POST http://localhost:8080/job/MyJob/build</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <div class="note-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Situation</th>
+              <th>Command</th>
+              <th>Use carefully because</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Check Service Status</td>
+              <td><code>systemctl status jenkins</code></td>
+              <td>Check if Jenkins is running</td>
+            </tr>
+            <tr>
+              <td>Restart Jenkins</td>
+              <td><code>systemctl restart jenkins</code></td>
+              <td>Applies new plugin configurations</td>
+            </tr>
+            <tr>
+              <td>Tail Logs</td>
+              <td><code>journalctl -u jenkins -f</code></td>
+              <td>Watch Jenkins logs in real-time</td>
+            </tr>
+            <tr>
+              <td>Trigger Build via CLI</td>
+              <td><code>jenkins-cli build my-job</code></td>
+              <td>Requires authentication</td>
+            </tr>
+            <tr>
+              <td>Safe Restart URL</td>
+              <td><code>http://server/safeRestart</code></td>
+              <td>Waits for builds to finish before restart</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <div class="callout success">
+        <strong>Practice order:</strong> finish the Node.js CI project first, then Docker integration, then AWS EC2 deployment. That path matches the way the concepts build on each other.
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Jenkins CLI Cheat Sheet</span>
+    <span>Created by: <strong>Priyanshu K. Sharma</strong></span>
+    <span><a href="note.html?id=cli">Full CLI note</a></span>
+    <span><a href="projects.html">Practice projects</a></span>
+  </footer>
+  <script src="assets/js/nav-toggle.js"></script>
+</body>
+</html>
