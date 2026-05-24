@@ -337,14 +337,14 @@ add_note(
             "label": "Jenkins UI Mockup Map",
             "diagram": """
 ┌────────────────────────────────────────────────────────┐
-│ Jenkins Logo  [Searchbox...]               [User Profile]│
+│ Jenkins Logo  [Searchbox...]             [User Profile]│
 ├────────────────────────────────────────────────────────┤
 │ ┌───────────────┐ ┌──────────────────────────────────┐ │
 │ │  New Item     │ │  Dashboard > All Jobs            │ │
 │ │  People       │ ├──────────────────────────────────┤ │
 │ │  Build History│ │ Job Name  Status  Last Success   │ │
-│ │  Manage Jenkins│ │ my-app-ci  [Green] 2 mins ago     │ │
-│ │               │ │ test-db    [Red]   1 hour ago      │ │
+│ │ Manage Jenkins│ │ my-app-ci  [Green] 2 mins ago    │ │
+│ │               │ │ test-db    [Red]   1 hour ago    │ │
 │ │ ───────────── │ └──────────────────────────────────┘ │
 │ │ Build Executor│ ┌──────────────────────────────────┐ │
 │ │ [Master Idle] │ │  Console Output Logs             │ │
@@ -556,7 +556,7 @@ add_note(
 │       steps {                 │ │   if (isRelease) {            │
 │         sh 'make'             │ │     stage('Deploy') { ... }   │
 │       }                       │ │   }                           │
-│     }                         │ │ }                               │
+│     }                         │ │ }                             │
 │   }                           │ │                               │
 │ }                             │ │                               │
 └───────────────────────────────┘ └───────────────────────────────┘
@@ -2851,9 +2851,9 @@ add_note(
                                                  ▼
  ┌──────────────────────────────────────────────────────────────────┐
  │                       AWS EC2 Instance                           │
- │  ┌──────────────────────┐            ┌───────────────────────┐  │
- │  │      SSH Port 22     │ ─────────> │   Docker Deployment   │  │
- │  └──────────────────────┘            └───────────────────────┘  │
+ │  ┌──────────────────────┐            ┌───────────────────────┐   │
+ │  │      SSH Port 22     │ ─────────> │   Docker Deployment   │   │
+ │  └──────────────────────┘            └───────────────────────┘   │
  └──────────────────────────────────────────────────────────────────┘
 """
         },
@@ -2923,7 +2923,7 @@ add_note(
       │ (Pushes Code)
       ▼
 ┌──────────────┐      ┌────────────────────┐      ┌────────────────┐
-│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │  Docker Registry│
+│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │ Docker Registry│
 └──────────────┘      │(Builds/Tests/Pushes│      │  (Docker Hub)  │
                       └─────────┬──────────┘      └────────────────┘
                                 │ (Updates Manifest Tag)
@@ -3026,7 +3026,7 @@ add_note(
             "diagram": """
   ┌─────────────────┐
   │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]
-  │  (jar file tool) │                                │
+  │ (jar file tool) │                                 │
   └─────────────────┘                         (Performs Action)
                                                       │
                                                       ▼
