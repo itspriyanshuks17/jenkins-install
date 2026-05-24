@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jenkins Note</title>
+  <meta name="description" content="Jenkins topic note from the Jenkins In One Shot Hindi notes site.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Jenkins Notes home">
+      <span class="brand-mark" style="background:var(--jenkins); color:white;">jk</span>
+      <span>Jenkins Notes</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="siteNav">
+      <svg viewBox="0 0 18 18" aria-hidden="true">
+        <line x1="1" y1="4" x2="17" y2="4"/>
+        <line x1="1" y1="9" x2="17" y2="9"/>
+        <line x1="1" y1="14" x2="17" y2="14"/>
+      </svg>
+    </button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
+      <a href="index.html">Notes</a>
+      <a href="projects.html">Projects</a>
+      <a href="cheat-sheet.html">Cheat Sheet</a>
+      <a href="https://www.youtube.com/watch?v=XaSdKR2fOU4" target="_blank" rel="noreferrer">Video</a>
+      <a href="https://github.com/itspriyanshuks17/jenkins-install" target="_blank" rel="noreferrer">Repo</a>
+    </nav>
+  </header>
+
+  <main class="page-shell note-layout">
+    <aside class="note-sidebar" aria-label="All Jenkins notes">
+      <button class="note-sidebar-toggle" id="sidebarToggle" aria-expanded="true" aria-controls="noteList">
+        All Notes
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="2 5 7 10 12 5"/></svg>
+      </button>
+      <div id="noteList"></div>
+    </aside>
+
+    <article class="note-article" id="noteArticle">
+      <div class="note-topline" id="noteTopline"></div>
+      <h1 id="noteTitle">Jenkins Note</h1>
+      <p class="note-summary" id="noteSummary"></p>
+      <div id="noteBody"></div>
+      <nav class="pager" id="notePager" aria-label="Previous and next notes"></nav>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Jenkins One Shot Notes</span>
+    <span>Created by: <strong>Priyanshu K. Sharma</strong></span>
+    <span><a href="index.html">Catalog</a></span>
+    <span><a href="projects.html">Projects</a></span>
+    <span><a href="https://github.com/itspriyanshuks17/jenkins-install" target="_blank" rel="noreferrer">GitHub repo</a></span>
+  </footer>
+
+  <script src="assets/js/jenkins-notes.js"></script>
+  <script src="assets/js/note.js"></script>
+  <script src="assets/js/nav-toggle.js"></script>
+</body>
+</html>
