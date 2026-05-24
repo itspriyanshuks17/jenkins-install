@@ -72,6 +72,16 @@
               </button>
             </div>
             <pre><code>${escapeHtml(section.code)}</code></pre>
+            ${section.explanation ? `
+              <div class="code-explanation">
+                <h4>Code Breakdown & Keywords</h4>
+                <ul>
+                  ${section.explanation.map((exp) => `
+                    <li><code>${escapeHtml(exp.keyword)}</code>: ${exp.detail}</li>
+                  `).join("")}
+                </ul>
+              </div>
+            ` : ""}
           </div>
         </section>
       `;

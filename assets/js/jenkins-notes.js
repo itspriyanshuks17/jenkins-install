@@ -34,7 +34,9 @@ window.JENKINS_CATEGORIES = [
     "label": "Reference",
     "kicker": "Track 07"
   }
-];\n\nwindow.JENKINS_NOTES = [
+];
+
+window.JENKINS_NOTES = [
   {
     "id": "intro",
     "num": "01",
@@ -164,12 +166,52 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Option A: Native Ubuntu/Debian Installation",
-        "code": "# Update OS packages\nsudo apt update && sudo apt upgrade -y\n\n# Install JDK 17 (Required runtime)\nsudo apt install -y fontconfig openjdk-17-jre\njava -version\n\n# Add Jenkins repository GPG key\nsudo wget -O /usr/share/keyrings/jenkins-keyring.asc \\\n  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key\n\n# Append Jenkins repository to system sources\necho \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \\\n  https://pkg.jenkins.io/debian-stable binary/\" | \\\n  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null\n\n# Install & enable service\nsudo apt update\nsudo apt install -y jenkins\nsudo systemctl start jenkins\nsudo systemctl enable jenkins\n\n# Retrieve First-time Setup Password\nsudo cat /var/lib/jenkins/secrets/initialAdminPassword"
+        "code": "# Update OS packages\nsudo apt update && sudo apt upgrade -y\n\n# Install JDK 17 (Required runtime)\nsudo apt install -y fontconfig openjdk-17-jre\njava -version\n\n# Add Jenkins repository GPG key\nsudo wget -O /usr/share/keyrings/jenkins-keyring.asc \\\n  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key\n\n# Append Jenkins repository to system sources\necho \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \\\n  https://pkg.jenkins.io/debian-stable binary/\" | \\\n  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null\n\n# Install & enable service\nsudo apt update\nsudo apt install -y jenkins\nsudo systemctl start jenkins\nsudo systemctl enable jenkins\n\n# Retrieve First-time Setup Password\nsudo cat /var/lib/jenkins/secrets/initialAdminPassword",
+        "explanation": [
+          {
+            "keyword": "openjdk-17-jre",
+            "detail": "Java Runtime Environment version 17. Jenkins is written in Java and requires JDK 11 or 17 to execute."
+          },
+          {
+            "keyword": "jenkins-keyring.asc",
+            "detail": "The GPG keys used to sign the Jenkins packages, ensuring standard security authenticity during APT download."
+          },
+          {
+            "keyword": "/etc/apt/sources.list.d/jenkins.list",
+            "detail": "Registers the official Jenkins Debian repository so standard APT tools scan for updates."
+          },
+          {
+            "keyword": "systemctl start jenkins",
+            "detail": "Systemd command to start the background daemon service process representing Jenkins server."
+          },
+          {
+            "keyword": "initialAdminPassword",
+            "detail": "A dynamically generated bootstrap password required to log in for the very first time."
+          }
+        ]
       },
       {
         "type": "code",
         "title": "Option B: Containerized Docker Compose Setup",
-        "code": "# docker-compose.yml\nversion: '3.8'\nservices:\n  jenkins:\n    image: jenkins/jenkins:lts-jdk17\n    container_name: jenkins-lts\n    ports:\n      - \"8080:8080\"\n      - \"50000:50000\" # JNLP Agent connection port\n    volumes:\n      - jenkins_home:/var/jenkins_home\n    restart: unless-stopped\n\nvolumes:\n  jenkins_home:"
+        "code": "# docker-compose.yml\nversion: '3.8'\nservices:\n  jenkins:\n    image: jenkins/jenkins:lts-jdk17\n    container_name: jenkins-lts\n    ports:\n      - \"8080:8080\"\n      - \"50000:50000\" # JNLP Agent connection port\n    volumes:\n      - jenkins_home:/var/jenkins_home\n    restart: unless-stopped\n\nvolumes:\n  jenkins_home:",
+        "explanation": [
+          {
+            "keyword": "jenkins/jenkins:lts-jdk17",
+            "detail": "Official LTS container image of Jenkins compiled with JDK 17 pre-installed."
+          },
+          {
+            "keyword": "8080:8080",
+            "detail": "Binds host port 8080 to container port 8080, exposing the main web UI interface."
+          },
+          {
+            "keyword": "50000:50000",
+            "detail": "Binds host port 50000, used by inbound JNLP executors to coordinate build nodes."
+          },
+          {
+            "keyword": "jenkins_home",
+            "detail": "Persistent volume mounting to preserve pipeline code configurations, logs, users, and credentials."
+          }
+        ]
       },
       {
         "type": "callout",
@@ -411,7 +453,33 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Minimal Production-Ready Jenkinsfile Template",
-        "code": "pipeline {\n    agent any\n\n    options {\n        timeout(time: 1, unit: 'HOURS')\n        buildDiscarder(logRotator(numToKeepStr: '15'))\n        disableConcurrentBuilds()\n    }\n\n    stages {\n        stage('Initialize') {\n            steps {\n                echo \"Initializing Build #${env.BUILD_NUMBER} on Node: ${env.NODE_NAME}\"\n            }\n        }\n        stage('Compile') {\n            steps {\n                sh 'echo \"Running compilation steps...\"'\n            }\n        }\n    }\n    \n    post {\n        always {\n            cleanWs()\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n\n    options {\n        timeout(time: 1, unit: 'HOURS')\n        buildDiscarder(logRotator(numToKeepStr: '15'))\n        disableConcurrentBuilds()\n    }\n\n    stages {\n        stage('Initialize') {\n            steps {\n                echo \"Initializing Build #${env.BUILD_NUMBER} on Node: ${env.NODE_NAME}\"\n            }\n        }\n        stage('Compile') {\n            steps {\n                sh 'echo \"Running compilation steps...\"'\n            }\n        }\n    }\n    \n    post {\n        always {\n            cleanWs()\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "pipeline",
+            "detail": "The required entry block wrapper that marks this script as a Declarative Jenkins Pipeline."
+          },
+          {
+            "keyword": "agent any",
+            "detail": "Allocates any available worker execution agent node and directory to run this pipeline."
+          },
+          {
+            "keyword": "options",
+            "detail": "Enforces global pipeline settings like build timeouts, concurrency, and retention logic."
+          },
+          {
+            "keyword": "stages",
+            "detail": "The container block containing the sequential list of execution stages."
+          },
+          {
+            "keyword": "post",
+            "detail": "Triggers execution blocks based on overall pipeline outcomes like success, failure, or always."
+          },
+          {
+            "keyword": "cleanWs()",
+            "detail": "Built-in function utility to wipe the current workspace directory clean of compiled garbage after a run."
+          }
+        ]
       },
       {
         "type": "callout",
@@ -440,12 +508,38 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "ascii",
         "label": "Declarative Pipeline Blueprint Map",
-        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 pipeline {                                             \u2502\n\u2502   agent [any | none | node label | docker container]   \u2502\n\u2502   environment { ... }                                  \u2502\n\u2502   options { ... }                                      \u2502\n\u2502   parameters { ... }                                   \u2502\n\u2502   stages {                                             \u2502\n\u2502     stage('Build') {                                   \u2502\n\u2502       steps { ... }                                    \u2502\n\u2502       post { ... }                                     \u2502\n\u2502     }                                                  \u2502\n\u2502   }                                                    \u2502\n\u2502   post { [always | success | failure | unstable] }     \u2502\n\u2502 }                                                      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+        "diagram": "\npipeline {\n  agent [any | none | node label | docker container]\n  environment { ... }\n  options { ... }\n  parameters { ... }\n  stages {\n    stage('Build') {\n      steps { ... }\n      post { ... }\n    }\n  }\n  post { [always | success | failure | unstable] }\n}\n"
       },
       {
         "type": "code",
         "title": "Full-Featured Declarative Pipeline Blueprint",
-        "code": "pipeline {\n    agent { label 'linux-executor' }\n\n    environment {\n        DEPLOY_PORT = \"8080\"\n        REGISTRY_URL = \"docker.io/myprofile\"\n    }\n\n    options {\n        timeout(time: 30, unit: 'MINUTES')\n        retry(3)\n        timestamps()\n    }\n\n    parameters {\n        string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Target Env')\n        booleanParam(name: 'SCAN_IMAGES', defaultValue: true, description: 'Trivy Scan')\n    }\n\n    triggers {\n        cron('H 4 * * 1-5') // Build nightly Mon-Fri\n    }\n\n    stages {\n        stage('Pull SCM') {\n            steps {\n                checkout scm\n            }\n        }\n        stage('Security Analysis') {\n            when {\n                expression { return params.SCAN_IMAGES == true }\n            }\n            steps {\n                sh 'echo \"Scanning workspace vulnerabilities...\"'\n            }\n        }\n        stage('Deploy') {\n            when {\n                branch 'main'\n            }\n            steps {\n                sh \"echo Deploying to port ${env.DEPLOY_PORT} on environment ${params.DEPLOY_ENV}\"\n            }\n        }\n    }\n\n    post {\n        always {\n            echo \"Pipeline run completed.\"\n        }\n        success {\n            echo \"Deployment fully executed!\"\n        }\n        failure {\n            echo \"Critical Pipeline Failure. Triggering rollback procedures.\"\n        }\n    }\n}"
+        "code": "pipeline {\n    agent { label 'linux-executor' }\n\n    environment {\n        DEPLOY_PORT = \"8080\"\n        REGISTRY_URL = \"docker.io/myprofile\"\n    }\n\n    options {\n        timeout(time: 30, unit: 'MINUTES')\n        retry(3)\n        timestamps()\n    }\n\n    parameters {\n        string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Target Env')\n        booleanParam(name: 'SCAN_IMAGES', defaultValue: true, description: 'Trivy Scan')\n    }\n\n    triggers {\n        cron('H 4 * * 1-5') // Build nightly Mon-Fri\n    }\n\n    stages {\n        stage('Pull SCM') {\n            steps {\n                checkout scm\n            }\n        }\n        stage('Security Analysis') {\n            when {\n                expression { return params.SCAN_IMAGES == true }\n            }\n            steps {\n                sh 'echo \"Scanning workspace vulnerabilities...\"'\n            }\n        }\n        stage('Deploy') {\n            when {\n                branch 'main'\n            }\n            steps {\n                sh \"echo Deploying to port ${env.DEPLOY_PORT} on environment ${params.DEPLOY_ENV}\"\n            }\n        }\n    }\n\n    post {\n        always {\n            echo \"Pipeline run completed.\"\n        }\n        success {\n            echo \"Deployment fully executed!\"\n        }\n        failure {\n            echo \"Critical Pipeline Failure. Triggering rollback procedures.\"\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "agent { label 'linux-executor' }",
+            "detail": "Explicitly binds this build run to agents containing the label 'linux-executor'."
+          },
+          {
+            "keyword": "environment",
+            "detail": "Stores static or dynamic pipeline-wide environment variables."
+          },
+          {
+            "keyword": "parameters",
+            "detail": "Accepts user inputs (string, boolean, choice) during parameterized builds."
+          },
+          {
+            "keyword": "triggers { cron(...) }",
+            "detail": "Automates pipeline scheduling using unix crontab scheduling commands."
+          },
+          {
+            "keyword": "when { expression { ... } }",
+            "detail": "Conditional stage wrapper. Runs the stage ONLY if the expression evaluates to true."
+          },
+          {
+            "keyword": "checkout scm",
+            "detail": "Clones the code repository associated with the Jenkins build trigger automatically."
+          }
+        ]
       }
     ]
   },
@@ -474,7 +568,29 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Advanced Scripted Pipeline with Complex Controls",
-        "code": "node('linux') {\n    def appName = 'analytics-service'\n    def environments = ['staging', 'production']\n\n    try {\n        stage('Checkout Source') {\n            checkout scm\n        }\n\n        stage('Parallel Compile') {\n            parallel(\n                \"build-amd64\": { sh \"echo 'Building x86 architecture binary'\" },\n                \"build-arm64\": { sh \"echo 'Building arm64 architecture binary'\" }\n            )\n        }\n\n        stage('Multi-Environment Deployment') {\n            for (envName in environments) {\n                if (envName == 'production') {\n                    // Manual Approval checkpoint via Groovy step\n                    input message: \"Authorize release to Production?\", ok: \"Release\"\n                }\n                echo \"Deploying ${appName} to server pool: ${envName}\"\n            }\n        }\n\n    } catch (Exception err) {\n        currentBuild.result = 'FAILED'\n        echo \"Pipeline failed with error: ${err.toString()}\"\n        throw err\n    } finally {\n        stage('Post-cleanup') {\n            cleanWs()\n        }\n    }\n}"
+        "code": "node('linux') {\n    def appName = 'analytics-service'\n    def environments = ['staging', 'production']\n\n    try {\n        stage('Checkout Source') {\n            checkout scm\n        }\n\n        stage('Parallel Compile') {\n            parallel(\n                \"build-amd64\": { sh \"echo 'Building x86 architecture binary'\" },\n                \"build-arm64\": { sh \"echo 'Building arm64 architecture binary'\" }\n            )\n        }\n\n        stage('Multi-Environment Deployment') {\n            for (envName in environments) {\n                if (envName == 'production') {\n                    // Manual Approval checkpoint via Groovy step\n                    input message: \"Authorize release to Production?\", ok: \"Release\"\n                }\n                echo \"Deploying ${appName} to server pool: ${envName}\"\n            }\n        }\n\n    } catch (Exception err) {\n        currentBuild.result = 'FAILED'\n        echo \"Pipeline failed with error: ${err.toString()}\"\n        throw err\n    } finally {\n        stage('Post-cleanup') {\n            cleanWs()\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "node('linux')",
+            "detail": "The essential scripted block allocating an execution node and workspace matching target label."
+          },
+          {
+            "keyword": "def",
+            "detail": "Standard Groovy keyword to declare dynamic local variables."
+          },
+          {
+            "keyword": "parallel",
+            "detail": "Built-in scripted step running list of asynchronous block closures concurrently."
+          },
+          {
+            "keyword": "try-catch-finally",
+            "detail": "Standard programming exception pattern to execute custom error behaviors and clean workspace states."
+          },
+          {
+            "keyword": "input",
+            "detail": "Halts pipeline execution waiting for a physical user approval prompt."
+          }
+        ]
       }
     ]
   },
@@ -503,7 +619,25 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Directory Utilities, Stashing, and Dynamic Scripting",
-        "code": "pipeline {\n    agent none // Explicitly allocate workspace per stage\n    \n    stages {\n        stage('Build Artifact') {\n            agent { label 'build-agent' }\n            steps {\n                // Ensure a clean target directory\n                dir('workspace-build') {\n                    sh 'mkdir -p target && echo \"Compiled Binary Content\" > target/app.jar'\n                }\n                // Save target folder to Jenkins storage without permanent archiving\n                stash name: 'compiled-jar', includes: 'workspace-build/target/**'\n            }\n        }\n        \n        stage('Deploy Artifact') {\n            agent { label 'deploy-agent' }\n            steps {\n                // Retrieve files from Jenkins storage into current workspace\n                unstash 'compiled-jar'\n                sh 'ls -R workspace-build/target/'\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent none // Explicitly allocate workspace per stage\n    \n    stages {\n        stage('Build Artifact') {\n            agent { label 'build-agent' }\n            steps {\n                // Ensure a clean target directory\n                dir('workspace-build') {\n                    sh 'mkdir -p target && echo \"Compiled Binary Content\" > target/app.jar'\n                }\n                // Save target folder to Jenkins storage without permanent archiving\n                stash name: 'compiled-jar', includes: 'workspace-build/target/**'\n            }\n        }\n        \n        stage('Deploy Artifact') {\n            agent { label 'deploy-agent' }\n            steps {\n                // Retrieve files from Jenkins storage into current workspace\n                unstash 'compiled-jar'\n                sh 'ls -R workspace-build/target/'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "agent none",
+            "detail": "Prevents allocating a global node directory. Enforces custom nodes inside individual stage directives."
+          },
+          {
+            "keyword": "dir('workspace-build')",
+            "detail": "Changes the file context execution directory path to a specific folder within the workspace."
+          },
+          {
+            "keyword": "stash",
+            "detail": "Saves target workspace files into controller storage under a specific reference key."
+          },
+          {
+            "keyword": "unstash",
+            "detail": "Retrieves stashed file pools back into the active agent workspace. Great for heterogeneous multi-node deploys."
+          }
+        ]
       },
       {
         "type": "table",
@@ -583,7 +717,21 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Running Stages inside Isolated Docker Containers",
-        "code": "pipeline {\n    agent none // Do not bind a root executor workspace\n\n    stages {\n        stage('Frontend Compilation') {\n            agent {\n                docker {\n                    image 'node:18-alpine'\n                    args '-v /tmp:/tmp-cache'\n                }\n            }\n            steps {\n                sh 'node -v'\n                sh 'npm install && npm run build'\n            }\n        }\n        \n        stage('Java Backend Compilation') {\n            agent {\n                docker {\n                    image 'maven:3.9-eclipse-temurin-17'\n                }\n            }\n            steps {\n                sh 'mvn -version'\n                sh 'mvn clean package'\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent none // Do not bind a root executor workspace\n\n    stages {\n        stage('Frontend Compilation') {\n            agent {\n                docker {\n                    image 'node:18-alpine'\n                    args '-v /tmp:/tmp-cache'\n                }\n            }\n            steps {\n                sh 'node -v'\n                sh 'npm install && npm run build'\n            }\n        }\n        \n        stage('Java Backend Compilation') {\n            agent {\n                docker {\n                    image 'maven:3.9-eclipse-temurin-17'\n                }\n            }\n            steps {\n                sh 'mvn -version'\n                sh 'mvn clean package'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "docker",
+            "detail": "Declares that the agent must be instantiated inside an isolated Docker container."
+          },
+          {
+            "keyword": "image",
+            "detail": "The public or private registry image reference (e.g. node:18-alpine) containing compile frameworks."
+          },
+          {
+            "keyword": "args",
+            "detail": "Standard CLI parameters passed during container startup, such as directory mappings (`-v`)."
+          }
+        ]
       },
       {
         "type": "callout",
@@ -617,7 +765,17 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Parallel Pipeline with Fail-Fast Configuration",
-        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Compile') {\n            steps {\n                sh 'echo \"Compiling system binaries...\"'\n            }\n        }\n\n        stage('Comprehensive Auditing') {\n            // Terminate other parallel jobs immediately if one of them fails\n            failFast true\n            \n            parallel {\n                stage('Execution Suite A') {\n                    steps {\n                        sh 'echo \"Running suite A tests...\"'\n                    }\n                }\n                stage('Execution Suite B') {\n                    steps {\n                        sh 'echo \"Running suite B tests...\"'\n                    }\n                }\n                stage('Static SonarQube Scan') {\n                    steps {\n                        sh 'echo \"Analyzing code quality metrics...\"'\n                    }\n                }\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Compile') {\n            steps {\n                sh 'echo \"Compiling system binaries...\"'\n            }\n        }\n\n        stage('Comprehensive Auditing') {\n            // Terminate other parallel jobs immediately if one of them fails\n            failFast true\n            \n            parallel {\n                stage('Execution Suite A') {\n                    steps {\n                        sh 'echo \"Running suite A tests...\"'\n                    }\n                }\n                stage('Execution Suite B') {\n                    steps {\n                        sh 'echo \"Running suite B tests...\"'\n                    }\n                }\n                stage('Static SonarQube Scan') {\n                    steps {\n                        sh 'echo \"Analyzing code quality metrics...\"'\n                    }\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "failFast true",
+            "detail": "Aborts all other parallel sibling execution stages immediately if one of them encounters a failure, saving agent resources."
+          },
+          {
+            "keyword": "parallel",
+            "detail": "Declares that the wrapped stages within the block run simultaneously in parallel executors."
+          }
+        ]
       }
     ]
   },
@@ -646,7 +804,25 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Advanced SCM Checkout with Sub-directory Isolation",
-        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Checkout Specific Repository Branch') {\n            steps {\n                // Perform complex checkout configuration instead of standard checkout scm\n                checkout([\n                    $class: 'GitSCM',\n                    branches: [[name: '*/release-v2']],\n                    userRemoteConfigs: [[\n                        url: 'git@github.com:myprofile/analytics-engine.git',\n                        credentialsId: 'jenkins-ssh-private-key'\n                    ]],\n                    extensions: [\n                        // Clone source code into a subfolder of the workspace\n                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'source-code'],\n                        // Fetch submodules recursively\n                        [$class: 'SubmoduleOption', recursiveSubmodules: true]\n                    ]\n                ])\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Checkout Specific Repository Branch') {\n            steps {\n                // Perform complex checkout configuration instead of standard checkout scm\n                checkout([\n                    $class: 'GitSCM',\n                    branches: [[name: '*/release-v2']],\n                    userRemoteConfigs: [[\n                        url: 'git@github.com:myprofile/analytics-engine.git',\n                        credentialsId: 'jenkins-ssh-private-key'\n                    ]],\n                    extensions: [\n                        // Clone source code into a subfolder of the workspace\n                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'source-code'],\n                        // Fetch submodules recursively\n                        [$class: 'SubmoduleOption', recursiveSubmodules: true]\n                    ]\n                ])\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "GitSCM",
+            "detail": "The underlying Java class used to initialize robust Git repository connections."
+          },
+          {
+            "keyword": "credentialsId",
+            "detail": "Standard token reference indicating the credential entry containing target SSH keys or credentials."
+          },
+          {
+            "keyword": "RelativeTargetDirectory",
+            "detail": "Forces SCM checkout clone directly inside a custom nested sub-folder rather than base root workspace."
+          },
+          {
+            "keyword": "SubmoduleOption",
+            "detail": "Plugin configurations to resolve git repositories nested as submodules automatically."
+          }
+        ]
       }
     ]
   },
@@ -725,7 +901,25 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Production Pipeline: Build, Trivy Security Scan, and Push",
-        "code": "pipeline {\n    agent any\n    \n    environment {\n        IMAGE_NAME = \"docker.io/myprofile/payment-api\"\n        IMAGE_TAG = \"${env.BUILD_NUMBER}\"\n        FULL_IMAGE = \"${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n    }\n    \n    stages {\n        stage('Lint & Compile') {\n            steps {\n                sh 'echo \"Performing code analysis...\"'\n            }\n        }\n        \n        stage('Docker Packaging') {\n            steps {\n                sh \"docker build -t ${env.FULL_IMAGE} .\"\n            }\n        }\n        \n        stage('Trivy Security Audit') {\n            steps {\n                // Exit build if image contains HIGH or CRITICAL level vulnerabilities\n                sh \"trivy image --severity HIGH,CRITICAL --exit-code 1 ${env.FULL_IMAGE}\"\n            }\n        }\n        \n        stage('Publish Image') {\n            steps {\n                withCredentials([usernamePassword(\n                    credentialsId: 'docker-registry-creds',\n                    usernameVariable: 'REGISTRY_USER',\n                    passwordVariable: 'REGISTRY_PASS'\n                )]) {\n                    sh \"echo ${env.REGISTRY_PASS} | docker login -u ${env.REGISTRY_USER} --password-stdin\"\n                    sh \"docker push ${env.FULL_IMAGE}\"\n                    sh \"docker logout\"\n                }\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Clean local build images to avoid disk bloat\n            sh \"docker rmi ${env.FULL_IMAGE} || true\"\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        IMAGE_NAME = \"docker.io/myprofile/payment-api\"\n        IMAGE_TAG = \"${env.BUILD_NUMBER}\"\n        FULL_IMAGE = \"${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n    }\n    \n    stages {\n        stage('Lint & Compile') {\n            steps {\n                sh 'echo \"Performing code analysis...\"'\n            }\n        }\n        \n        stage('Docker Packaging') {\n            steps {\n                sh \"docker build -t ${env.FULL_IMAGE} .\"\n            }\n        }\n        \n        stage('Trivy Security Audit') {\n            steps {\n                // Exit build if image contains HIGH or CRITICAL level vulnerabilities\n                sh \"trivy image --severity HIGH,CRITICAL --exit-code 1 ${env.FULL_IMAGE}\"\n            }\n        }\n        \n        stage('Publish Image') {\n            steps {\n                withCredentials([usernamePassword(\n                    credentialsId: 'docker-registry-creds',\n                    usernameVariable: 'REGISTRY_USER',\n                    passwordVariable: 'REGISTRY_PASS'\n                )]) {\n                    sh \"echo ${env.REGISTRY_PASS} | docker login -u ${env.REGISTRY_USER} --password-stdin\"\n                    sh \"docker push ${env.FULL_IMAGE}\"\n                    sh \"docker logout\"\n                }\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Clean local build images to avoid disk bloat\n            sh \"docker rmi ${env.FULL_IMAGE} || true\"\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "trivy image",
+            "detail": "Executes vulnerability scan on the built Docker image before pushing."
+          },
+          {
+            "keyword": "--exit-code 1",
+            "detail": "Forces the Trivy execution command to crash the build if matching severity limits are caught."
+          },
+          {
+            "keyword": "docker login --password-stdin",
+            "detail": "Feeds password from secure environmental inputs safely without leaking logs."
+          },
+          {
+            "keyword": "docker rmi",
+            "detail": "Forces deletion of local built docker images after completion, freeing disk space."
+          }
+        ]
       },
       {
         "type": "callout",
@@ -759,7 +953,25 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Using Multiple Credential Types Securely",
-        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Deploy with SSH Key') {\n            steps {\n                withCredentials([\n                    sshUserPrivateKey(\n                        credentialsId: 'prod-target-ssh',\n                        keyFileVariable: 'PRIVATE_KEY_PATH',\n                        usernameVariable: 'SSH_USER_NAME'\n                    ),\n                    string(\n                        credentialsId: 'external-api-token',\n                        variable: 'API_TOKEN'\n                    )\n                ]) {\n                    sh \"\"\"\n                        echo \"Executing secure API connection...\"\n                        curl -H \"Authorization: Bearer \\$API_TOKEN\" https://api.prod.com/health\n                        \n                        ssh -i \\$PRIVATE_KEY_PATH -o StrictHostKeyChecking=no \\$SSH_USER_NAME@prod.server.com \"docker restart app\"\n                    \"\"\"\n                }\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Deploy with SSH Key') {\n            steps {\n                withCredentials([\n                    sshUserPrivateKey(\n                        credentialsId: 'prod-target-ssh',\n                        keyFileVariable: 'PRIVATE_KEY_PATH',\n                        usernameVariable: 'SSH_USER_NAME'\n                    ),\n                    string(\n                        credentialsId: 'external-api-token',\n                        variable: 'API_TOKEN'\n                    )\n                ]) {\n                    sh \"\"\"\n                        echo \"Executing secure API connection...\"\n                        curl -H \"Authorization: Bearer \\$API_TOKEN\" https://api.prod.com/health\n                        \n                        ssh -i \\$PRIVATE_KEY_PATH -o StrictHostKeyChecking=no \\$SSH_USER_NAME@prod.server.com \"docker restart app\"\n                    \"\"\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "withCredentials",
+            "detail": "The built-in block wrapper allocating secure bindings and automatic log masking."
+          },
+          {
+            "keyword": "sshUserPrivateKey",
+            "detail": "Binds username and creates a secure temp file path reference holding private SSH credentials."
+          },
+          {
+            "keyword": "StrictHostKeyChecking=no",
+            "detail": "Prevents SSH connections from prompting or failing due to unverified new server hosts."
+          },
+          {
+            "keyword": "API_TOKEN",
+            "detail": "Variable holding secure raw API tokens mapped directly from credential store settings."
+          }
+        ]
       },
       {
         "type": "callout",
@@ -857,12 +1069,36 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Global Step Definition: vars/buildDocker.groovy",
-        "code": "// vars/buildDocker.groovy\ndef call(Map config = [:]) {\n    def imageName = config.imageName ?: 'app'\n    def imageTag = config.imageTag ?: 'latest'\n    \n    echo \"Running custom library docker build for ${imageName}:${imageTag}\"\n    sh \"docker build -t ${imageName}:${imageTag} .\"\n}"
+        "code": "// vars/buildDocker.groovy\ndef call(Map config = [:]) {\n    def imageName = config.imageName ?: 'app'\n    def imageTag = config.imageTag ?: 'latest'\n    \n    echo \"Running custom library docker build for ${imageName}:${imageTag}\"\n    sh \"docker build -t ${imageName}:${imageTag} .\"\n}",
+        "explanation": [
+          {
+            "keyword": "def call",
+            "detail": "The designated method entry point in Groovy that Jenkins triggers when loading custom step scripts."
+          },
+          {
+            "keyword": "Map config",
+            "detail": "Allows developers to pass multiple parameter arguments into the shared library function steps."
+          }
+        ]
       },
       {
         "type": "code",
         "title": "Using the Shared Library in a Jenkinsfile",
-        "code": "// Import library dynamically from Git\n@Library('my-shared-library@main') _\n\npipeline {\n    agent any\n    \n    stages {\n        stage('Docker Build') {\n            steps {\n                // Call global custom step defined in shared library\n                buildDocker(\n                    imageName: 'my-custom-app',\n                    imageTag: \"${env.BUILD_NUMBER}\"\n                )\n            }\n        }\n    }\n}"
+        "code": "// Import library dynamically from Git\n@Library('my-shared-library@main') _\n\npipeline {\n    agent any\n    \n    stages {\n        stage('Docker Build') {\n            steps {\n                // Call global custom step defined in shared library\n                buildDocker(\n                    imageName: 'my-custom-app',\n                    imageTag: \"${env.BUILD_NUMBER}\"\n                )\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "@Library",
+            "detail": "Tells Jenkins to fetch the Global Shared Library configuration containing target step codes."
+          },
+          {
+            "keyword": "_",
+            "detail": "Underlying wildcard telling Jenkins to expose all global library variables immediately."
+          },
+          {
+            "keyword": "buildDocker",
+            "detail": "Triggers the custom step script compiled in the shared library vars folder directly."
+          }
+        ]
       }
     ]
   },
@@ -936,7 +1172,25 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Setting and Reading Dynamic Variables in Pipelines",
-        "code": "pipeline {\n    agent any\n    \n    environment {\n        // Global pipeline environment variable\n        DEPLOY_SERVER = \"prod-server-01\"\n    }\n    \n    stages {\n        stage('Generate Dynamic Variables') {\n            environment {\n                STAGE_SPECIFIC = \"local-value\"\n            }\n            steps {\n                // Accessing built-in environment variables\n                echo \"Executing Build Number: ${env.BUILD_NUMBER}\"\n                echo \"Running inside Workspace: ${env.WORKSPACE}\"\n                \n                // Fetch variable outputs from shell scripts\n                script {\n                    env.GIT_SHORT_SHA = sh(\n                        script: 'git rev-parse --short HEAD', \n                        returnStdout: true\n                    ).trim()\n                }\n                \n                echo \"Dynamically calculated SHA: ${env.GIT_SHORT_SHA}\"\n            }\n        }\n        \n        stage('Validate Environment Context') {\n            steps {\n                // Read variables inside bash execution\n                sh 'echo \"Target Deployment Server: $DEPLOY_SERVER\"'\n                sh 'echo \"Short commit SHA: $GIT_SHORT_SHA\"'\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        // Global pipeline environment variable\n        DEPLOY_SERVER = \"prod-server-01\"\n    }\n    \n    stages {\n        stage('Generate Dynamic Variables') {\n            environment {\n                STAGE_SPECIFIC = \"local-value\"\n            }\n            steps {\n                // Accessing built-in environment variables\n                echo \"Executing Build Number: ${env.BUILD_NUMBER}\"\n                echo \"Running inside Workspace: ${env.WORKSPACE}\"\n                \n                // Fetch variable outputs from shell scripts\n                script {\n                    env.GIT_SHORT_SHA = sh(\n                        script: 'git rev-parse --short HEAD', \n                        returnStdout: true\n                    ).trim()\n                }\n                \n                echo \"Dynamically calculated SHA: ${env.GIT_SHORT_SHA}\"\n            }\n        }\n        \n        stage('Validate Environment Context') {\n            steps {\n                // Read variables inside bash execution\n                sh 'echo \"Target Deployment Server: $DEPLOY_SERVER\"'\n                sh 'echo \"Short commit SHA: $GIT_SHORT_SHA\"'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "env.BUILD_NUMBER",
+            "detail": "The unique auto-incrementing identifier allocated by Jenkins to identify the current run."
+          },
+          {
+            "keyword": "env.WORKSPACE",
+            "detail": "A built-in variable referencing the exact local path on worker agent hosting target files."
+          },
+          {
+            "keyword": "returnStdout: true",
+            "detail": "Tells the shell step command execution to capture and output logs directly as string results."
+          },
+          {
+            "keyword": ".trim()",
+            "detail": "Groovy syntax tool to remove blank space or newline characters returned from script executables."
+          }
+        ]
       }
     ]
   },
@@ -965,7 +1219,21 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Configuring Slack Alerts inside Post Blocks",
-        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Test Suite') {\n            steps {\n                sh 'npm run test'\n            }\n        }\n    }\n    \n    post {\n        success {\n            slackSend(\n                color: '#36a64f',\n                message: \"SUCCESS: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}] successfully verified and completed.\"\n            )\n        }\n        failure {\n            slackSend(\n                color: '#danger',\n                message: \"FAILURE: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}] has failed! Please inspect logs at: ${env.BUILD_URL}\"\n            )\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Test Suite') {\n            steps {\n                sh 'npm run test'\n            }\n        }\n    }\n    \n    post {\n        success {\n            slackSend(\n                color: '#36a64f',\n                message: \"SUCCESS: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}] successfully verified and completed.\"\n            )\n        }\n        failure {\n            slackSend(\n                color: '#danger',\n                message: \"FAILURE: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}] has failed! Please inspect logs at: ${env.BUILD_URL}\"\n            )\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "slackSend",
+            "detail": "Built-in integration step command from Slack plugin to dispatch formatted UI notifications."
+          },
+          {
+            "keyword": "#36a64f",
+            "detail": "Standard green HSL color hex indicating build success reports."
+          },
+          {
+            "keyword": "env.BUILD_URL",
+            "detail": "A built-in variable providing absolute server URL link to the current job run dashboard."
+          }
+        ]
       }
     ]
   },
@@ -994,7 +1262,17 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Comprehensive Node.js CI Pipeline Configuration",
-        "code": "pipeline {\n    agent { label 'node-runner' }\n    \n    options {\n        timeout(time: 15, unit: 'MINUTES')\n        buildDiscarder(logRotator(numToKeepStr: '10'))\n    }\n    \n    stages {\n        stage('SCM Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Dependency Installation') {\n            steps {\n                sh 'npm ci' // Clean installation for reproducible builds\n            }\n        }\n        \n        stage('Static Code Analysis') {\n            steps {\n                sh 'npm run lint'\n            }\n        }\n        \n        stage('Unit Testing') {\n            steps {\n                sh 'npm test -- --coverage'\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Save coverage outputs permanently in Jenkins\n            archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true\n        }\n    }\n}"
+        "code": "pipeline {\n    agent { label 'node-runner' }\n    \n    options {\n        timeout(time: 15, unit: 'MINUTES')\n        buildDiscarder(logRotator(numToKeepStr: '10'))\n    }\n    \n    stages {\n        stage('SCM Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Dependency Installation') {\n            steps {\n                sh 'npm ci' // Clean installation for reproducible builds\n            }\n        }\n        \n        stage('Static Code Analysis') {\n            steps {\n                sh 'npm run lint'\n            }\n        }\n        \n        stage('Unit Testing') {\n            steps {\n                sh 'npm test -- --coverage'\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Save coverage outputs permanently in Jenkins\n            archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "npm ci",
+            "detail": "Installs strict npm project dependencies using package-lock locks, preventing build mutations."
+          },
+          {
+            "keyword": "archiveArtifacts",
+            "detail": "Instructs Jenkins to archive and store folders permanently (like test coverages) inside the master node repository."
+          }
+        ]
       }
     ]
   },
@@ -1023,7 +1301,17 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Complete Docker CI/CD Pipeline Configuration",
-        "code": "pipeline {\n    agent any\n    \n    environment {\n        HUB_ACCOUNT = \"mypublicaccount\"\n        APP_NAME = \"docker-web-service\"\n        IMAGE_NAME = \"${env.HUB_ACCOUNT}/${env.APP_NAME}\"\n        IMAGE_TAG = \"build-${env.BUILD_NUMBER}\"\n    }\n    \n    stages {\n        stage('Source Clone') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Container Build') {\n            steps {\n                sh \"docker build -t ${env.IMAGE_NAME}:${env.IMAGE_TAG} .\"\n            }\n        }\n        \n        stage('Image Vulnerability Audit') {\n            steps {\n                sh \"trivy image --severity HIGH,CRITICAL ${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n            }\n        }\n        \n        stage('Upload Registry') {\n            steps {\n                withCredentials([usernamePassword(\n                    credentialsId: 'docker-hub-credentials',\n                    usernameVariable: 'REGISTRY_USER',\n                    passwordVariable: 'REGISTRY_PASS'\n                )]) {\n                    sh \"echo \\$REGISTRY_PASS | docker login -u \\$REGISTRY_USER --password-stdin\"\n                    sh \"docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n                }\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        HUB_ACCOUNT = \"mypublicaccount\"\n        APP_NAME = \"docker-web-service\"\n        IMAGE_NAME = \"${env.HUB_ACCOUNT}/${env.APP_NAME}\"\n        IMAGE_TAG = \"build-${env.BUILD_NUMBER}\"\n    }\n    \n    stages {\n        stage('Source Clone') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Container Build') {\n            steps {\n                sh \"docker build -t ${env.IMAGE_NAME}:${env.IMAGE_TAG} .\"\n            }\n        }\n        \n        stage('Image Vulnerability Audit') {\n            steps {\n                sh \"trivy image --severity HIGH,CRITICAL ${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n            }\n        }\n        \n        stage('Upload Registry') {\n            steps {\n                withCredentials([usernamePassword(\n                    credentialsId: 'docker-hub-credentials',\n                    usernameVariable: 'REGISTRY_USER',\n                    passwordVariable: 'REGISTRY_PASS'\n                )]) {\n                    sh \"echo \\$REGISTRY_PASS | docker login -u \\$REGISTRY_USER --password-stdin\"\n                    sh \"docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "docker build",
+            "detail": "Packages application codes into an isolated container layout using definitions set inside Dockerfile."
+          },
+          {
+            "keyword": "trivy image --severity HIGH,CRITICAL",
+            "detail": "Instructs Trivy scanner tool to execute audit checks focusing only on high and critical level security issues."
+          }
+        ]
       }
     ]
   },
@@ -1052,7 +1340,21 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "AWS Production Deployment Pipeline Configuration",
-        "code": "pipeline {\n    agent any\n    \n    environment {\n        AWS_EC2_IP = \"54.210.85.99\"\n        SSH_CRED_ID = \"aws-ec2-private-key\"\n    }\n    \n    stages {\n        stage('Source Fetch') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Deploy to EC2 Instance') {\n            steps {\n                withCredentials([sshUserPrivateKey(\n                    credentialsId: env.SSH_CRED_ID,\n                    keyFileVariable: 'PRIVATE_KEY_PATH',\n                    usernameVariable: 'SSH_USER'\n                )]) {\n                    // Connect and deploy on target server\n                    sh \"\"\"\n                        ssh -i \\$PRIVATE_KEY_PATH -o StrictHostKeyChecking=no \\$SSH_USER@${env.AWS_EC2_IP} \\\n                        \"docker pull myrepo/app:latest && \\\n                         docker stop web-app || true && \\\n                         docker rm web-app || true && \\\n                         docker run -d --name web-app -p 80:80 myrepo/app:latest\"\n                    \"\"\"\n                }\n            }\n        }\n    }\n}"
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        AWS_EC2_IP = \"54.210.85.99\"\n        SSH_CRED_ID = \"aws-ec2-private-key\"\n    }\n    \n    stages {\n        stage('Source Fetch') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Deploy to EC2 Instance') {\n            steps {\n                withCredentials([sshUserPrivateKey(\n                    credentialsId: env.SSH_CRED_ID,\n                    keyFileVariable: 'PRIVATE_KEY_PATH',\n                    usernameVariable: 'SSH_USER'\n                )]) {\n                    // Connect and deploy on target server\n                    sh \"\"\"\n                        ssh -i \\$PRIVATE_KEY_PATH -o StrictHostKeyChecking=no \\$SSH_USER@${env.AWS_EC2_IP} \\\n                        \"docker pull myrepo/app:latest && \\\n                         docker stop web-app || true && \\\n                         docker rm web-app || true && \\\n                         docker run -d --name web-app -p 80:80 myrepo/app:latest\"\n                    \"\"\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "sshUserPrivateKey",
+            "detail": "Accesses EC2 private key securely from credentials database to construct active SSH tunnels."
+          },
+          {
+            "keyword": "StrictHostKeyChecking=no",
+            "detail": "Disables checking the target server host key footprint, avoiding pipeline lock issues."
+          },
+          {
+            "keyword": "docker run -d",
+            "detail": "Launches the newly pulled application container detached in the background on port 80."
+          }
+        ]
       }
     ]
   },
@@ -1081,7 +1383,25 @@ window.JENKINS_CATEGORIES = [
       {
         "type": "code",
         "title": "Host OS & CLI Commands Reference",
-        "code": "# --- Systemd Service Controls ---\n# Start Jenkins service\nsudo systemctl start jenkins\n\n# Stop Jenkins service\nsudo systemctl stop jenkins\n\n# Restart Jenkins service\nsudo systemctl restart jenkins\n\n# Inspect startup logs\nsudo journalctl -u jenkins --no-pager | tail -n 50\n\n# --- Jenkins CLI tool usage ---\n# Download the CLI client directly from your server\nwget http://localhost:8080/jnlpJars/jenkins-cli.jar\n\n# Execute safe restart using your API token\njava -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:mytoken safe-restart\n\n# List all active jobs configured on the system\njava -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:mytoken list-jobs"
+        "code": "# --- Systemd Service Controls ---\n# Start Jenkins service\nsudo systemctl start jenkins\n\n# Stop Jenkins service\nsudo systemctl stop jenkins\n\n# Restart Jenkins service\nsudo systemctl restart jenkins\n\n# Inspect startup logs\nsudo journalctl -u jenkins --no-pager | tail -n 50\n\n# --- Jenkins CLI tool usage ---\n# Download the CLI client directly from your server\nwget http://localhost:8080/jnlpJars/jenkins-cli.jar\n\n# Execute safe restart using your API token\njava -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:mytoken safe-restart\n\n# List all active jobs configured on the system\njava -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:mytoken list-jobs",
+        "explanation": [
+          {
+            "keyword": "systemctl restart jenkins",
+            "detail": "Restarts the systemd system service manager process for Jenkins server."
+          },
+          {
+            "keyword": "journalctl -u jenkins",
+            "detail": "Retrieves internal startup system logs printed by the main Jenkins daemon process."
+          },
+          {
+            "keyword": "jenkins-cli.jar",
+            "detail": "A built-in jar adapter tool allowing terminal developers to interact with server nodes via CLI."
+          },
+          {
+            "keyword": "safe-restart",
+            "detail": "Tells Jenkins CLI to wait for all currently active builds to conclude safely before executing host reboot."
+          }
+        ]
       }
     ]
   },
@@ -1229,7 +1549,9 @@ window.JENKINS_CATEGORIES = [
       }
     ]
   }
-];\n\nwindow.JENKINS_PROJECTS = [
+];
+
+window.JENKINS_PROJECTS = [
   {
     "id": "project1",
     "num": "P1",
