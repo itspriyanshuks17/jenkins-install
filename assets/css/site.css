@@ -817,6 +817,38 @@ td code {
   padding: 0.08rem 0.32rem;
 }
 
+.ascii-diagram {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--code);
+}
+
+.ascii-label {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgba(255,255,255,0.02);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 0 0.9rem;
+  text-transform: uppercase;
+}
+
+.ascii-pre {
+  margin: 0;
+  padding: 1.2rem 1.4rem;
+  overflow-x: auto;
+  color: #a3c4e8;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
 .note-table {
   width: 100%;
   overflow: auto;

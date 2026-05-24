@@ -123,6 +123,18 @@
       `;
     }
 
+    if (section.type === "ascii") {
+      return `
+        <section class="article-section">
+          ${sectionTitle(section)}
+          <div class="ascii-diagram">
+            <div class="ascii-label">${escapeHtml(section.label || "Architecture Diagram")}</div>
+            <pre class="ascii-pre">${escapeHtml(section.diagram)}</pre>
+          </div>
+        </section>
+      `;
+    }
+
     return "";
   }
 
