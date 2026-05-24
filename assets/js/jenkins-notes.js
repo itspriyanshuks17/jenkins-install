@@ -34,59 +34,54 @@ window.JENKINS_CATEGORIES = [
     "label": "Reference",
     "kicker": "Track 07"
   }
-];
-
-window.JENKINS_NOTES = [
+];\n\nwindow.JENKINS_NOTES = [
   {
     "id": "intro",
     "num": "01",
     "title": "What is Jenkins?",
     "category": "introduction",
-    "description": "Learn about What is Jenkins? in Jenkins.",
+    "description": "Comprehensive guide explaining Jenkins architecture, features, and role in DevOps CI/CD pipelines.",
     "tags": [
       "Jenkins",
-      "CI/CD",
+      "Introduction",
       "DevOps"
     ],
-    "search": "jenkins what is jenkins?",
+    "search": "jenkins what is jenkins automation server master-agent core definition introduction",
     "sections": [
       {
         "type": "lead",
-        "text": "Jenkins is an open-source, Java-based <strong>automation server</strong> used to automate the build, test, and deployment parts of software development. It is the most widely used CI/CD tool in DevOps and integrates with almost every tool in the ecosystem."
+        "text": "Jenkins is an open-source, Java-based <strong>automation server</strong>. It is the backbone of modern DevOps, designed to orchestrate and automate the continuous integration (CI) and continuous delivery/deployment (CD) lifecycle of software applications."
+      },
+      {
+        "type": "ascii",
+        "label": "Jenkins Ecosystem & Flow",
+        "diagram": "\n[ Developer ]\n      \u2502 (Pushes Code)\n      \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Git / GitHub \u2502 \u2500\u2500\u2500> \u2502   Jenkins Controller    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2502                         \u2502\n                      \u2502  (Orchestrator/Sched)   \u2502\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                   \u2502\n                     \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                     \u25bc                           \u25bc\n        \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n        \u2502     Jenkins Agent 1     \u2502 \u2502     Jenkins Agent 2     \u2502\n        \u2502  (Runs Docker Build)    \u2502 \u2502   (Runs Unit Tests)     \u2502\n        \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                     \u2502                           \u2502\n                     \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                   \u25bc\n                      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n                      \u2502    Staging / Prod       \u2502\n                      \u2502  (Deploy Environments)  \u2502\n                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "grid",
         "items": [
           {
-            "title": "Open Source",
-            "text": "Free, community-driven. 1,800+ plugins available for every use case."
+            "title": "Central Orchestrator",
+            "text": "Acts as the command center. Schedules builds, monitors executions, and manages environments."
           },
           {
-            "title": "Java-based",
-            "text": "Requires JDK 11/17. Runs as a war file or system service on any OS."
-          },
-          {
-            "title": "Plugin Ecosystem",
-            "text": "Git, Docker, Kubernetes, AWS, Slack \u2014 pluggable for any workflow."
+            "title": "Rich Plugin Ecosystem",
+            "text": "Over 1,800+ community plugins available to integrate with virtually any DevOps tool."
           },
           {
             "title": "Pipeline as Code",
-            "text": "Define your entire CI/CD workflow in a <code>Jenkinsfile</code> stored in your repo."
+            "text": "Pipelines are declared inside a version-controlled file called a 'Jenkinsfile'."
           },
           {
-            "title": "Master\u2013Agent",
-            "text": "Distribute builds across multiple agents \u2014 Linux, Windows, Docker, cloud."
-          },
-          {
-            "title": "Triggers",
-            "text": "GitHub webhooks, SCM polling, cron schedules, or manual triggers."
+            "title": "Distributed Arch",
+            "text": "Build tasks are offloaded from the main controller to scale-out worker agents."
           }
         ]
       },
       {
         "type": "callout",
         "tone": "info",
-        "html": "\n<strong>Jenkins vs GitHub Actions:</strong> Jenkins is self-hosted, fully customizable, and free at scale. GitHub Actions is cloud-native and simpler. Jenkins is preferred when you need full control, on-prem infra, or complex multi-stage pipelines.\n    "
+        "html": "<strong>Why choose Jenkins over managed solutions?</strong> Jenkins is fully self-hosted, has zero licensing fees at scale, and gives organizations absolute control over their underlying build infrastructure and security policies."
       }
     ]
   },
@@ -95,88 +90,91 @@ window.JENKINS_NOTES = [
     "num": "02",
     "title": "CI / CD Concepts",
     "category": "introduction",
-    "description": "Learn about CI / CD Concepts in Jenkins.",
+    "description": "Detailed guide to Continuous Integration, Continuous Delivery, and Continuous Deployment with comparison tables.",
     "tags": [
-      "Jenkins",
       "CI/CD",
-      "DevOps"
+      "DevOps",
+      "Theory"
     ],
-    "search": "jenkins ci / cd concepts",
+    "search": "ci cd continuous integration delivery deployment concepts theory pipeline lifecycle",
     "sections": [
+      {
+        "type": "lead",
+        "text": "CI/CD automates the transition of code modifications from a developer's workspace into running production systems, drastically increasing release velocity while lowering risk."
+      },
+      {
+        "type": "ascii",
+        "label": "CI vs CDelivery vs CDeployment",
+        "diagram": "\nContinuous Integration (CI):\n[Code] \u2500\u2500> [Build] \u2500\u2500> [Test] (Fast feedback loop on commits)\n\nContinuous Delivery (CD):\n[CI Loop] \u2500\u2500> [Package] \u2500\u2500> [Release to Staging] \u2500\u2500> [Manual Gate] \u2500\u2500> [Deploy to Prod]\n\nContinuous Deployment (Fully Automated):\n[CI Loop] \u2500\u2500> [Package] \u2500\u2500> [Release to Staging] \u2500\u2500> [Auto Deploy to Prod]\n"
+      },
       {
         "type": "table",
         "headers": [
-          "Concept",
-          "Full Form",
-          "What Happens"
+          "Phase",
+          "Process Definition",
+          "Primary Automation Goal"
         ],
         "rows": [
           [
-            "CI",
             "Continuous Integration",
-            "Code pushed \u2192 auto build + auto tests run. Catch bugs early."
+            "Integrating code into main branch multiple times daily.",
+            "Automatic compilation, static code analysis, and unit testing."
           ],
           [
-            "CD",
             "Continuous Delivery",
-            "Tested code auto-packaged and ready for deployment (manual trigger)."
+            "Ensuing codebase is always in a deployable, stable state.",
+            "Auto-packaging artifacts (JARs, Docker images) and staging deploys."
           ],
           [
-            "CD",
             "Continuous Deployment",
-            "Fully automated \u2014 tested code goes straight to production, no human approval."
+            "Completely removing human intervention from production release.",
+            "Tested changes go live directly to customers automatically."
           ]
         ]
       },
       {
         "type": "callout",
-        "tone": "info",
-        "html": "\n<div class=\"pipe-stage\">\n<div class=\"pipe-box\"><span class=\"stage-icon\">\ud83d\udcbb</span><span class=\"stage-name\">Code Push</span></div>\n<div class=\"pipe-arrow\">\u2192</div>\n</div>\n<div class=\"pipe-stage\">\n<div class=\"pipe-box active\"><span class=\"stage-icon\">\ud83d\udd28</span><span class=\"stage-name\">Build</span></div>\n<div class=\"pipe-arrow\">\u2192</div>\n</div>\n<div class=\"pipe-stage\">\n<div class=\"pipe-box active\"><span class=\"stage-icon\">\ud83e\uddea</span><span class=\"stage-name\">Test</span></div>\n<div class=\"pipe-arrow\">\u2192</div>\n</div>\n<div class=\"pipe-stage\">\n<div class=\"pipe-box active\"><span class=\"stage-icon\">\ud83d\udce6</span><span class=\"stage-name\">Package</span></div>\n<div class=\"pipe-arrow\">\u2192</div>\n</div>\n<div class=\"pipe-stage\">\n<div class=\"pipe-box\"><span class=\"stage-icon\">\u2705</span><span class=\"stage-name\">Deploy</span></div>\n</div>\n"
-      },
-      {
-        "type": "callout",
         "tone": "success",
-        "html": "\n<strong>Key Insight:</strong> CI is about integrating code frequently (multiple times/day). CD is about keeping software in a deployable state at all times. Jenkins automates every step in this pipeline.\n    "
+        "html": "<strong>The Golden Rule:</strong> The main branch must always be green and buildable. If a build breaks, fixing it is the team's absolute highest priority."
       }
     ]
   },
   {
     "id": "install",
     "num": "03",
-    "title": "Installation",
+    "title": "Installation Guide",
     "category": "introduction",
-    "description": "Learn about Installation in Jenkins.",
+    "description": "Cross-platform Jenkins installation guides (Debian/Ubuntu, Docker Compose, Windows) and EC2 port setups.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Installation",
+      "Setup",
+      "Docker"
     ],
-    "search": "jenkins installation",
+    "search": "install installation setup port open ubuntu docker compose security ec2 java requirements",
     "sections": [
       {
-        "type": "code",
-        "title": "Step 1 \u2014 Install Java (Required)",
-        "code": "# Update packages and install JDK 17\nsudo apt update\nsudo apt install -y fontconfig openjdk-17-jre\n\n# Verify\njava -version\n# openjdk version \"17.x.x\" ..."
+        "type": "lead",
+        "text": "Jenkins requires Java (JDK 11 or 17 LTS) to execute. It can be installed as a system service natively or containerized using Docker."
+      },
+      {
+        "type": "ascii",
+        "label": "Installation Architecture",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                  AWS EC2                     \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502  Inbound Rule   \u2502 \u2500\u2500>\u2502  Host System    \u2502  \u2502\n\u2502  \u2502  TCP Port 8080  \u2502    \u2502  (Ubuntu/JDK17) \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2502                                  \u25bc           \u2502\n\u2502                         \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502                         \u2502  Jenkins Server \u2502  \u2502\n\u2502                         \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Step 2 \u2014 Install Jenkins (Ubuntu/Debian)",
-        "code": "# Add Jenkins GPG key\nsudo wget -O /usr/share/keyrings/jenkins-keyring.asc \\\n  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key\n\n# Add Jenkins repo\necho \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \\\n  https://pkg.jenkins.io/debian-stable binary/\" | \\\n  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null\n\n# Install\nsudo apt update\nsudo apt install -y jenkins\n\n# Start and enable service\nsudo systemctl start jenkins\nsudo systemctl enable jenkins\nsudo systemctl status jenkins"
+        "title": "Option A: Native Ubuntu/Debian Installation",
+        "code": "# Update OS packages\nsudo apt update && sudo apt upgrade -y\n\n# Install JDK 17 (Required runtime)\nsudo apt install -y fontconfig openjdk-17-jre\njava -version\n\n# Add Jenkins repository GPG key\nsudo wget -O /usr/share/keyrings/jenkins-keyring.asc \\\n  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key\n\n# Append Jenkins repository to system sources\necho \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \\\n  https://pkg.jenkins.io/debian-stable binary/\" | \\\n  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null\n\n# Install & enable service\nsudo apt update\nsudo apt install -y jenkins\nsudo systemctl start jenkins\nsudo systemctl enable jenkins\n\n# Retrieve First-time Setup Password\nsudo cat /var/lib/jenkins/secrets/initialAdminPassword"
       },
       {
         "type": "code",
-        "title": "Step 3 \u2014 First Login Setup",
-        "code": "# Get the initial admin password\nsudo cat /var/lib/jenkins/secrets/initialAdminPassword\n\n# Open browser \u2192 http://your-server-ip:8080\n# Paste the password \u2192 Install suggested plugins \u2192 Create admin user"
-      },
-      {
-        "type": "code",
-        "title": "Open Port 8080 (AWS EC2)",
-        "code": "# In AWS Security Group, add inbound rule:\nType: Custom TCP\nPort: 8080\nSource: 0.0.0.0/0   # or your IP for security"
+        "title": "Option B: Containerized Docker Compose Setup",
+        "code": "# docker-compose.yml\nversion: '3.8'\nservices:\n  jenkins:\n    image: jenkins/jenkins:lts-jdk17\n    container_name: jenkins-lts\n    ports:\n      - \"8080:8080\"\n      - \"50000:50000\" # JNLP Agent connection port\n    volumes:\n      - jenkins_home:/var/jenkins_home\n    restart: unless-stopped\n\nvolumes:\n  jenkins_home:"
       },
       {
         "type": "callout",
         "tone": "warn",
-        "html": "\n<strong>Production tip:</strong> Always run Jenkins behind an Nginx reverse proxy with HTTPS (port 443). Never expose port 8080 directly in production.\n    "
+        "html": "<strong>AWS EC2 Config Warning:</strong> Always configure your Security Groups to limit TCP port 8080 traffic to your own public IP address instead of exposing it to the entire internet (0.0.0.0/0) in non-production tests."
       }
     ]
   },
@@ -185,59 +183,43 @@ window.JENKINS_NOTES = [
     "num": "04",
     "title": "Jenkins UI Tour",
     "category": "introduction",
-    "description": "Learn about Jenkins UI Tour in Jenkins.",
+    "description": "Touring the core views of the Jenkins user interface, logs, and global configuration dashboards.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "UI",
+      "Configuration",
+      "Logs"
     ],
-    "search": "jenkins jenkins ui tour",
+    "search": "ui tour user interface dashboard settings navigation manage logs console",
     "sections": [
       {
-        "type": "table",
-        "headers": [
-          "UI Element",
-          "What it does"
-        ],
-        "rows": [
-          [
-            "Dashboard",
-            "Home page \u2014 lists all jobs with build status, health, and last run time"
-          ],
-          [
-            "New Item",
-            "Create a new job (Freestyle, Pipeline, Multibranch, Folder)"
-          ],
-          [
-            "Manage Jenkins",
-            "Global settings \u2014 plugins, credentials, nodes, security, tools"
-          ],
-          [
-            "Build Queue",
-            "Jobs waiting to run (if all executors are busy)"
-          ],
-          [
-            "Build Executor Status",
-            "Shows running builds on controller and agents"
-          ],
-          [
-            "Blue Ocean",
-            "Modern UI for visualizing pipeline stages (install the plugin)"
-          ],
-          [
-            "Console Output",
-            "Real-time log of each build \u2014 your primary debugging window"
-          ],
-          [
-            "Workspace",
-            "Directory on the agent where source code is checked out during a build"
-          ]
-        ]
+        "type": "lead",
+        "text": "The Jenkins UI is split into operational, management, and real-time log analysis layouts designed to help developers control and configure automation jobs."
       },
       {
-        "type": "callout",
-        "tone": "info",
-        "html": "\n<strong>Build Status Colors:</strong> \ud83d\udd35 Blue = Success, \ud83d\udd34 Red = Failed, \ud83d\udfe1 Yellow = Unstable (tests failed), \u2b1c Grey = Never built / Disabled, \ud83d\udd04 Blinking = Running\n    "
+        "type": "ascii",
+        "label": "Jenkins UI Mockup Map",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Jenkins Logo  [Searchbox...]               [User Profile]\u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2502\n\u2502 \u2502  New Item     \u2502 \u2502  Dashboard > All Jobs            \u2502 \u2502\n\u2502 \u2502  People       \u2502 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u2502\n\u2502 \u2502  Build History\u2502 \u2502 Job Name  Status  Last Success   \u2502 \u2502\n\u2502 \u2502  Manage Jenkins\u2502 \u2502 my-app-ci  [Green] 2 mins ago     \u2502 \u2502\n\u2502 \u2502               \u2502 \u2502 test-db    [Red]   1 hour ago      \u2502 \u2502\n\u2502 \u2502 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \u2502 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2502\n\u2502 \u2502 Build Executor\u2502 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u2502\n\u2502 \u2502 [Master Idle] \u2502 \u2502  Console Output Logs             \u2502 \u2502\n\u2502 \u2502 [Agent Busy ] \u2502 \u2502  + git fetch --tags              \u2502 \u2502\n\u2502 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Manage Jenkins",
+            "text": "The administrative panel. Configure credentials, system settings, plugins, nodes, and global security."
+          },
+          {
+            "title": "Console Output",
+            "text": "Primary debugging workspace. Prints stdout logs of the pipeline in real-time."
+          },
+          {
+            "title": "Workspace View",
+            "text": "Allows manual inspection of checked-out repository files directly on the executor agent node."
+          },
+          {
+            "title": "Build Queue",
+            "text": "Displays pending jobs waiting to run. Highly useful for diagnosing resource bottlenecks."
+          }
+        ]
       }
     ]
   },
@@ -246,67 +228,57 @@ window.JENKINS_NOTES = [
     "num": "05",
     "title": "Jobs & Builds",
     "category": "core_concepts",
-    "description": "Learn about Jobs & Builds in Jenkins.",
+    "description": "Understanding the difference between Jobs and Builds, workspace dynamics, and tracking builds.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Jobs",
+      "Builds",
+      "Core Concepts"
     ],
-    "search": "jenkins jobs & builds",
+    "search": "jobs builds workspace execution workspace items tracking config baseline",
     "sections": [
       {
         "type": "lead",
-        "text": "A <strong>Job</strong> (or Item) is a runnable task in Jenkins. Each execution of a job is called a <strong>Build</strong>, numbered incrementally (#1, #2, #3\u2026)."
+        "text": "In Jenkins, a <strong>Job</strong> (or Item) represents the configured automation logic, whereas a <strong>Build</strong> is a specific execution event of that Job."
       },
       {
-        "type": "grid",
-        "items": [
-          {
-            "title": "Freestyle Project",
-            "text": "GUI-configured job. Good for simple shell scripts and basic pipelines."
-          },
-          {
-            "title": "Pipeline",
-            "text": "Code-defined job using a Jenkinsfile. The standard for production."
-          },
-          {
-            "title": "Multibranch Pipeline",
-            "text": "Auto-creates pipelines for each branch in a Git repo."
-          },
-          {
-            "title": "Folder",
-            "text": "Organizes jobs into groups. Each folder has its own credentials and views."
-          }
-        ]
+        "type": "ascii",
+        "label": "Job vs Build Lifecycle",
+        "diagram": "\n   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n   \u2502         Job Definition         \u2502  <--- Saved in config.xml\n   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                   \u2502\n         [ Trigger Event ]  <--- Webhook, Cron, Manual Run\n                   \u2502\n                   \u25bc\n   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n   \u2502     Build Execution #1         \u2502  <--- Injects dynamic variables\n   \u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502       (WORKSPACE, BUILD_NUMBER)\n   \u2502  \u2502 logs, artifacts, results \u2502  \u2502\n   \u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "table",
         "headers": [
-          "Build Concept",
-          "Description"
+          "Job Type",
+          "Best Practical Use Case",
+          "Configuration Method"
         ],
         "rows": [
           [
-            "#BUILD_NUMBER",
-            "Auto-incremented integer for each run of a job"
+            "Freestyle",
+            "Simple shell/batch executions, small scripts.",
+            "Full GUI-based clicks."
           ],
           [
-            "Artifact",
-            "File produced by a build (JAR, Docker image, ZIP) and saved for later use"
+            "Pipeline",
+            "Complex, production multi-stage CI/CD pipelines.",
+            "Jenkinsfile (Pipeline-as-Code)"
           ],
           [
-            "Workspace",
-            "Temp directory on the agent where the build runs and files are checked out"
+            "Multibranch Pipeline",
+            "Dynamic environments with active branch strategies.",
+            "Auto SCM scanning"
           ],
           [
-            "Upstream / Downstream",
-            "Job A triggers Job B \u2014 A is upstream, B is downstream"
-          ],
-          [
-            "Parameter",
-            "User-provided input to a build (string, boolean, choice, credentials)"
+            "Folder",
+            "Access control & project isolation in multi-tenant servers.",
+            "Logical grouping GUI"
           ]
         ]
+      },
+      {
+        "type": "callout",
+        "tone": "info",
+        "html": "<strong>Log Rotation Tip:</strong> Under 'Options', always configure 'Discard Old Builds' to prevent your disk from filling up with hundreds of old build logs and artifacts."
       }
     ]
   },
@@ -315,42 +287,48 @@ window.JENKINS_NOTES = [
     "num": "06",
     "title": "Freestyle Projects",
     "category": "core_concepts",
-    "description": "Learn about Freestyle Projects in Jenkins.",
+    "description": "How to configure Freestyle jobs, SCM settings, build steps, and why they are deprecated for advanced projects.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Freestyle",
+      "SCM",
+      "Jobs"
     ],
-    "search": "jenkins freestyle projects",
+    "search": "freestyle project GUI configure setup post build steps limitations",
     "sections": [
       {
         "type": "lead",
-        "text": "Freestyle is the simplest job type \u2014 configured entirely through the Jenkins UI. Good for learning and simple tasks, but Pipeline-as-Code is preferred in production."
+        "text": "Freestyle Projects are traditional Jenkins jobs managed completely through the web UI. While simple to set up for beginners, they scale poorly and cannot be version-controlled."
+      },
+      {
+        "type": "ascii",
+        "label": "Freestyle Job Components",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                     Freestyle Job                       \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502   SCM (Git Repository)  \u2502 \u2500>\u2502   Build Triggers    \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2502                                           \u25bc             \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502   Post-Build Actions    \u2502<\u2500\u2500\u2502 Build Steps (Bash)  \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "flow",
         "steps": [
           {
-            "title": "New Item \u2192 Freestyle Project",
-            "text": "Give it a name and select Freestyle Project."
+            "title": "Define Project Metadata",
+            "text": "Provide description and assign logical parameters (e.g. choice, string parameters)."
           },
           {
-            "title": "Source Code Management",
-            "text": "Select Git, enter repo URL, add credentials, choose branch (<code>*/main</code>)."
+            "title": "Connect Source Code",
+            "text": "Enable SCM Git, supply repository endpoint URL, select SSH or access token credentials."
           },
           {
-            "title": "Build Triggers",
-            "text": "Choose when to run: Poll SCM, GitHub webhook, Build periodically (cron), or Manual."
+            "title": "Specify Build Steps",
+            "text": "Execute multiple sequential tasks (e.g. 'Execute Shell' for Unix, 'Execute Windows Batch')."
           },
           {
-            "title": "Build Steps",
-            "text": "Execute shell commands \u2014 <code>npm install</code>, <code>mvn test</code>, <code>docker build</code>, etc."
-          },
-          {
-            "title": "Post-build Actions",
-            "text": "Archive artifacts, send email notifications, trigger another job, publish test results."
+            "title": "Post-Build Publishers",
+            "text": "Send warnings, archive target binaries, run downstream jobs, publish JUnit test reports."
           }
         ]
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>Why Freestyle is discouraged in production:</strong> Changes to Freestyle jobs are immediate and unversioned. There is no Git audit trail for who edited a configuration, and no code review process."
       }
     ]
   },
@@ -359,48 +337,52 @@ window.JENKINS_NOTES = [
     "num": "07",
     "title": "Pipeline Types",
     "category": "core_concepts",
-    "description": "Learn about Pipeline Types in Jenkins.",
+    "description": "Detailed comparison between Declarative and Scripted pipelines, SCM execution models, and multibranch setups.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Pipeline",
+      "Declarative",
+      "Scripted"
     ],
-    "search": "jenkins pipeline types",
+    "search": "pipeline types declarative scripted structure syntax groovy comparisons",
     "sections": [
+      {
+        "type": "lead",
+        "text": "Jenkins supports two pipeline programming syntaxes: <strong>Declarative</strong> (newer, simplified structure) and <strong>Scripted</strong> (original, direct procedural Groovy execution)."
+      },
+      {
+        "type": "ascii",
+        "label": "Structure Comparison",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502      Declarative Syntax       \u2502 \u2502        Scripted Syntax        \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524 \u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 pipeline {                    \u2502 \u2502 node('linux') {               \u2502\n\u2502   agent any                   \u2502 \u2502   stage('Build') {            \u2502\n\u2502   stages {                    \u2502 \u2502     sh 'make'                 \u2502\n\u2502     stage('Build') {          \u2502 \u2502   }                           \u2502\n\u2502       steps {                 \u2502 \u2502   if (isRelease) {            \u2502\n\u2502         sh 'make'             \u2502 \u2502     stage('Deploy') { ... }   \u2502\n\u2502       }                       \u2502 \u2502   }                           \u2502\n\u2502     }                         \u2502 \u2502 }                               \u2502\n\u2502   }                           \u2502 \u2502                               \u2502\n\u2502 }                             \u2502 \u2502                               \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518 \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
       {
         "type": "table",
         "headers": [
-          "Type",
-          "Syntax",
-          "Best For"
+          "Feature",
+          "Declarative Pipeline",
+          "Scripted Pipeline"
         ],
         "rows": [
           [
-            "Declarative",
-            "Structured, predefined blocks",
-            "Most teams \u2014 readable, enforces best practices, easier to learn"
+            "Syntax Style",
+            "Structured, highly opinionated blocks.",
+            "Procedural, direct Groovy script."
           ],
           [
-            "Scripted",
-            "Full Groovy code, <code>node{}</code> block",
-            "Complex custom logic, legacy pipelines, maximum flexibility"
+            "Complexity",
+            "Easy for beginners; standard formatting.",
+            "Requires Groovy and runtime knowledge."
           ],
           [
-            "Multibranch",
-            "Auto-detects Jenkinsfiles per branch",
-            "Teams using GitFlow / feature branches \u2014 auto PR pipelines"
+            "Conditional Logic",
+            "Enforced through declarative 'when {}' blocks.",
+            "Standard native programmatic logic (if-else, loops)."
           ],
           [
-            "Shared Library",
-            "Reusable Groovy in a separate repo",
-            "Large orgs \u2014 DRY pipeline code across 20+ repos"
+            "Error Recovery",
+            "Predefined post execution blocks (success/failure).",
+            "Try-catch blocks."
           ]
         ]
-      },
-      {
-        "type": "callout",
-        "tone": "success",
-        "html": "\n<strong>Rule of thumb:</strong> Always start with Declarative. Move to Scripted only when you hit a limitation. Use Shared Libraries when you find yourself copy-pasting Jenkinsfiles.\n    "
       }
     ]
   },
@@ -409,92 +391,61 @@ window.JENKINS_NOTES = [
     "num": "08",
     "title": "Jenkinsfile",
     "category": "core_concepts",
-    "description": "Learn about Jenkinsfile in Jenkins.",
+    "description": "Guide to Pipeline-as-Code. File structures, placing Jenkinsfiles, SCM checkouts, and validation tools.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Jenkinsfile",
+      "Pipeline",
+      "Git"
     ],
-    "search": "jenkins jenkinsfile",
+    "search": "jenkinsfile pipeline as code scm validation placement project setup base",
     "sections": [
       {
         "type": "lead",
-        "text": "A <strong>Jenkinsfile</strong> is a text file stored in the root of your Git repository that defines the entire CI/CD pipeline as code. This enables versioning, code review, and reproducibility."
+        "text": "A <strong>Jenkinsfile</strong> is a plain text configuration file stored directly inside your software source code repository. It standardizes builds and allows pipeline configurations to change automatically alongside the application code."
+      },
+      {
+        "type": "ascii",
+        "label": "Pipeline-as-Code Workflow",
+        "diagram": "\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502 Developer    \u2502 \u2500\u2500 (Pushes Jenkinsfile) \u2500\u2500> \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                             \u2502 Git Repository \u2502\n                                              \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                                      \u2502 (Triggers Build)\n                                                      \u25bc\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510                             \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502 Jenkins Agent\u2502 <\u2500\u2500\u2500 (Parses Jenkinsfile) \u2500\u2500\u2502 Jenkins Master \u2502\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                             \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Jenkinsfile - Minimal Declarative Jenkinsfile",
-        "code": "Jenkinsfilepipeline {\n  agent any             // run on any available agent\n\n  stages {\n    stage('Checkout') {\n      steps {\n        git branch: 'main', url: 'https://github.com/user/repo.git'\n      }\n    }\n    stage('Build') {\n      steps {\n        sh 'npm install'\n      }\n    }\n    stage('Test') {\n      steps {\n        sh 'npm test'\n      }\n    }\n    stage('Deploy') {\n      steps {\n        sh './deploy.sh'\n      }\n    }\n  }\n\n  post {\n    success { echo 'Pipeline succeeded!' }\n    failure { echo 'Pipeline failed!' }\n    always  { cleanWs() }   // clean workspace after every run\n  }\n}"
+        "title": "Minimal Production-Ready Jenkinsfile Template",
+        "code": "pipeline {\n    agent any\n\n    options {\n        timeout(time: 1, unit: 'HOURS')\n        buildDiscarder(logRotator(numToKeepStr: '15'))\n        disableConcurrentBuilds()\n    }\n\n    stages {\n        stage('Initialize') {\n            steps {\n                echo \"Initializing Build #${env.BUILD_NUMBER} on Node: ${env.NODE_NAME}\"\n            }\n        }\n        stage('Compile') {\n            steps {\n                sh 'echo \"Running compilation steps...\"'\n            }\n        }\n    }\n    \n    post {\n        always {\n            cleanWs()\n        }\n    }\n}"
       },
       {
         "type": "callout",
-        "tone": "info",
-        "html": "\n<strong>Where to put it:</strong> File named exactly <code>Jenkinsfile</code> (capital J, no extension) in the root of your repository. Jenkins finds it automatically when you configure the Pipeline job.\n    "
+        "tone": "success",
+        "html": "<strong>Best Practice:</strong> Always name this file exactly <code>Jenkinsfile</code> (no file extension, capital J) and keep it in the root folder of your project."
       }
     ]
   },
   {
     "id": "declarative",
     "num": "09",
-    "title": "Declarative Pipeline \u2014 Full Reference",
+    "title": "Declarative Pipeline",
     "category": "pipelines",
-    "description": "Learn about Declarative Pipeline \u2014 Full Reference in Jenkins.",
+    "description": "Complete technical reference for Declarative pipelines. Parameters, parameters, options, environment variables, stages, steps, triggers.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Declarative",
+      "Reference",
+      "Syntax"
     ],
-    "search": "jenkins declarative pipeline \u2014 full reference",
+    "search": "declarative pipeline syntax reference triggers tools parameters options when post",
     "sections": [
       {
-        "type": "code",
-        "title": "Full Declarative Syntax",
-        "code": "pipeline {\n  agent { label 'linux' }   // or: any, none, docker{}\n\n  environment {             // pipeline-wide env vars\n    APP_NAME = 'my-app'\n    DOCKER_REGISTRY = 'docker.io/myuser'\n  }\n\n  options {\n    timeout(time: 30, unit: 'MINUTES')\n    buildDiscarder(logRotator(numToKeepStr: '10'))\n    disableConcurrentBuilds()\n  }\n\n  parameters {\n    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Target env')\n    booleanParam(name: 'RUN_TESTS', defaultValue: true)\n  }\n\n  stages {\n    stage('Build') {\n      steps {\n        sh 'mvn clean package -DskipTests'\n      }\n    }\n\n    stage('Test') {\n      when { expression { params.RUN_TESTS == true } }\n      steps {\n        sh 'mvn test'\n        junit '**/target/surefire-reports/*.xml'\n      }\n    }\n\n    stage('Deploy') {\n      when { branch 'main' }\n      steps {\n        sh \"./deploy.sh ${params.DEPLOY_ENV}\"\n      }\n    }\n  }\n\n  post {\n    always   { archiveArtifacts artifacts: '**/target/*.jar' }\n    failure  { mail to: 'team@co.com', subject: \"FAILED: ${env.JOB_NAME}\" }\n    success  { echo 'All good!' }\n    unstable { echo 'Tests are failing!' }\n  }\n}"
+        "type": "lead",
+        "text": "Declarative syntax offers a clean, robust, and highly structured framework to build secure, robust CI/CD systems."
       },
       {
-        "type": "table",
-        "headers": [
-          "Block",
-          "Purpose"
-        ],
-        "rows": [
-          [
-            "agent",
-            "Where the pipeline/stage runs (any, none, label, docker)"
-          ],
-          [
-            "environment",
-            "Define env vars accessible as <code>env.VAR_NAME</code> throughout"
-          ],
-          [
-            "options",
-            "Pipeline behaviour \u2014 timeouts, log rotation, concurrent builds"
-          ],
-          [
-            "parameters",
-            "Input values users can provide before running the build"
-          ],
-          [
-            "stages",
-            "Container for all stage blocks"
-          ],
-          [
-            "stage('name')",
-            "A logical step \u2014 shown as a column in the pipeline view"
-          ],
-          [
-            "steps",
-            "The actual commands/actions inside a stage"
-          ],
-          [
-            "when",
-            "Conditional execution \u2014 branch name, env var, expression, etc."
-          ],
-          [
-            "post",
-            "Actions after pipeline finishes \u2014 always, success, failure, unstable, changed"
-          ]
-        ]
+        "type": "ascii",
+        "label": "Declarative Pipeline Blueprint Map",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 pipeline {                                             \u2502\n\u2502   agent [any | none | node label | docker container]   \u2502\n\u2502   environment { ... }                                  \u2502\n\u2502   options { ... }                                      \u2502\n\u2502   parameters { ... }                                   \u2502\n\u2502   stages {                                             \u2502\n\u2502     stage('Build') {                                   \u2502\n\u2502       steps { ... }                                    \u2502\n\u2502       post { ... }                                     \u2502\n\u2502     }                                                  \u2502\n\u2502   }                                                    \u2502\n\u2502   post { [always | success | failure | unstable] }     \u2502\n\u2502 }                                                      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
+      {
+        "type": "code",
+        "title": "Full-Featured Declarative Pipeline Blueprint",
+        "code": "pipeline {\n    agent { label 'linux-executor' }\n\n    environment {\n        DEPLOY_PORT = \"8080\"\n        REGISTRY_URL = \"docker.io/myprofile\"\n    }\n\n    options {\n        timeout(time: 30, unit: 'MINUTES')\n        retry(3)\n        timestamps()\n    }\n\n    parameters {\n        string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Target Env')\n        booleanParam(name: 'SCAN_IMAGES', defaultValue: true, description: 'Trivy Scan')\n    }\n\n    triggers {\n        cron('H 4 * * 1-5') // Build nightly Mon-Fri\n    }\n\n    stages {\n        stage('Pull SCM') {\n            steps {\n                checkout scm\n            }\n        }\n        stage('Security Analysis') {\n            when {\n                expression { return params.SCAN_IMAGES == true }\n            }\n            steps {\n                sh 'echo \"Scanning workspace vulnerabilities...\"'\n            }\n        }\n        stage('Deploy') {\n            when {\n                branch 'main'\n            }\n            steps {\n                sh \"echo Deploying to port ${env.DEPLOY_PORT} on environment ${params.DEPLOY_ENV}\"\n            }\n        }\n    }\n\n    post {\n        always {\n            echo \"Pipeline run completed.\"\n        }\n        success {\n            echo \"Deployment fully executed!\"\n        }\n        failure {\n            echo \"Critical Pipeline Failure. Triggering rollback procedures.\"\n        }\n    }\n}"
       }
     ]
   },
@@ -503,42 +454,86 @@ window.JENKINS_NOTES = [
     "num": "10",
     "title": "Scripted Pipeline",
     "category": "pipelines",
-    "description": "Learn about Scripted Pipeline in Jenkins.",
+    "description": "Deep dive into Scripted pipelines, procedural Groovy scripts, loops, exception handling, and custom code integration.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Scripted",
+      "Groovy",
+      "Advanced"
     ],
-    "search": "jenkins scripted pipeline",
+    "search": "scripted pipeline syntax groovy node scripting loops try catch exception dynamic",
     "sections": [
       {
         "type": "lead",
-        "text": "Scripted pipelines use full Groovy syntax inside a <code>node{}</code> block. More powerful but more complex \u2014 good for advanced conditional logic and loops."
+        "text": "Scripted Pipelines are built directly on top of the Groovy programming engine, offering maximum execution flexibility and direct programmatic logic control."
+      },
+      {
+        "type": "ascii",
+        "label": "Scripted Pipeline Logic flow",
+        "diagram": "\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502         node('worker-node')        \u2502  <--- Allocate build workspace\n  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                    \u25bc\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502        stage('Environment')        \u2502  <--- Standard code execution\n  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                    \u25bc\n                    \u251c\u2500\u2500 [isRelease == true] \u2500\u2500> [stage('Deploy')]\n                    \u2514\u2500\u2500 [isRelease == false] \u2500\u2500> [Skip deployment stage]\n"
       },
       {
         "type": "code",
-        "title": "Scripted Pipeline Example",
-        "code": "node('linux') {               // run on agent with label 'linux'\n  def appName = 'my-app'\n  def version = ''\n\n  stage('Checkout') {\n    checkout scm\n    version = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()\n  }\n\n  stage('Build') {\n    sh \"docker build -t ${appName}:${version} .\"\n  }\n\n  try {\n    stage('Test') {\n      sh 'npm test'\n    }\n  } catch (err) {\n    echo \"Tests failed: ${err}\"\n    currentBuild.result = 'UNSTABLE'\n  }\n\n  if (env.BRANCH_NAME == 'main') {\n    stage('Deploy') {\n      sh \"./deploy.sh ${version}\"\n    }\n  }\n}"
+        "title": "Advanced Scripted Pipeline with Complex Controls",
+        "code": "node('linux') {\n    def appName = 'analytics-service'\n    def environments = ['staging', 'production']\n\n    try {\n        stage('Checkout Source') {\n            checkout scm\n        }\n\n        stage('Parallel Compile') {\n            parallel(\n                \"build-amd64\": { sh \"echo 'Building x86 architecture binary'\" },\n                \"build-arm64\": { sh \"echo 'Building arm64 architecture binary'\" }\n            )\n        }\n\n        stage('Multi-Environment Deployment') {\n            for (envName in environments) {\n                if (envName == 'production') {\n                    // Manual Approval checkpoint via Groovy step\n                    input message: \"Authorize release to Production?\", ok: \"Release\"\n                }\n                echo \"Deploying ${appName} to server pool: ${envName}\"\n            }\n        }\n\n    } catch (Exception err) {\n        currentBuild.result = 'FAILED'\n        echo \"Pipeline failed with error: ${err.toString()}\"\n        throw err\n    } finally {\n        stage('Post-cleanup') {\n            cleanWs()\n        }\n    }\n}"
       }
     ]
   },
   {
     "id": "stages",
     "num": "11",
-    "title": "Stages & Steps \u2014 Common Commands",
+    "title": "Stages & Steps",
     "category": "pipelines",
-    "description": "Learn about Stages & Steps \u2014 Common Commands in Jenkins.",
+    "description": "Comprehensive directory of common pipeline steps including directory manipulation, environment management, credentials wrapping, and script execution.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Stages",
+      "Steps",
+      "Commands"
     ],
-    "search": "jenkins stages & steps \u2014 common commands",
+    "search": "stages steps common commands shell credentials withcredentials stash unstash env variables",
     "sections": [
       {
+        "type": "lead",
+        "text": "Steps are the fundamental building blocks of execution inside a stage. Jenkins provides native steps to manage workspace files, environments, stashes, and passwords."
+      },
+      {
+        "type": "ascii",
+        "label": "Workspace Stashing Logic",
+        "diagram": "\n   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n   \u2502     Build Executor    \u2502 \u2500\u2500\u2500 (stash) \u2500\u2500\u2500> [ Jenkins Controller Storage ]\n   \u2502  (Compiles binaries)  \u2502                         \u2502\n   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                         \u2502\n                                                 (unstash)\n   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510                         \u2502\n   \u2502    Deploy Executor    \u2502 <\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n   \u2502  (Runs deploy steps)  \u2502\n   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
+      {
         "type": "code",
-        "title": "Common step() commands",
-        "code": "// Shell commands\nsh 'echo hello'\nsh(script: 'ls -la', returnStdout: true).trim()\n\n// Git\ngit url: 'https://github.com/user/repo', branch: 'main'\ncheckout scm                   // use SCM configured in job\n\n// Environment\nwithEnv(['MY_VAR=hello']) { sh 'echo $MY_VAR' }\n\n// Credentials injection\nwithCredentials([usernamePassword(\n  credentialsId: 'docker-creds',\n  usernameVariable: 'USER',\n  passwordVariable: 'PASS'\n)]) {\n  sh 'docker login -u $USER -p $PASS'\n}\n\n// Artifacts\narchiveArtifacts artifacts: '**/*.jar', fingerprint: true\nstash includes: 'dist/**', name: 'build-output'\nunstash 'build-output'\n\n// Input / approval gate\ninput message: 'Deploy to production?', ok: 'Deploy'\n\n// Sleep\nsleep time: 5, unit: 'SECONDS'"
+        "title": "Directory Utilities, Stashing, and Dynamic Scripting",
+        "code": "pipeline {\n    agent none // Explicitly allocate workspace per stage\n    \n    stages {\n        stage('Build Artifact') {\n            agent { label 'build-agent' }\n            steps {\n                // Ensure a clean target directory\n                dir('workspace-build') {\n                    sh 'mkdir -p target && echo \"Compiled Binary Content\" > target/app.jar'\n                }\n                // Save target folder to Jenkins storage without permanent archiving\n                stash name: 'compiled-jar', includes: 'workspace-build/target/**'\n            }\n        }\n        \n        stage('Deploy Artifact') {\n            agent { label 'deploy-agent' }\n            steps {\n                // Retrieve files from Jenkins storage into current workspace\n                unstash 'compiled-jar'\n                sh 'ls -R workspace-build/target/'\n            }\n        }\n    }\n}"
+      },
+      {
+        "type": "table",
+        "headers": [
+          "Built-in Step Command",
+          "Primary Action",
+          "Usage Context"
+        ],
+        "rows": [
+          [
+            "sh 'command'",
+            "Runs Unix shell command. Failures abort pipeline.",
+            "Build, compilation, execution."
+          ],
+          [
+            "dir('path') { ... }",
+            "Switches execution directory scope.",
+            "Executing tasks in sub-folders."
+          ],
+          [
+            "stash / unstash",
+            "Saves temporary workspace binaries across stages.",
+            "Offloading deployment from build agent."
+          ],
+          [
+            "archiveArtifacts",
+            "Saves permanent post-build binaries in controller.",
+            "Publishing released binaries permanently."
+          ]
+        ]
       }
     ]
   },
@@ -547,27 +542,53 @@ window.JENKINS_NOTES = [
     "num": "12",
     "title": "Agents & Nodes",
     "category": "pipelines",
-    "description": "Learn about Agents & Nodes in Jenkins.",
+    "description": "Detailed study of Master-Agent architecture, configuring nodes via SSH/JNLP, and running pipelines inside Docker containers.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Agents",
+      "Nodes",
+      "Architectures"
     ],
-    "search": "jenkins agents & nodes",
+    "search": "agents nodes controller master worker distributed dynamic docker agent jnlp ssh labels",
     "sections": [
       {
         "type": "lead",
-        "text": "Jenkins uses a <strong>Controller</strong> (master) to schedule jobs and one or more <strong>Agents</strong> (workers) to run them. This enables distributed, parallel builds."
+        "text": "Jenkins distributes task execution from a central Controller node out to secondary worker Agents, scaling operational capacity and preventing execution overload on the host platform."
+      },
+      {
+        "type": "ascii",
+        "label": "Master-Agent Communication Architecture",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                 Jenkins Controller                    \u2502\n\u2502    (Schedules builds, processes user logins, UI)      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n         \u2502 (SSH Port 22)        \u2502 (JNLP Port 50000)\n         \u25bc                      \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510    \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Linux Agent 01  \u2502    \u2502 Windows Agent   \u2502\n\u2502 (System Node)   \u2502    \u2502 (Native Runner) \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518    \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Controller Node",
+            "text": "Acts as the administrative center. Scheduling, parsing pipelines, UI, and log storage."
+          },
+          {
+            "title": "Static Permanent Agent",
+            "text": "Dedicated VM/Hardware running java agent process continuously."
+          },
+          {
+            "title": "Dynamic Docker Agent",
+            "text": "Launches a dynamic container at the start of a stage and destroys it immediately on completion."
+          },
+          {
+            "title": "Cloud Scale-Out Agents",
+            "text": "Auto-scaling agents triggered on Kubernetes or AWS ECS during high job queues."
+          }
+        ]
       },
       {
         "type": "code",
-        "title": "Agent Directive Options",
-        "code": "// Run on any available agent\nagent any\n\n// Run on controller (not recommended for heavy builds)\nagent none\n\n// Run on agent with a specific label\nagent { label 'linux && docker' }\n\n// Run inside a Docker container\nagent {\n  docker {\n    image 'node:18-alpine'\n    args  '-v /tmp:/tmp'\n  }\n}\n\n// Per-stage agent (when pipeline agent is none)\nstage('Build') {\n  agent { label 'build-server' }\n  steps { sh 'make build' }\n}"
+        "title": "Running Stages inside Isolated Docker Containers",
+        "code": "pipeline {\n    agent none // Do not bind a root executor workspace\n\n    stages {\n        stage('Frontend Compilation') {\n            agent {\n                docker {\n                    image 'node:18-alpine'\n                    args '-v /tmp:/tmp-cache'\n                }\n            }\n            steps {\n                sh 'node -v'\n                sh 'npm install && npm run build'\n            }\n        }\n        \n        stage('Java Backend Compilation') {\n            agent {\n                docker {\n                    image 'maven:3.9-eclipse-temurin-17'\n                }\n            }\n            steps {\n                sh 'mvn -version'\n                sh 'mvn clean package'\n            }\n        }\n    }\n}"
       },
       {
         "type": "callout",
-        "tone": "info",
-        "html": "\n<strong>Adding an Agent:</strong> Manage Jenkins \u2192 Manage Nodes \u2192 New Node \u2192 Set labels, Remote root, Launch method (SSH or JNLP). Install Java on the agent first.\n    "
+        "tone": "warn",
+        "html": "<strong>Controller Executor Rule:</strong> Always configure the number of executors on your main Controller node to <strong>0</strong>. This protects the master node from running application builds, keeping it responsive for users."
       }
     ]
   },
@@ -576,22 +597,27 @@ window.JENKINS_NOTES = [
     "num": "13",
     "title": "Parallel Execution",
     "category": "pipelines",
-    "description": "Learn about Parallel Execution in Jenkins.",
+    "description": "Running multi-branch execution, dynamic tasks in parallel, and handling error propagation.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Parallel",
+      "Concurrency",
+      "Speed"
     ],
-    "search": "jenkins parallel execution",
+    "search": "parallel execution concurrent runtime speed stages failfast branches multi platform",
     "sections": [
       {
         "type": "lead",
-        "text": "Run multiple stages simultaneously to cut pipeline time \u2014 e.g., run Unit Tests and Integration Tests at the same time."
+        "text": "Running pipeline stages concurrently reduces total build times and accelerates software feedback loops."
+      },
+      {
+        "type": "ascii",
+        "label": "Sequential vs Parallel Execution",
+        "diagram": "\nSequential Execution (Time: 30m):\n[Checkout] \u2500\u2500> [Build] \u2500\u2500> [Unit Test: 10m] \u2500\u2500> [Integration Test: 15m] \u2500\u2500> [Deploy: 5m]\n\nParallel Execution (Time: 18m):\n                           \u250c\u2500\u2500\u2500> [Unit Test: 10m] \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n[Checkout] \u2500\u2500> [Build] \u2500\u2500\u2500>\u251c\u2500\u2500\u2500> [Integration Test: 15m] \u2500\u253c\u2500\u2500\u2500> [Deploy: 5m]\n                           \u2514\u2500\u2500\u2500> [Static Lint: 2m] \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Parallel Stages",
-        "code": "stage('Test') {\n  parallel {\n    stage('Unit Tests') {\n      agent { label 'linux' }\n      steps { sh 'npm run test:unit' }\n    }\n    stage('Integration Tests') {\n      agent { label 'linux' }\n      steps { sh 'npm run test:integration' }\n    }\n    stage('Lint') {\n      agent { label 'linux' }\n      steps { sh 'npm run lint' }\n    }\n  }\n}\n\n// Fail fast: stop all parallel branches if one fails\nstage('Parallel Tests') {\n  failFast true\n  parallel { ... }\n}"
+        "title": "Parallel Pipeline with Fail-Fast Configuration",
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Compile') {\n            steps {\n                sh 'echo \"Compiling system binaries...\"'\n            }\n        }\n\n        stage('Comprehensive Auditing') {\n            // Terminate other parallel jobs immediately if one of them fails\n            failFast true\n            \n            parallel {\n                stage('Execution Suite A') {\n                    steps {\n                        sh 'echo \"Running suite A tests...\"'\n                    }\n                }\n                stage('Execution Suite B') {\n                    steps {\n                        sh 'echo \"Running suite B tests...\"'\n                    }\n                }\n                stage('Static SonarQube Scan') {\n                    steps {\n                        sh 'echo \"Analyzing code quality metrics...\"'\n                    }\n                }\n            }\n        }\n    }\n}"
       }
     ]
   },
@@ -600,23 +626,27 @@ window.JENKINS_NOTES = [
     "num": "14",
     "title": "Git & GitHub Integration",
     "category": "integrations",
-    "description": "Learn about Git & GitHub Integration in Jenkins.",
+    "description": "Detailed guide on Git integrations, setting up SCM checkouts, branch strategies, and SSH configuration.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Git",
+      "GitHub",
+      "SCM"
     ],
-    "search": "jenkins git & github integration",
+    "search": "git github integration scm ssh keys credentials clone branch fetch strategy",
     "sections": [
       {
-        "type": "code",
-        "title": "Connecting Jenkins to GitHub",
-        "code": "// 1. Install Git plugin (usually pre-installed)\n// 2. Manage Jenkins \u2192 Global Tool Configuration \u2192 Git \u2192 Set path\n\n// 3. In Pipeline job: Pipeline script from SCM\n//    SCM: Git\n//    Repository URL: https://github.com/user/repo.git\n//    Credentials: add GitHub token or SSH key\n//    Branch: */main\n\n// 4. In Jenkinsfile \u2014 checkout is automatic with:\ncheckout scm"
+        "type": "lead",
+        "text": "Connecting Jenkins to Git/GitHub allows developers to automate builds on code delivery. Authentication can be established securely using HTTPS tokens or SSH keys."
+      },
+      {
+        "type": "ascii",
+        "label": "Git Secure Connection Methods",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502         Jenkins Server          \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u2502\n\u2502  \u2502 Credentials Provider     \u2502   \u2502\n\u2502  \u2502   - SSH Private Key      \u2502   \u2502\n\u2502  \u2502   - GitHub PAT (HTTPS)   \u2502   \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                \u2502 (Git TLS handshake)\n                \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502     GitHub Secure Server        \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u2502\n\u2502  \u2502 Repo Access / Permissions\u2502   \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Using GitHub Personal Access Token",
-        "code": "// In GitHub: Settings \u2192 Developer Settings \u2192 Personal Access Tokens\n// Scope needed: repo (full control of private repos)\n\n// In Jenkins: Manage Credentials \u2192 Add Credential\n// Kind: Username with password\n// Username: your-github-username\n// Password: your-PAT-token\n// ID: github-creds  \u2190 reference this ID in Jenkinsfile"
+        "title": "Advanced SCM Checkout with Sub-directory Isolation",
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Checkout Specific Repository Branch') {\n            steps {\n                // Perform complex checkout configuration instead of standard checkout scm\n                checkout([\n                    $class: 'GitSCM',\n                    branches: [[name: '*/release-v2']],\n                    userRemoteConfigs: [[\n                        url: 'git@github.com:myprofile/analytics-engine.git',\n                        credentialsId: 'jenkins-ssh-private-key'\n                    ]],\n                    extensions: [\n                        // Clone source code into a subfolder of the workspace\n                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'source-code'],\n                        // Fetch submodules recursively\n                        [$class: 'SubmoduleOption', recursiveSubmodules: true]\n                    ]\n                ])\n            }\n        }\n    }\n}"
       }
     ]
   },
@@ -625,69 +655,48 @@ window.JENKINS_NOTES = [
     "num": "15",
     "title": "Webhooks & Triggers",
     "category": "integrations",
-    "description": "Learn about Webhooks & Triggers in Jenkins.",
+    "description": "How to configure webhooks, poll SCM, cron triggers, and secure webhook endpoint authentications.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Webhooks",
+      "Triggers",
+      "GitHub"
     ],
-    "search": "jenkins webhooks & triggers",
+    "search": "webhooks triggers webhook github event poll scm cron triggers scheduling automated",
     "sections": [
+      {
+        "type": "lead",
+        "text": "Triggers remove manual effort from CI/CD pipelines. Webhooks push notifications from GitHub to Jenkins instantly, while Cron configurations run builds on scheduled intervals."
+      },
+      {
+        "type": "ascii",
+        "label": "Git Push Event Webhook Loop",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510         (Push Commit)        \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Developer \u2502 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500> \u2502 Git Server   \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                              \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                                                  \u2502\n                                         (HTTP POST /webhook)\n                                                  \u2502\n                                                  \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510       (Triggers Build)       \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Build Run \u2502 <\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 \u2502   Jenkins    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                              \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
       {
         "type": "flow",
         "steps": [
           {
-            "title": "Install GitHub Integration Plugin",
-            "text": "Manage Jenkins \u2192 Plugins \u2192 Available \u2192 search \"GitHub Integration\" \u2192 Install."
+            "title": "Install System Plugins",
+            "text": "Go to Manage Jenkins -> Plugins. Add the 'GitHub Integration' plugin."
           },
           {
-            "title": "Enable GitHub hook trigger in Job",
-            "text": "Job \u2192 Configure \u2192 Build Triggers \u2192 \u2705 <strong>GitHub hook trigger for GITScm polling</strong>."
+            "title": "Configure Job Triggers",
+            "text": "Inside your pipeline configuration UI, check 'GitHub hook trigger for GITScm polling'."
           },
           {
-            "title": "Add Webhook in GitHub",
-            "text": "Repo \u2192 Settings \u2192 Webhooks \u2192 Add Webhook \u2192 Payload URL: <code>http://your-jenkins-ip:8080/github-webhook/</code> \u2192 Content type: <code>application/json</code> \u2192 Select events: Push."
+            "title": "Register Webhook inside GitHub",
+            "text": "Open repository settings in GitHub. Add a Webhook pointing to: http://<jenkins-url>:8080/github-webhook/"
           },
           {
-            "title": "Test it",
-            "text": "Push a commit to your repo \u2014 Jenkins should auto-trigger within seconds."
+            "title": "Verify Payload Delivery",
+            "text": "Submit a code commit. Confirm GitHub successfully posts the event and triggers Jenkins."
           }
         ]
       },
       {
-        "type": "table",
-        "headers": [
-          "Trigger Type",
-          "Config",
-          "Use Case"
-        ],
-        "rows": [
-          [
-            "GitHub Webhook",
-            "GitHub \u2192 Webhooks",
-            "Instant trigger on push/PR \u2014 fastest, recommended"
-          ],
-          [
-            "Poll SCM",
-            "<code>H/5 * * * *</code> (every 5 min)",
-            "When webhooks not available (no public IP)"
-          ],
-          [
-            "Cron Schedule",
-            "<code>0 2 * * *</code> (nightly 2am)",
-            "Nightly builds, scheduled reports"
-          ],
-          [
-            "Upstream Job",
-            "Build after other projects built",
-            "Sequential dependent pipelines"
-          ],
-          [
-            "Manual",
-            "Build Now button",
-            "On-demand triggered deploys"
-          ]
-        ]
+        "type": "callout",
+        "tone": "info",
+        "html": "<strong>Webhook vs Polling:</strong> Webhooks are instant and put zero resource overhead on your Jenkins server. Polling scans the repository at scheduled intervals (e.g. every 5 minutes), generating unnecessary SCM traffic."
       }
     ]
   },
@@ -696,23 +705,32 @@ window.JENKINS_NOTES = [
     "num": "16",
     "title": "Docker Integration",
     "category": "integrations",
-    "description": "Learn about Docker Integration in Jenkins.",
+    "description": "Integrating Docker containers with pipelines. Packaging, vulnerability scanning, and managing Docker sockets.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
+      "Docker",
+      "Containers",
       "DevOps"
     ],
-    "search": "jenkins docker integration",
+    "search": "docker integration container build push scan docker socket registry trivy socket daemon",
     "sections": [
       {
-        "type": "callout",
-        "tone": "warn",
-        "html": "\n<strong>Pre-requisite:</strong> Docker must be installed on the Jenkins agent. Add the <code>jenkins</code> user to the docker group: <code>sudo usermod -aG docker jenkins</code>, then restart Jenkins.\n    "
+        "type": "lead",
+        "text": "Combining Jenkins with Docker guarantees that your application builds in a predictable, isolated container ecosystem."
+      },
+      {
+        "type": "ascii",
+        "label": "Docker Socket Mounting Architecture",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                      Host Server                       \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502    Jenkins Container  \u2502   \u2502     Docker Daemon    \u2502  \u2502\n\u2502  \u2502                       \u2502   \u2502                      \u2502  \u2502\n\u2502  \u2502   - docker command    \u2502   \u2502                      \u2502  \u2502\n\u2502  \u2502   - mounted socket:   \u251c\u2500\u2500>\u2502                      \u2502  \u2502\n\u2502  \u2502   /var/run/docker.sock\u2502   \u2502  /var/run/docker.sock\u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Build & Push Docker Image in Pipeline",
-        "code": "pipeline {\n  agent any\n  environment {\n    DOCKER_IMAGE = \"myuser/my-app:${BUILD_NUMBER}\"\n  }\n  stages {\n    stage('Build Image') {\n      steps {\n        sh \"docker build -t ${DOCKER_IMAGE} .\"\n      }\n    }\n    stage('Push to DockerHub') {\n      steps {\n        withCredentials([usernamePassword(\n          credentialsId: 'dockerhub-creds',\n          usernameVariable: 'DOCKER_USER',\n          passwordVariable: 'DOCKER_PASS'\n        )]) {\n          sh \"\"\"\n            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin\n            docker push ${DOCKER_IMAGE}\n            docker logout\n          \"\"\"\n        }\n      }\n    }\n    stage('Deploy Container') {\n      steps {\n        sh \"\"\"\n          docker stop my-app || true\n          docker rm   my-app || true\n          docker run -d --name my-app -p 8000:8000 ${DOCKER_IMAGE}\n        \"\"\"\n      }\n    }\n  }\n  post {\n    always { sh \"docker rmi ${DOCKER_IMAGE} || true\" }\n  }\n}"
+        "title": "Production Pipeline: Build, Trivy Security Scan, and Push",
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        IMAGE_NAME = \"docker.io/myprofile/payment-api\"\n        IMAGE_TAG = \"${env.BUILD_NUMBER}\"\n        FULL_IMAGE = \"${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n    }\n    \n    stages {\n        stage('Lint & Compile') {\n            steps {\n                sh 'echo \"Performing code analysis...\"'\n            }\n        }\n        \n        stage('Docker Packaging') {\n            steps {\n                sh \"docker build -t ${env.FULL_IMAGE} .\"\n            }\n        }\n        \n        stage('Trivy Security Audit') {\n            steps {\n                // Exit build if image contains HIGH or CRITICAL level vulnerabilities\n                sh \"trivy image --severity HIGH,CRITICAL --exit-code 1 ${env.FULL_IMAGE}\"\n            }\n        }\n        \n        stage('Publish Image') {\n            steps {\n                withCredentials([usernamePassword(\n                    credentialsId: 'docker-registry-creds',\n                    usernameVariable: 'REGISTRY_USER',\n                    passwordVariable: 'REGISTRY_PASS'\n                )]) {\n                    sh \"echo ${env.REGISTRY_PASS} | docker login -u ${env.REGISTRY_USER} --password-stdin\"\n                    sh \"docker push ${env.FULL_IMAGE}\"\n                    sh \"docker logout\"\n                }\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Clean local build images to avoid disk bloat\n            sh \"docker rmi ${env.FULL_IMAGE} || true\"\n        }\n    }\n}"
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>Permission Denied Fix:</strong> If Jenkins fails to communicate with your Docker daemon, run: <code>sudo usermod -aG docker jenkins && sudo systemctl restart jenkins</code> on your agent node to grant permission."
       }
     ]
   },
@@ -721,52 +739,32 @@ window.JENKINS_NOTES = [
     "num": "17",
     "title": "Credentials & Secrets",
     "category": "integrations",
-    "description": "Learn about Credentials & Secrets in Jenkins.",
+    "description": "Managing passwords, API tokens, SSH keys, and using withCredentials wrapper safely.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Credentials",
+      "Security",
+      "Secrets"
     ],
-    "search": "jenkins credentials & secrets",
+    "search": "credentials secrets security passwords api tokens keys wrapper secure store masking",
     "sections": [
       {
-        "type": "table",
-        "headers": [
-          "Credential Type",
-          "Use Case"
-        ],
-        "rows": [
-          [
-            "Username with password",
-            "Docker Hub, GitHub PAT, database credentials"
-          ],
-          [
-            "SSH Username with private key",
-            "SSH into servers, Git over SSH"
-          ],
-          [
-            "Secret text",
-            "API tokens, Slack webhooks, any single secret string"
-          ],
-          [
-            "Secret file",
-            "Kubeconfig, .env files, certificate PEM files"
-          ],
-          [
-            "Certificate (PKCS#12)",
-            "Code signing, SSL client certificates"
-          ]
-        ]
+        "type": "lead",
+        "text": "Jenkins features a secure credentials storage vault that masks sensitive credentials in console logs and prevents secrets from leaking."
+      },
+      {
+        "type": "ascii",
+        "label": "Credentials Masking Mechanism",
+        "diagram": "\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502   Credentials Store  \u2502 ---> [ Secret token: \"my-super-secret-key\" ]\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n            \u2502 (Injected via withCredentials)\n            \u25bc\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502   Pipeline Engine    \u2502 ---> [ Console logs: \"Authenticating with *****\" ]\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Using Credentials in Jenkinsfile",
-        "code": "// Secret text\nwithCredentials([string(credentialsId: 'slack-token', variable: 'SLACK_TOKEN')]) {\n  sh 'curl -X POST -d \"token=$SLACK_TOKEN\" ...'\n}\n\n// Secret file (e.g. kubeconfig)\nwithCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {\n  sh 'kubectl --kubeconfig=$KUBECONFIG_FILE get pods'\n}\n\n// SSH Key\nwithCredentials([sshUserPrivateKey(\n  credentialsId: 'prod-ssh',\n  keyFileVariable: 'SSH_KEY',\n  usernameVariable: 'SSH_USER'\n)]) {\n  sh 'ssh -i $SSH_KEY $SSH_USER@prod-server.com \"docker restart app\"'\n}"
+        "title": "Using Multiple Credential Types Securely",
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Deploy with SSH Key') {\n            steps {\n                withCredentials([\n                    sshUserPrivateKey(\n                        credentialsId: 'prod-target-ssh',\n                        keyFileVariable: 'PRIVATE_KEY_PATH',\n                        usernameVariable: 'SSH_USER_NAME'\n                    ),\n                    string(\n                        credentialsId: 'external-api-token',\n                        variable: 'API_TOKEN'\n                    )\n                ]) {\n                    sh \"\"\"\n                        echo \"Executing secure API connection...\"\n                        curl -H \"Authorization: Bearer \\$API_TOKEN\" https://api.prod.com/health\n                        \n                        ssh -i \\$PRIVATE_KEY_PATH -o StrictHostKeyChecking=no \\$SSH_USER_NAME@prod.server.com \"docker restart app\"\n                    \"\"\"\n                }\n            }\n        }\n    }\n}"
       },
       {
         "type": "callout",
         "tone": "warn",
-        "html": "\n<strong>Never hardcode secrets</strong> in Jenkinsfiles. Jenkins masks credential values in logs automatically when using <code>withCredentials</code>, but they must be stored in the Credentials store first.\n    "
+        "html": "<strong>Security best practice:</strong> Never use <code>echo</code> to print variable names containing credentials. Jenkins will attempt to mask them, but complex formatting or base64 encoding can bypass standard log filters."
       }
     ]
   },
@@ -775,70 +773,62 @@ window.JENKINS_NOTES = [
     "num": "18",
     "title": "Essential Plugins",
     "category": "integrations",
-    "description": "Learn about Essential Plugins in Jenkins.",
+    "description": "Plugin architecture, managing installations, must-have plugins for DevOps integration, and troubleshooting failures.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Plugins",
+      "Configuration",
+      "Extensions"
     ],
-    "search": "jenkins essential plugins",
+    "search": "plugins manage installation lifecycle extensions modules ecosystem list restart failures",
     "sections": [
+      {
+        "type": "lead",
+        "text": "Plugins extend the core capabilities of Jenkins, allowing teams to integrate external cloud platforms, messaging services, and metrics collection tools easily."
+      },
+      {
+        "type": "ascii",
+        "label": "Core Extensibility Architecture",
+        "diagram": "\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502               Jenkins Core Engine             \u2502\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                         \u2502 (Plugin API Interface)\n        \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n        \u25bc                \u25bc                \u25bc\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502 Git Plugin  \u2502  \u2502Slack Plugin \u2502  \u2502Sonar Plugin \u2502\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
       {
         "type": "table",
         "headers": [
-          "Plugin",
-          "What it adds"
+          "Must-Have Plugin",
+          "Purpose",
+          "Production Value"
         ],
         "rows": [
           [
-            "Git",
-            "Core Git SCM support (usually pre-installed)"
-          ],
-          [
-            "GitHub Integration",
-            "Webhook triggers, GitHub PR status updates"
-          ],
-          [
             "Pipeline",
-            "Jenkinsfile-based pipeline support"
+            "Enables Declarative and Scripted Jenkinsfiles.",
+            "Essential"
           ],
           [
-            "Blue Ocean",
-            "Modern visual UI for pipelines"
+            "Git / GitHub",
+            "Allows cloning repositories and receiving webhook triggers.",
+            "Essential"
           ],
           [
             "Docker Pipeline",
-            "Use Docker inside Jenkinsfiles (<code>docker.build</code>, <code>docker.image</code>)"
-          ],
-          [
-            "Credentials Binding",
-            "<code>withCredentials{}</code> support"
-          ],
-          [
-            "Maven Integration",
-            "Maven build tool support"
-          ],
-          [
-            "NodeJS",
-            "Node/npm version management per job"
-          ],
-          [
-            "Email Extension",
-            "Rich HTML email notifications"
+            "Provides native DSL to build, scan, and run Docker containers.",
+            "High"
           ],
           [
             "Slack Notification",
-            "Send Slack messages on build events"
+            "Post real-time build results into channels.",
+            "Medium"
           ],
           [
             "SonarQube Scanner",
-            "Code quality analysis integration"
-          ],
-          [
-            "Kubernetes",
-            "Dynamic agent provisioning in K8s clusters"
+            "Enforces quality gates and security audits.",
+            "High"
           ]
         ]
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>Plugin Dependency Bloat:</strong> Limit the number of installed plugins. Too many active plugins consume system memory, slow down boot times, and increase the server's security attack surface."
       }
     ]
   },
@@ -847,32 +837,32 @@ window.JENKINS_NOTES = [
     "num": "19",
     "title": "Shared Libraries",
     "category": "advanced",
-    "description": "Learn about Shared Libraries in Jenkins.",
+    "description": "How to build Global Shared Libraries, folder structures, vars/ files, custom classes, and importing libraries.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Shared Libraries",
+      "Advanced",
+      "Groovy"
     ],
-    "search": "jenkins shared libraries",
+    "search": "shared libraries global vars class resources groovy dynamic code dry reusable configuration",
     "sections": [
       {
         "type": "lead",
-        "text": "Shared Libraries let you define reusable Groovy code in a separate Git repo and import it into any Jenkinsfile. Prevents copy-paste across pipelines."
+        "text": "Shared Libraries allow teams to extract duplicate Jenkinsfile logic into a dedicated repository, keeping pipelines DRY (Don't Repeat Yourself) across the organization."
+      },
+      {
+        "type": "ascii",
+        "label": "Shared Library Repository Structure",
+        "diagram": "\nshared-library-repository/\n\u251c\u2500\u2500 src/                       # Custom Object Classes (Groovy)\n\u2502   \u2514\u2500\u2500 org/\n\u2502       \u2514\u2500\u2500 company/\n\u2502           \u2514\u2500\u2500 Helper.groovy\n\u251c\u2500\u2500 vars/                      # Global step scripts (Reusable in Jenkinsfiles)\n\u2502   \u251c\u2500\u2500 buildDocker.groovy\n\u2502   \u2514\u2500\u2500 notifySlack.groovy\n\u2514\u2500\u2500 resources/                 # Non-Groovy templates (JSON, YAML, XML)\n    \u2514\u2500\u2500 configs/\n        \u2514\u2500\u2500 template.json\n"
       },
       {
         "type": "code",
-        "title": "Library Repo Structure",
-        "code": "jenkins-shared-library/\n\u251c\u2500\u2500 vars/\n\u2502   \u251c\u2500\u2500 buildAndPush.groovy   // callable as buildAndPush()\n\u2502   \u2514\u2500\u2500 deployToK8s.groovy    // callable as deployToK8s()\n\u2514\u2500\u2500 src/\n    \u2514\u2500\u2500 org/\n        \u2514\u2500\u2500 myapp/\n            \u2514\u2500\u2500 Utils.groovy  // importable class"
+        "title": "Global Step Definition: vars/buildDocker.groovy",
+        "code": "// vars/buildDocker.groovy\ndef call(Map config = [:]) {\n    def imageName = config.imageName ?: 'app'\n    def imageTag = config.imageTag ?: 'latest'\n    \n    echo \"Running custom library docker build for ${imageName}:${imageTag}\"\n    sh \"docker build -t ${imageName}:${imageTag} .\"\n}"
       },
       {
         "type": "code",
-        "title": "vars/buildAndPush.groovy",
-        "code": "def call(String imageName, String tag) {\n  sh \"\"\"\n    docker build -t ${imageName}:${tag} .\n    docker push ${imageName}:${tag}\n  \"\"\"\n}"
-      },
-      {
-        "type": "code",
-        "title": "Using the shared library in Jenkinsfile",
-        "code": "// Register in: Manage Jenkins \u2192 Configure System \u2192 Global Pipeline Libraries\n// Name: my-shared-lib  |  Default version: main  |  SCM: Git\n\n@Library('my-shared-lib') _   // import everything\n\npipeline {\n  agent any\n  stages {\n    stage('Build & Push') {\n      steps {\n        buildAndPush('myuser/my-app', env.BUILD_NUMBER)\n      }\n    }\n  }\n}"
+        "title": "Using the Shared Library in a Jenkinsfile",
+        "code": "// Import library dynamically from Git\n@Library('my-shared-library@main') _\n\npipeline {\n    agent any\n    \n    stages {\n        stage('Docker Build') {\n            steps {\n                // Call global custom step defined in shared library\n                buildDocker(\n                    imageName: 'my-custom-app',\n                    imageTag: \"${env.BUILD_NUMBER}\"\n                )\n            }\n        }\n    }\n}"
       }
     ]
   },
@@ -881,27 +871,43 @@ window.JENKINS_NOTES = [
     "num": "20",
     "title": "Multibranch Pipelines",
     "category": "advanced",
-    "description": "Learn about Multibranch Pipelines in Jenkins.",
+    "description": "Setting up Multibranch pipelines, SCM branch detection, Pull Request builds, and build isolation.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Multibranch",
+      "Advanced",
+      "Git"
     ],
-    "search": "jenkins multibranch pipelines",
+    "search": "multibranch pipeline branch detection pull request github scanning indexing strategy automation",
     "sections": [
       {
         "type": "lead",
-        "text": "Multibranch Pipeline jobs automatically discover branches (and PRs) in your repo and create a pipeline for each branch that has a Jenkinsfile."
+        "text": "Multibranch Pipelines dynamically scan your SCM repository for any branch containing a <code>Jenkinsfile</code>, auto-creating active pipelines for active code branches."
       },
       {
-        "type": "code",
-        "title": "Setup",
-        "code": "// New Item \u2192 Multibranch Pipeline\n// Branch Sources: Add source \u2192 GitHub\n// Set repository URL + credentials\n// Scan Multibranch Pipeline Triggers: 1 minute (optional)\n\n// Jenkins will auto-discover branches and run Jenkinsfile in each one"
+        "type": "ascii",
+        "label": "Multibranch Auto-Discovery",
+        "diagram": "\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502 Git Repo Repository  \u2502\n \u2502  \u251c\u2500\u2500 main            \u2502 \u2500\u2500 (SCM Scan) \u2500\u2500> [ Jenkins Job: my-project/main ]\n \u2502  \u251c\u2500\u2500 feature/auth    \u2502 \u2500\u2500 (SCM Scan) \u2500\u2500> [ Jenkins Job: my-project/feature-auth ]\n \u2502  \u2514\u2500\u2500 release-v1      \u2502 \u2500\u2500 (SCM Scan) \u2500\u2500> [ Jenkins Job: my-project/release-v1 ]\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
-        "type": "code",
-        "title": "Jenkinsfile with branch-based logic",
-        "code": "pipeline {\n  agent any\n  stages {\n    stage('Build')  { steps { sh 'make build' } }\n    stage('Test')   { steps { sh 'make test'  } }\n\n    stage('Deploy Staging') {\n      when { branch 'develop' }\n      steps { sh './deploy.sh staging' }\n    }\n\n    stage('Deploy Production') {\n      when { branch 'main' }\n      steps {\n        input 'Approve deploy to production?'\n        sh './deploy.sh production'\n      }\n    }\n  }\n}"
+        "type": "flow",
+        "steps": [
+          {
+            "title": "Create Multibranch Pipeline Job",
+            "text": "Select 'New Item' -> 'Multibranch Pipeline'."
+          },
+          {
+            "title": "Configure SCM Source",
+            "text": "Select 'GitHub' or 'Git', supply repository, and configure your credentials."
+          },
+          {
+            "title": "Define Scan Behaviors",
+            "text": "Determine branch discovery filters (e.g. exclude feature branches, focus on PRs)."
+          },
+          {
+            "title": "Launch SCM Indexing",
+            "text": "Trigger repository scanning. Jenkins scans all repository branches and starts pipelines instantly."
+          }
+        ]
       }
     ]
   },
@@ -910,255 +916,224 @@ window.JENKINS_NOTES = [
     "num": "21",
     "title": "Environment Variables",
     "category": "advanced",
-    "description": "Learn about Environment Variables in Jenkins.",
+    "description": "Comprehensive guide to environment variables. Built-in variables, setting custom env variables, and executing dynamic scripts.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Environment Variables",
+      "Configuration",
+      "Syntax"
     ],
-    "search": "jenkins environment variables",
+    "search": "environment variables env vars env block builtin dynamic variables execution",
     "sections": [
       {
-        "type": "table",
-        "headers": [
-          "Variable",
-          "Value"
-        ],
-        "rows": [
-          [
-            "BUILD_NUMBER",
-            "Current build number (1, 2, 3\u2026)"
-          ],
-          [
-            "BUILD_ID",
-            "Same as BUILD_NUMBER"
-          ],
-          [
-            "JOB_NAME",
-            "Name of the job (e.g. <code>my-app/main</code>)"
-          ],
-          [
-            "JOB_BASE_NAME",
-            "Short job name without folder path"
-          ],
-          [
-            "WORKSPACE",
-            "Absolute path to build workspace directory"
-          ],
-          [
-            "JENKINS_URL",
-            "Jenkins server URL"
-          ],
-          [
-            "BUILD_URL",
-            "Full URL of this build's page"
-          ],
-          [
-            "GIT_COMMIT",
-            "Full SHA of the commit being built"
-          ],
-          [
-            "GIT_BRANCH",
-            "Branch being built (e.g. <code>origin/main</code>)"
-          ],
-          [
-            "BRANCH_NAME",
-            "Branch name in Multibranch (e.g. <code>main</code>)"
-          ]
-        ]
+        "type": "lead",
+        "text": "Environment variables provide system configuration data to shell steps during pipeline runs, containing both standard build information and user-defined variables."
+      },
+      {
+        "type": "ascii",
+        "label": "Environment Scope Levels",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Global Server Env Variables                  \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502 Pipeline Env Block (All Stages)        \u2502  \u2502\n\u2502  \u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502  \u2502\n\u2502  \u2502  \u2502 Stage Env Block (Single Stage)   \u2502  \u2502  \u2502\n\u2502  \u2502  \u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502  \u2502  \u2502\n\u2502  \u2502  \u2502  \u2502 Shell Process Variable     \u2502  \u2502  \u2502  \u2502\n\u2502  \u2502  \u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502  \u2502  \u2502\n\u2502  \u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Using & Setting Env Vars",
-        "code": "environment {\n  IMAGE_TAG = \"v${BUILD_NUMBER}-${GIT_COMMIT.take(7)}\"\n  DEPLOY_URL = \"https://api.${env.BRANCH_NAME == 'main' ? 'prod' : 'staging'}.example.com\"\n}\n\nsteps {\n  echo \"Building image: ${env.IMAGE_TAG}\"\n  sh \"docker build -t myapp:${env.IMAGE_TAG} .\"\n}"
+        "title": "Setting and Reading Dynamic Variables in Pipelines",
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        // Global pipeline environment variable\n        DEPLOY_SERVER = \"prod-server-01\"\n    }\n    \n    stages {\n        stage('Generate Dynamic Variables') {\n            environment {\n                STAGE_SPECIFIC = \"local-value\"\n            }\n            steps {\n                // Accessing built-in environment variables\n                echo \"Executing Build Number: ${env.BUILD_NUMBER}\"\n                echo \"Running inside Workspace: ${env.WORKSPACE}\"\n                \n                // Fetch variable outputs from shell scripts\n                script {\n                    env.GIT_SHORT_SHA = sh(\n                        script: 'git rev-parse --short HEAD', \n                        returnStdout: true\n                    ).trim()\n                }\n                \n                echo \"Dynamically calculated SHA: ${env.GIT_SHORT_SHA}\"\n            }\n        }\n        \n        stage('Validate Environment Context') {\n            steps {\n                // Read variables inside bash execution\n                sh 'echo \"Target Deployment Server: $DEPLOY_SERVER\"'\n                sh 'echo \"Short commit SHA: $GIT_SHORT_SHA\"'\n            }\n        }\n    }\n}"
       }
     ]
   },
   {
     "id": "notifications",
     "num": "22",
-    "title": "Notifications",
+    "title": "Notifications & Alerts",
     "category": "advanced",
-    "description": "Learn about Notifications in Jenkins.",
+    "description": "Sending build notifications via Slack and emails during success or failure pipeline post events.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Notifications",
+      "Alerts",
+      "Slack"
     ],
-    "search": "jenkins notifications",
+    "search": "notifications slack email alerts alerts communications messaging integrations",
     "sections": [
       {
-        "type": "code",
-        "title": "Slack Notification (post block)",
-        "code": "post {\n  success {\n    slackSend(\n      channel: '#deployments',\n      color: 'good',\n      message: \"\u2705 *${env.JOB_NAME}* build #${env.BUILD_NUMBER} succeeded!\\n${env.BUILD_URL}\"\n    )\n  }\n  failure {\n    slackSend(\n      channel: '#deployments',\n      color: 'danger',\n      message: \"\u274c *${env.JOB_NAME}* build #${env.BUILD_NUMBER} FAILED!\\n${env.BUILD_URL}\"\n    )\n  }\n}"
+        "type": "lead",
+        "text": "Automated alert configurations ensure the team is immediately informed of build warnings, successes, and pipeline failures."
+      },
+      {
+        "type": "ascii",
+        "label": "Pipeline Notification Loop",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Pipeline Execution \u2502\n\u2502  - Fail or Success \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n          \u2502 (Triggers post step)\n          \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510          (HTTPS webhook API)         \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 Notification step  \u2502 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500> \u2502 Slack / Teams\u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                                      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Email Notification",
-        "code": "post {\n  failure {\n    emailext(\n      to: 'devteam@company.com',\n      subject: \"FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}\",\n      body: \"\"\"\n        Build failed.\n        Job: ${env.JOB_NAME}\n        Build: #${env.BUILD_NUMBER}\n        URL: ${env.BUILD_URL}\n\n        Check console output for details.\n      \"\"\"\n    )\n  }\n}"
+        "title": "Configuring Slack Alerts inside Post Blocks",
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Test Suite') {\n            steps {\n                sh 'npm run test'\n            }\n        }\n    }\n    \n    post {\n        success {\n            slackSend(\n                color: '#36a64f',\n                message: \"SUCCESS: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}] successfully verified and completed.\"\n            )\n        }\n        failure {\n            slackSend(\n                color: '#danger',\n                message: \"FAILURE: Job '${env.JOB_NAME}' [Build #${env.BUILD_NUMBER}] has failed! Please inspect logs at: ${env.BUILD_URL}\"\n            )\n        }\n    }\n}"
       }
     ]
   },
   {
     "id": "project1",
     "num": "P1",
-    "title": "Project 1 \u2014 Simple Node.js CI Pipeline",
+    "title": "Node.js CI Project",
     "category": "projects",
-    "description": "Learn about Project 1 \u2014 Simple Node.js CI Pipeline in Jenkins.",
+    "description": "Project 1: Setup a fully automated Continuous Integration pipeline for a Node.js web application.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Project",
+      "Node.js",
+      "CI"
     ],
-    "search": "jenkins project 1 \u2014 simple node.js ci pipeline",
+    "search": "project 1 nodejs ci continuous integration test package jest lint check workspace cache project1",
     "sections": [
       {
-        "type": "callout",
-        "tone": "success",
-        "html": "\n<div class=\"project-label\">Project 01 / Beginner</div>\n<h3>Automated CI for a Node.js application</h3>\n<p>Set up a complete Jenkins pipeline that triggers on every GitHub push, installs dependencies, runs tests, and archives build artifacts. The foundation of all CI workflows.</p>\n<div><span class=\"tag\">Node.js</span><span class=\"tag\">GitHub Webhook</span><span class=\"tag\">npm test</span><span class=\"tag\">Artifacts</span></div>\n"
+        "type": "lead",
+        "text": "<strong>Project 1 Objective:</strong> Configure an automated CI pipeline that checks out code, installs dependencies, runs static analysis checks, and executes unit tests for a modern Node.js web app."
+      },
+      {
+        "type": "ascii",
+        "label": "Node.js Pipeline Lifecycle",
+        "diagram": "\n[ Git Commit ]\n      \u2502\n      \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502   Checkout   \u2502 \u2500\u2500\u2500> \u2502 Dependency   \u2502 \u2500\u2500\u2500> \u2502  ESLint Check\u2502 \u2500\u2500\u2500> \u2502  Jest Tests  \u2502\n\u2502  Repository  \u2502      \u2502 Installation \u2502      \u2502  (Analysis)  \u2502      \u2502  (Coverage)  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Jenkinsfile",
-        "code": "pipeline {\n  agent any\n\n  tools {\n    nodejs 'NodeJS-18'   // configured in Global Tool Configuration\n  }\n\n  stages {\n    stage('Checkout') {\n      steps { checkout scm }\n    }\n    stage('Install') {\n      steps { sh 'npm install' }\n    }\n    stage('Lint') {\n      steps { sh 'npm run lint' }\n    }\n    stage('Test') {\n      steps {\n        sh 'npm test -- --reporter=junit --reporter-options mochaFile=results/test-results.xml'\n      }\n      post {\n        always {\n          junit 'results/test-results.xml'\n        }\n      }\n    }\n    stage('Build') {\n      steps {\n        sh 'npm run build'\n        archiveArtifacts artifacts: 'dist/**', fingerprint: true\n      }\n    }\n  }\n  post {\n    always { cleanWs() }\n  }\n}"
+        "title": "Comprehensive Node.js CI Pipeline Configuration",
+        "code": "pipeline {\n    agent { label 'node-runner' }\n    \n    options {\n        timeout(time: 15, unit: 'MINUTES')\n        buildDiscarder(logRotator(numToKeepStr: '10'))\n    }\n    \n    stages {\n        stage('SCM Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Dependency Installation') {\n            steps {\n                sh 'npm ci' // Clean installation for reproducible builds\n            }\n        }\n        \n        stage('Static Code Analysis') {\n            steps {\n                sh 'npm run lint'\n            }\n        }\n        \n        stage('Unit Testing') {\n            steps {\n                sh 'npm test -- --coverage'\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Save coverage outputs permanently in Jenkins\n            archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true\n        }\n    }\n}"
       }
     ]
   },
   {
     "id": "project2",
     "num": "P2",
-    "title": "Project 2 \u2014 Docker CI/CD Pipeline",
+    "title": "Docker CI/CD Project",
     "category": "projects",
-    "description": "Learn about Project 2 \u2014 Docker CI/CD Pipeline in Jenkins.",
+    "description": "Project 2: Continuous Integration & Deployment pipeline using containerized Docker platforms.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Project",
+      "Docker",
+      "CD"
     ],
-    "search": "jenkins project 2 \u2014 docker ci/cd pipeline",
+    "search": "project 2 docker cd trivy dockerhub containerized registry image scan project2",
     "sections": [
       {
-        "type": "callout",
-        "tone": "success",
-        "html": "\n<div class=\"project-label\">Project 02 / Intermediate</div>\n<h3>Full CI/CD with Docker Build \u2192 Push \u2192 Deploy</h3>\n<p>Build a Docker image on every push, push it to DockerHub with a versioned tag, then SSH into the production server and restart the container with the new image. The classic production CI/CD flow.</p>\n<div><span class=\"tag\">Docker</span><span class=\"tag\">DockerHub</span><span class=\"tag\">SSH Deploy</span><span class=\"tag\">Versioned Tags</span></div>\n"
+        "type": "lead",
+        "text": "<strong>Project 2 Objective:</strong> Create a containerized pipeline. We build a production Docker image, run security scans to ensure safety, and upload to DockerHub."
+      },
+      {
+        "type": "ascii",
+        "label": "Containerized Build Flow",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510      \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  Git Source  \u2502 \u2500\u2500\u2500> \u2502 Docker Build \u2502 \u2500\u2500\u2500> \u2502  Trivy Scan  \u2502 \u2500\u2500\u2500> \u2502 Push Registry\u2502\n\u2502  Repository  \u2502      \u2502 (Docker Image)\u2502     \u2502(Vulnerabilities)\u2502   \u2502 (Docker Hub) \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518      \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Jenkinsfile",
-        "code": "pipeline {\n  agent any\n\n  environment {\n    IMAGE_NAME  = \"myuser/wanderlust-app\"\n    IMAGE_TAG   = \"${BUILD_NUMBER}\"\n    FULL_IMAGE  = \"${IMAGE_NAME}:${IMAGE_TAG}\"\n  }\n\n  stages {\n    stage('Checkout') {\n      steps { checkout scm }\n    }\n\n    stage('Build Image') {\n      steps {\n        sh \"docker build -t ${FULL_IMAGE} .\"\n      }\n    }\n\n    stage('Push to DockerHub') {\n      steps {\n        withCredentials([usernamePassword(\n          credentialsId: 'dockerhub-creds',\n          usernameVariable: 'DOCKER_USER',\n          passwordVariable: 'DOCKER_PASS'\n        )]) {\n          sh \"\"\"\n            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin\n            docker push ${FULL_IMAGE}\n            docker tag  ${FULL_IMAGE} ${IMAGE_NAME}:latest\n            docker push ${IMAGE_NAME}:latest\n          \"\"\"\n        }\n      }\n    }\n\n    stage('Deploy to Server') {\n      steps {\n        withCredentials([sshUserPrivateKey(\n          credentialsId: 'prod-ssh-key',\n          keyFileVariable: 'SSH_KEY'\n        )]) {\n          sh \"\"\"\n            ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@prod-server.com \\\n              \"docker pull ${FULL_IMAGE} && \\\n               docker stop app || true && \\\n               docker rm   app || true && \\\n               docker run -d --name app -p 80:3000 ${FULL_IMAGE}\"\n          \"\"\"\n        }\n      }\n    }\n  }\n\n  post {\n    always {\n      sh \"docker rmi ${FULL_IMAGE} || true\"\n      cleanWs()\n    }\n  }\n}"
+        "title": "Complete Docker CI/CD Pipeline Configuration",
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        HUB_ACCOUNT = \"mypublicaccount\"\n        APP_NAME = \"docker-web-service\"\n        IMAGE_NAME = \"${env.HUB_ACCOUNT}/${env.APP_NAME}\"\n        IMAGE_TAG = \"build-${env.BUILD_NUMBER}\"\n    }\n    \n    stages {\n        stage('Source Clone') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Container Build') {\n            steps {\n                sh \"docker build -t ${env.IMAGE_NAME}:${env.IMAGE_TAG} .\"\n            }\n        }\n        \n        stage('Image Vulnerability Audit') {\n            steps {\n                sh \"trivy image --severity HIGH,CRITICAL ${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n            }\n        }\n        \n        stage('Upload Registry') {\n            steps {\n                withCredentials([usernamePassword(\n                    credentialsId: 'docker-hub-credentials',\n                    usernameVariable: 'REGISTRY_USER',\n                    passwordVariable: 'REGISTRY_PASS'\n                )]) {\n                    sh \"echo \\$REGISTRY_PASS | docker login -u \\$REGISTRY_USER --password-stdin\"\n                    sh \"docker push ${env.IMAGE_NAME}:${env.IMAGE_TAG}\"\n                }\n            }\n        }\n    }\n}"
       }
     ]
   },
   {
     "id": "project3",
     "num": "P3",
-    "title": "Project 3 \u2014 Full Stack CI/CD to AWS EC2",
+    "title": "AWS EC2 Deployment",
     "category": "projects",
-    "description": "Learn about Project 3 \u2014 Full Stack CI/CD to AWS EC2 in Jenkins.",
+    "description": "Project 3: Deep dive project explaining secure continuous deployment to remote AWS EC2 server stacks via SSH keys.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Project",
+      "AWS",
+      "EC2"
     ],
-    "search": "jenkins project 3 \u2014 full stack ci/cd to aws ec2",
+    "search": "project 3 aws ec2 deploy ssh deployment setup variables configuration project3",
     "sections": [
       {
-        "type": "callout",
-        "tone": "success",
-        "html": "\n<div class=\"project-label\">Project 03 / Advanced</div>\n<h3>Production-grade pipeline \u2014 Code \u2192 Docker \u2192 ECR \u2192 EC2</h3>\n<p>Push the image to AWS ECR (instead of DockerHub), deploy to an EC2 instance using AWS credentials, send Slack notification on success or failure. Covers real-world production patterns.</p>\n<div><span class=\"tag\">AWS ECR</span><span class=\"tag\">EC2 Deploy</span><span class=\"tag\">AWS CLI</span><span class=\"tag\">Slack</span><span class=\"tag\">SonarQube</span></div>\n"
+        "type": "lead",
+        "text": "<strong>Project 3 Objective:</strong> Complete continuous deployment pipeline that securely connects to an AWS EC2 instance using an SSH key and deploys application services."
+      },
+      {
+        "type": "ascii",
+        "label": "AWS Deployment Pipeline",
+        "diagram": "\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502  Jenkins Server  \u2502 \u2500\u2500\u2500\u2500\u2500\u2500 (Deploy Trigger) \u2500\u2500\u2500\u2510\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                            \u2502\n                                                 \u25bc\n \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n \u2502                       AWS EC2 Instance                          \u2502\n \u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510            \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n \u2502  \u2502      SSH Port 22     \u2502 \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500> \u2502   Docker Deployment   \u2502  \u2502\n \u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518            \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
       },
       {
         "type": "code",
-        "title": "Jenkinsfile (Production Pattern)",
-        "code": "pipeline {\n  agent any\n\n  environment {\n    AWS_REGION     = 'ap-south-1'\n    ECR_REGISTRY   = '123456789.dkr.ecr.ap-south-1.amazonaws.com'\n    ECR_REPO       = 'my-app'\n    IMAGE_TAG      = \"${BUILD_NUMBER}\"\n    FULL_IMAGE     = \"${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}\"\n  }\n\n  stages {\n    stage('Checkout') {\n      steps { checkout scm }\n    }\n\n    stage('SonarQube Analysis') {\n      steps {\n        withSonarQubeEnv('sonarqube') {\n          sh 'mvn sonar:sonar'\n        }\n      }\n    }\n\n    stage('Quality Gate') {\n      steps {\n        timeout(time: 5, unit: 'MINUTES') {\n          waitForQualityGate abortPipeline: true\n        }\n      }\n    }\n\n    stage('Build & Push to ECR') {\n      steps {\n        withCredentials([[\n          $class: 'AmazonWebServicesCredentialsBinding',\n          credentialsId: 'aws-creds',\n          accessKeyVariable: 'AWS_ACCESS_KEY_ID',\n          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'\n        ]]) {\n          sh \"\"\"\n            aws ecr get-login-password --region ${AWS_REGION} | \\\n              docker login --username AWS --password-stdin ${ECR_REGISTRY}\n            docker build -t ${FULL_IMAGE} .\n            docker push  ${FULL_IMAGE}\n          \"\"\"\n        }\n      }\n    }\n\n    stage('Deploy to EC2') {\n      steps {\n        withCredentials([sshUserPrivateKey(\n          credentialsId: 'ec2-ssh',\n          keyFileVariable: 'EC2_KEY'\n        )]) {\n          sh \"\"\"\n            ssh -i $EC2_KEY ec2-user@ec2-xx-xx.ap-south-1.compute.amazonaws.com \\\n              \"aws ecr get-login-password --region ${AWS_REGION} | \\\n               docker login --username AWS --password-stdin ${ECR_REGISTRY} && \\\n               docker pull ${FULL_IMAGE} && \\\n               docker stop app || true && docker rm app || true && \\\n               docker run -d --name app -p 80:8080 ${FULL_IMAGE}\"\n          \"\"\"\n        }\n      }\n    }\n  }\n\n  post {\n    success {\n      slackSend channel: '#ci-cd', color: 'good',\n        message: \"\u2705 Deployed ${env.FULL_IMAGE} to production\\n${env.BUILD_URL}\"\n    }\n    failure {\n      slackSend channel: '#ci-cd', color: 'danger',\n        message: \"\u274c Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}\\n${env.BUILD_URL}\"\n    }\n    always { cleanWs() }\n  }\n}"
+        "title": "AWS Production Deployment Pipeline Configuration",
+        "code": "pipeline {\n    agent any\n    \n    environment {\n        AWS_EC2_IP = \"54.210.85.99\"\n        SSH_CRED_ID = \"aws-ec2-private-key\"\n    }\n    \n    stages {\n        stage('Source Fetch') {\n            steps {\n                checkout scm\n            }\n        }\n        \n        stage('Deploy to EC2 Instance') {\n            steps {\n                withCredentials([sshUserPrivateKey(\n                    credentialsId: env.SSH_CRED_ID,\n                    keyFileVariable: 'PRIVATE_KEY_PATH',\n                    usernameVariable: 'SSH_USER'\n                )]) {\n                    // Connect and deploy on target server\n                    sh \"\"\"\n                        ssh -i \\$PRIVATE_KEY_PATH -o StrictHostKeyChecking=no \\$SSH_USER@${env.AWS_EC2_IP} \\\n                        \"docker pull myrepo/app:latest && \\\n                         docker stop web-app || true && \\\n                         docker rm web-app || true && \\\n                         docker run -d --name web-app -p 80:80 myrepo/app:latest\"\n                    \"\"\"\n                }\n            }\n        }\n    }\n}"
       }
     ]
   },
   {
     "id": "commands",
-    "num": "23",
+    "num": "R1",
     "title": "CLI & Commands",
     "category": "reference",
-    "description": "Learn about CLI & Commands in Jenkins.",
+    "description": "List of essential administration commands, service management commands, and Jenkins CLI usage.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Reference",
+      "CLI",
+      "Commands"
     ],
-    "search": "jenkins cli & commands",
+    "search": "commands reference cli control restart service backup logs diagnostic systemctl",
     "sections": [
       {
-        "type": "code",
-        "title": "Jenkins Service Management",
-        "code": "# Start / stop / restart / status\nsudo systemctl start   jenkins\nsudo systemctl stop    jenkins\nsudo systemctl restart jenkins\nsudo systemctl status  jenkins\n\n# View logs\nsudo journalctl -u jenkins -f\nsudo tail -f /var/log/jenkins/jenkins.log\n\n# Jenkins home directory (jobs, configs, credentials)\nls /var/lib/jenkins/\n\n# Jenkins CLI jar (for scripting Jenkins)\nwget http://localhost:8080/jnlpJars/jenkins-cli.jar\njava -jar jenkins-cli.jar -s http://localhost:8080 -auth user:token list-jobs"
+        "type": "lead",
+        "text": "Jenkins can be managed via operating system commands and its built-in CLI jar file, facilitating remote automation."
+      },
+      {
+        "type": "ascii",
+        "label": "Jenkins CLI Mechanism",
+        "diagram": "\n  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n  \u2502   Jenkins CLI   \u2502 \u2500\u2500\u2500 (HTTP request) \u2500\u2500\u2500> [ Jenkins Server URL ]\n  \u2502  (jar file tool) \u2502                                \u2502\n  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518                         (Performs Action)\n                                                      \u2502\n                                                      \u25bc\n                                              [ System Restart ]\n"
       },
       {
         "type": "code",
-        "title": "Useful Jenkins CLI Commands",
-        "code": "java -jar jenkins-cli.jar -s http://localhost:8080 -auth u:token \\\n  build     my-job                          # trigger a build\n  build     my-job -p ENV=prod              # build with param\n  list-jobs                                  # list all jobs\n  get-job   my-job                           # export job config (XML)\n  delete-job my-job                          # delete a job\n  safe-restart                               # restart after builds finish\n  install-plugin docker-plugin               # install a plugin"
+        "title": "Host OS & CLI Commands Reference",
+        "code": "# --- Systemd Service Controls ---\n# Start Jenkins service\nsudo systemctl start jenkins\n\n# Stop Jenkins service\nsudo systemctl stop jenkins\n\n# Restart Jenkins service\nsudo systemctl restart jenkins\n\n# Inspect startup logs\nsudo journalctl -u jenkins --no-pager | tail -n 50\n\n# --- Jenkins CLI tool usage ---\n# Download the CLI client directly from your server\nwget http://localhost:8080/jnlpJars/jenkins-cli.jar\n\n# Execute safe restart using your API token\njava -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:mytoken safe-restart\n\n# List all active jobs configured on the system\njava -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:mytoken list-jobs"
       }
     ]
   },
   {
     "id": "troubleshoot",
-    "num": "24",
+    "num": "R2",
     "title": "Troubleshooting",
     "category": "reference",
-    "description": "Learn about Troubleshooting in Jenkins.",
+    "description": "Solving common server errors, memory issues (OOM), permissions, and offline agent errors.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Reference",
+      "Troubleshooting",
+      "Debug"
     ],
-    "search": "jenkins troubleshooting",
+    "search": "troubleshoot debug error log out of memory oom offline agent permissions",
     "sections": [
+      {
+        "type": "lead",
+        "text": "This guide provides practical solutions to resolve common issues like memory starvation, file permission errors, and agent disconnects."
+      },
+      {
+        "type": "ascii",
+        "label": "System Diagnostic Chart",
+        "diagram": "\n   [ Critical Failure ]\n            \u2502\n            \u251c\u2500 (Job fails instantly) \u2500\u2500\u2500\u2500> [ Check Workspace Permissions ]\n            \u2502\n            \u251c\u2500 (Server unresponsive) \u2500\u2500\u2500> [ Check JVM CPU/Memory Status ]\n            \u2502\n            \u2514\u2500 (Build Queue Pending) \u2500\u2500\u2500> [ Check Agent Connection Status ]\n"
+      },
       {
         "type": "table",
         "headers": [
-          "Problem",
-          "Cause",
-          "Fix"
+          "Error Message / Fault",
+          "Root Cause",
+          "Actionable Solution"
         ],
         "rows": [
           [
-            "Jenkins not starting",
-            "Java not installed / port conflict",
-            "Check <code>java -version</code>, check if port 8080 is in use: <code>lsof -i :8080</code>"
+            "java.lang.OutOfMemoryError",
+            "Server JVM heap space exhausted.",
+            "Increase memory allocation. Run: 'JAVA_ARGS=\"-Xmx2g\"' inside /etc/default/jenkins."
           ],
           [
-            "Git clone fails",
-            "Credentials wrong, SSH key not added",
-            "Verify credentials ID in Jenkinsfile matches the stored credential. Test SSH manually."
+            "permission denied: docker.sock",
+            "Jenkins system user not in docker group.",
+            "Run: 'sudo usermod -aG docker jenkins && sudo systemctl restart jenkins'."
           ],
           [
-            "docker: permission denied",
-            "<code>jenkins</code> user not in docker group",
-            "<code>sudo usermod -aG docker jenkins &amp;&amp; sudo systemctl restart jenkins</code>"
+            "Agent Offline / Disconnected",
+            "Failed SSH key handshakes or network loss.",
+            "Verify agent port connectivity. Regenerate user SSH keys."
           ],
           [
-            "Webhook not triggering",
-            "Jenkins not reachable from GitHub",
-            "Check GitHub webhook delivery log. Jenkins must be on public IP or use ngrok for testing."
-          ],
-          [
-            "Build stuck / hanging",
-            "Process waiting for input or infinite loop",
-            "Check Console Output, add <code>timeout()</code> option, check for hanging <code>sh</code> commands."
-          ],
-          [
-            "Credentials masked but visible",
-            "Echoing the variable directly",
-            "Never use <code>echo $SECRET</code>. Credentials are masked only in <code>withCredentials{}</code> context."
-          ],
-          [
-            "Out of disk space",
-            "Build workspaces and artifacts accumulating",
-            "Add <code>buildDiscarder</code> option. Run <code>cleanWs()</code> in post. Configure agent disk cleanup."
-          ],
-          [
-            "Pipeline syntax error",
-            "HCL/Groovy mistake in Jenkinsfile",
-            "Use the <strong>Pipeline Syntax</strong> tool in Jenkins UI \u2192 Snippet Generator to generate valid steps."
+            "No Space Left on Device",
+            "Old builds and Docker cache filling host drive.",
+            "Configure build discard rules. Schedule periodic 'docker system prune -f' tasks."
           ]
         ]
       }
@@ -1166,104 +1141,117 @@ window.JENKINS_NOTES = [
   },
   {
     "id": "bestpractices",
-    "num": "25",
+    "num": "R3",
     "title": "Best Practices",
     "category": "reference",
-    "description": "Learn about Best Practices in Jenkins.",
+    "description": "Production checklist for security, back-ups, job configuration, and performance optimization.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Reference",
+      "Best Practices",
+      "Security"
     ],
-    "search": "jenkins best practices",
+    "search": "bestpractices checklist production performance backup audit permissions security",
     "sections": [
       {
-        "type": "list",
+        "type": "lead",
+        "text": "To guarantee high availability and stability, production Jenkins controllers should be secured, regularly backed up, and optimized."
+      },
+      {
+        "type": "ascii",
+        "label": "Enterprise Security Model",
+        "diagram": "\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502                   Secure Server Space                  \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502   Backup Executions   \u2502   \u2502  HTTPS Reverse Proxy \u2502  \u2502\n\u2502  \u2502 (Automated thinBackup)\u2502   \u2502       (Nginx)        \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2502                                         \u25bc              \u2502\n\u2502  \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510   \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510  \u2502\n\u2502  \u2502   Audit Trail / Log   \u2502<\u2500\u2500\u2502 Role-Based Security  \u2502  \u2502\n\u2502  \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518   \u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n"
+      },
+      {
+        "type": "grid",
         "items": [
-          "<strong>Store Jenkinsfile in Git</strong> \u2014 never configure pipelines through the UI alone. Code is the source of truth.",
-          "<strong>Use Declarative pipelines</strong> \u2014 they're more readable, easier to audit, and enforce structure.",
-          "<strong>Never hardcode secrets</strong> \u2014 always use the Credentials store and <code>withCredentials{}</code>.",
-          "<strong>Set timeouts</strong> \u2014 add <code>timeout(time: 30, unit: 'MINUTES')</code> to prevent hung builds consuming agents forever.",
-          "<strong>Clean workspaces</strong> \u2014 always call <code>cleanWs()</code> in the <code>post { always {} }</code> block.",
-          "<strong>Use agents for heavy work</strong> \u2014 don't run builds on the controller. Keep the controller for scheduling only.",
-          "<strong>Tag Docker images with BUILD_NUMBER</strong> \u2014 never overwrite <code>:latest</code> only. Versioned tags enable rollback.",
-          "<strong>Add quality gates</strong> \u2014 integrate SonarQube and fail the pipeline if code quality drops below threshold.",
-          "<strong>Use Shared Libraries</strong> \u2014 once you have 3+ repos with similar Jenkinsfiles, extract common logic.",
-          "<strong>Lock production deploys</strong> \u2014 use <code>input()</code> for manual approval before deploying to production.",
-          "<strong>Monitor Jenkins itself</strong> \u2014 set up disk space alerts, plugin update notifications, and log monitoring."
+          {
+            "title": "Ephemeral Build Agents",
+            "text": "Never run builds directly on the master node. Offload tasks to agent nodes to protect the controller."
+          },
+          {
+            "title": "Secure Secrets Management",
+            "text": "Always inject secrets securely via 'withCredentials'. Never hardcode passwords or API keys in your repositories."
+          },
+          {
+            "title": "Log Rotation Policies",
+            "text": "Enable build discard rules globally to keep your disk usage healthy."
+          },
+          {
+            "title": "Frequent Configuration Backups",
+            "text": "Set up automated thinBackup runs to copy config XML files to remote, secure cloud storage."
+          }
         ]
       }
     ]
   },
   {
     "id": "links",
-    "num": "26",
+    "num": "R4",
     "title": "Repo & Links",
     "category": "reference",
-    "description": "Learn about Repo & Links in Jenkins.",
+    "description": "Direct resource links to tutorial sources, official repositories, and community documentation websites.",
     "tags": [
-      "Jenkins",
-      "CI/CD",
-      "DevOps"
+      "Reference",
+      "Links",
+      "Resources"
     ],
-    "search": "jenkins repo & links",
+    "search": "links resources repository tutorial videos documentation learn links",
     "sections": [
+      {
+        "type": "lead",
+        "text": "Continuous learning resources to keep you up-to-date with new Jenkins developments and DevOps strategies."
+      },
+      {
+        "type": "ascii",
+        "label": "DevOps Learning Path Map",
+        "diagram": "\n[ Jenkins Basics ] \u2500\u2500> [ Advanced Pipelines ] \u2500\u2500> [ Cloud Integrations ]\n                                                           \u2502\n                                                           \u25bc\n                                                 [ Production Mastery ]\n"
+      },
       {
         "type": "grid",
         "items": [
           {
-            "title": "\ud83d\udcfa Video",
-            "text": "<a href=\"https://www.youtube.com/watch?v=XaSdKR2fOU4\" style=\"color:var(--jenkins);text-decoration:none;\">Jenkins In One Shot (Hindi)</a><br/>DevOps Production CI/CD"
+            "title": "Official Portal",
+            "text": "Visit the official portal at: https://www.jenkins.io"
           },
           {
-            "title": "\ud83d\udc19 GitHub Repo",
-            "text": "<a href=\"https://github.com/itspriyanshuks17/jenkins-install\" style=\"color:var(--cyan);text-decoration:none;font-family:var(--mono);font-size:12px;\">itspriyanshuks17/jenkins-install</a>"
+            "title": "Tutorial Video",
+            "text": "Watch the complete tutorial guide on YouTube: https://www.youtube.com/watch?v=XaSdKR2fOU4"
           },
           {
-            "title": "\ud83d\udcd6 Jenkins Docs",
-            "text": "<a href=\"https://www.jenkins.io/doc/\" style=\"color:var(--jenkins);text-decoration:none;\">jenkins.io/doc</a> \u2014 Official documentation"
+            "title": "Project Repository",
+            "text": "Explore project files and codebases at: https://github.com/itspriyanshuks17/jenkins-install"
           },
           {
-            "title": "\ud83e\udde9 Plugins Index",
-            "text": "<a href=\"https://plugins.jenkins.io/\" style=\"color:var(--cyan);text-decoration:none;\">plugins.jenkins.io</a> \u2014 1,800+ plugins"
+            "title": "Plugin Directory",
+            "text": "Find and manage custom extensions at: https://plugins.jenkins.io"
           }
         ]
-      },
-      {
-        "type": "callout",
-        "tone": "success",
-        "html": "\n<strong>Next Steps:</strong> Practice each project, then explore Jenkins with Kubernetes (dynamic agents), integrate SonarQube for code quality, and set up a full GitOps flow with ArgoCD for Kubernetes deployments.\n    "
       }
     ]
   }
-];
-
-window.JENKINS_PROJECTS = [
+];\n\nwindow.JENKINS_PROJECTS = [
   {
-    id: "project1",
-    level: "Project 01 / Beginner",
-    title: "Simple Node.js CI Pipeline",
-    description: "Set up a complete Jenkins pipeline that triggers on every GitHub push, installs dependencies, runs tests, and archives build artifacts.",
-    tags: ["Node.js", "GitHub Webhook", "npm test", "Artifacts"],
-    note: "note.html?id=project1",
-    paths: ["https://github.com/itspriyanshuks17/jenkins-install"]
+    "id": "project1",
+    "num": "P1",
+    "title": "Project 1 — Simple Node.js CI Pipeline",
+    "description": "Establish a fully automated Continuous Integration pipeline that checks out code, runs lint analysis, and executes dynamic unit tests on code push events.",
+    "level": "Beginner",
+    "tags": ["Node.js", "Jest", "Linting", "CI"]
   },
   {
-    id: "project2",
-    level: "Project 02 / Intermediate",
-    title: "Docker CI/CD Pipeline",
-    description: "Build a pipeline that tests code inside a Docker container, builds a Docker image, and pushes it to Docker Hub using Jenkins credentials.",
-    tags: ["Docker", "Docker Hub", "Credentials", "Pipeline"],
-    note: "note.html?id=project2",
-    paths: ["https://github.com/itspriyanshuks17/jenkins-install"]
+    "id": "project2",
+    "num": "P2",
+    "title": "Project 2 — Containerized Docker Pipeline",
+    "description": "Orchestrate continuous delivery workflows using container platforms. Build images, scan them for security leaks, and upload them to Docker Hub registries.",
+    "level": "Intermediate",
+    "tags": ["Docker", "Registry", "Security", "CD"]
   },
   {
-    id: "project3",
-    level: "Project 03 / Advanced",
-    title: "AWS EC2 Deployment",
-    description: "Deploy a live application to AWS EC2 using Jenkins, configuring SSH agents, and setting up an end-to-end continuous deployment workflow.",
-    tags: ["AWS EC2", "SSH Agent", "CD", "Production"],
-    note: "note.html?id=project3",
-    paths: ["https://github.com/itspriyanshuks17/jenkins-install"]
+    "id": "project3",
+    "num": "P3",
+    "title": "Project 3 — AWS Production EC2 Deployment",
+    "description": "A comprehensive continuous deployment pipeline targeting cloud infrastructures. Set up SSH authorizations to run commands securely on remote AWS servers.",
+    "level": "Advanced",
+    "tags": ["AWS", "EC2", "SSH", "Production"]
   }
 ];
