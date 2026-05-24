@@ -1056,6 +1056,216 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "ssh-agent-troubleshooting",
+    "num": "12-A",
+    "title": "SSH Agent Troubleshooting",
+    "category": "advanced",
+    "description": "Real-world fixes for the most common Jenkins SSH agent connection failures — known_hosts, key permissions, credential config, Java mismatch, disk space, and connection instability.",
+    "tags": [
+      "SSH",
+      "Agents",
+      "Troubleshooting"
+    ],
+    "search": "ssh agent troubleshooting known_hosts permission denied java mismatch disk space publickey aws ubuntu",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "These are real issues encountered while connecting a Jenkins SSH agent to an AWS Ubuntu node. Each issue includes the exact error, its root cause, and the precise fix commands."
+      },
+      {
+        "type": "ascii",
+        "label": "Final Working Architecture",
+        "diagram": "\nJenkins Master (Controller)\n       |\n       |  SSH — key-based authentication\n       |  Port 22\n       ↓\nAWS Ubuntu Agent Node\n  ├── Java 21 installed (openjdk-21-jdk)\n  ├── Jenkins remoting running (jar via SSH)\n  ├── ~/.ssh/known_hosts configured\n  └── Authorized public key in place\n\nAgent Status: ✅ Connected and Online\nProtocol   : Standard in/out (Remoting)\n"
+      },
+      {
+        "type": "code",
+        "title": "Issue 1 — Missing known_hosts File",
+        "code": "# Error:\n# No Known Hosts file was found at /var/lib/jenkins/.ssh/known_hosts\n# Key exchange was not finished, connection is closed.\n#\n# Cause: Jenkins cannot verify the remote host fingerprint.\n# Fix: Create the .ssh directory and scan the agent's fingerprint into known_hosts.\n\nsudo mkdir -p /var/lib/jenkins/.ssh\nsudo ssh-keyscan -H 52.66.248.36 | sudo tee -a /var/lib/jenkins/.ssh/known_hosts\n\n# Set correct ownership and permissions\nsudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh\nsudo chmod 700 /var/lib/jenkins/.ssh\nsudo chmod 644 /var/lib/jenkins/.ssh/known_hosts",
+        "explanation": [
+          {
+            "keyword": "ssh-keyscan -H",
+            "detail": "Scans the target host and outputs its public key fingerprint in hashed form, safe to store in known_hosts."
+          },
+          {
+            "keyword": "tee -a",
+            "detail": "Appends the scanned key to known_hosts without overwriting existing entries."
+          },
+          {
+            "keyword": "chmod 700 .ssh",
+            "detail": "Restricts the .ssh directory to owner-only access — required by SSH security policy."
+          },
+          {
+            "keyword": "chmod 644 known_hosts",
+            "detail": "Allows world-read on known_hosts so SSH can verify remote host fingerprints."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Issue 2 — SSH Private Key Permission Denied",
+        "code": "# Error:\n# Load key \"ansible-master-key\": Permission denied\n#\n# Cause: The key file is in the wrong location or has incorrect permissions.\n# Fix: Move key to Jenkins home, fix ownership and mode.\n\nsudo mv ansible-master-key /var/lib/jenkins/.ssh/\nsudo chown jenkins:jenkins /var/lib/jenkins/.ssh/ansible-master-key\nsudo chmod 600 /var/lib/jenkins/.ssh/ansible-master-key\n\n# Verify the key works manually as the jenkins user:\nsudo -u jenkins ssh -i /var/lib/jenkins/.ssh/ansible-master-key ubuntu@52.66.248.36",
+        "explanation": [
+          {
+            "keyword": "chmod 600",
+            "detail": "Private keys MUST be 600 (owner read/write only). SSH will refuse any key that is group- or world-readable."
+          },
+          {
+            "keyword": "chown jenkins:jenkins",
+            "detail": "The Jenkins service runs as the 'jenkins' OS user. The key file must be owned by this user."
+          },
+          {
+            "keyword": "sudo -u jenkins ssh",
+            "detail": "Tests the SSH connection running as the jenkins user — exactly how Jenkins itself would connect."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Issue 3 — Jenkins Credential Misconfiguration",
+        "code": "# Error:\n# Server rejected the private key\n# PEM problem: unknown type\n#\n# Cause: The private key pasted in Jenkins is corrupted or in the wrong format.\n# Fix: Re-add the credential correctly in Jenkins UI.\n\n# Navigate to:\n# Manage Jenkins → Credentials → Global → Add Credentials\n\n# Settings:\n#   Kind     : SSH Username with private key\n#   ID       : jenkins-aws-ssh\n#   Username : ubuntu\n#   Private Key: Enter directly → paste key content\n\n# The key must start and end with exactly:\n# -----BEGIN OPENSSH PRIVATE KEY-----\n# ...key body...\n# -----END OPENSSH PRIVATE KEY-----\n\n# Verify the key format locally:\nfile /path/to/your-key\n# Should output: PEM RSA private key  OR  OpenSSH private key",
+        "explanation": [
+          {
+            "keyword": "PEM problem: unknown type",
+            "detail": "Jenkins received a key that doesn't start with a valid PEM header. Copy the raw key file content, not a path."
+          },
+          {
+            "keyword": "SSH Username with private key",
+            "detail": "The credential Kind required for agent SSH connections. Username must match the OS user on the agent (e.g. ubuntu, ec2-user)."
+          },
+          {
+            "keyword": "Enter directly",
+            "detail": "Paste the full private key content including the BEGIN/END header lines. Do NOT paste a file path."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Issue 4 — Java Version Mismatch on Agent",
+        "code": "# Error:\n# UnsupportedClassVersionError\n# class file version 65.0 but runtime supports up to 61.0\n#\n# Cause: Agent Java is too old for the Jenkins remoting JAR.\n#   class file 65.0 = compiled with Java 21\n#   runtime 61.0    = running on Java 17  ← too old\n#\n# Fix: Install Java 21 on the agent node.\n\nsudo apt update\nsudo apt install openjdk-21-jdk -y\n\n# Verify the correct version is active:\njava -version\n# Expected: openjdk version \"21.x.x\"\n\n# If multiple Java versions are installed, select the right one:\nsudo update-alternatives --config java",
+        "explanation": [
+          {
+            "keyword": "class file version 65.0",
+            "detail": "Each Java version has a class file version number: Java 17=61, Java 21=65. Mismatches cause this error."
+          },
+          {
+            "keyword": "openjdk-21-jdk",
+            "detail": "Install the full JDK (not just JRE) on the agent. Jenkins remoting requires the JDK."
+          },
+          {
+            "keyword": "update-alternatives --config java",
+            "detail": "Lets you switch the default java binary when multiple versions are installed on the same machine."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Issue 5 — Disk Space Below Threshold",
+        "code": "# Error:\n# Disk space is below threshold of 1.00 GiB\n#\n# Fix: Free up space on the agent node.\n\n# Clear temp files\nsudo rm -rf /tmp/*\n\n# Clear apt package cache\nsudo apt clean\n\n# Check disk usage to confirm\ndf -h\n\n# Find large files consuming space\ndu -sh /var/log/* | sort -rh | head -10\nsudo journalctl --vacuum-size=100M",
+        "explanation": [
+          {
+            "keyword": "apt clean",
+            "detail": "Removes cached .deb package files from /var/cache/apt/archives that are no longer needed."
+          },
+          {
+            "keyword": "df -h",
+            "detail": "Shows disk usage for all mounted filesystems in human-readable format. Check the / (root) filesystem."
+          },
+          {
+            "keyword": "journalctl --vacuum-size",
+            "detail": "Trims systemd journal logs to the specified size limit, freeing significant space on long-running servers."
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Issue 6 — Publickey Auth Failure",
+            "text": "Error: 'Publickey authentication failed'. Verify the public key on the agent is in ~/.ssh/authorized_keys. Check that the Jenkins credential uses the matching private key and the username is 'ubuntu'."
+          },
+          {
+            "title": "Issue 7 — Channel Termination",
+            "text": "Error: 'Unexpected termination of the channel'. Usually caused by Java version mismatch or remoting crash. Align Java version on both controller and agent, and ensure stable network connectivity."
+          },
+          {
+            "title": "Key Permission Rules",
+            "text": "Private key: chmod 600. The .ssh directory: chmod 700. known_hosts: chmod 644. All files must be owned by the jenkins OS user (chown jenkins:jenkins)."
+          },
+          {
+            "title": "Manual SSH Test",
+            "text": "Always test the connection manually first: sudo -u jenkins ssh -i /var/lib/jenkins/.ssh/key ubuntu@<IP>. If this works, Jenkins can connect. If it fails, fix the OS-level issue first."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "success",
+        "html": "<strong>Final Result:</strong> Agent successfully connected and online. <code>Remoting version: 3355.v388858a_47b_33</code> — Communication Protocol: Standard in/out. Key learnings: SSH key permissions are critical, Java version compatibility is mandatory, and always test SSH manually as the jenkins OS user before configuring in the UI."
+      },
+      {
+        "type": "flow",
+        "title": "Step-by-Step Resolution Checklist",
+        "steps": [
+          {
+            "title": "Step 1 — Test SSH manually first",
+            "text": "Before touching Jenkins, verify the raw SSH connection works as the jenkins OS user: sudo -u jenkins ssh -i /var/lib/jenkins/.ssh/your-key ubuntu@<agent-IP>. If this fails, fix the OS-level issue first."
+          },
+          {
+            "title": "Step 2 — Fix known_hosts",
+            "text": "Run: sudo ssh-keyscan -H <agent-IP> | sudo tee -a /var/lib/jenkins/.ssh/known_hosts. Then set permissions: sudo chmod 700 /var/lib/jenkins/.ssh && sudo chmod 644 /var/lib/jenkins/.ssh/known_hosts && sudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh"
+          },
+          {
+            "title": "Step 3 — Fix private key permissions",
+            "text": "Move the key: sudo mv your-key /var/lib/jenkins/.ssh/. Set permissions: sudo chmod 600 /var/lib/jenkins/.ssh/your-key && sudo chown jenkins:jenkins /var/lib/jenkins/.ssh/your-key. The key must be 600 — SSH rejects anything looser."
+          },
+          {
+            "title": "Step 4 — Re-add the Jenkins credential",
+            "text": "Go to Manage Jenkins → Credentials → Global → Add Credentials. Choose 'SSH Username with private key', set Username to 'ubuntu', and paste the full raw private key content (including the -----BEGIN OPENSSH PRIVATE KEY----- header lines)."
+          },
+          {
+            "title": "Step 5 — Check Java version on the agent",
+            "text": "Run java -version on the agent. If it shows version 17 but Jenkins remoting needs 21, install: sudo apt install openjdk-21-jdk -y. If multiple versions exist, run: sudo update-alternatives --config java and select Java 21."
+          },
+          {
+            "title": "Step 6 — Free up disk space if needed",
+            "text": "If Jenkins reports disk threshold warnings: sudo apt clean && sudo rm -rf /tmp/* && sudo journalctl --vacuum-size=100M. Confirm with: df -h. Jenkins requires at least 1 GiB free to accept the agent."
+          },
+          {
+            "title": "Step 7 — Launch the agent from Jenkins UI",
+            "text": "Go to Manage Jenkins → Nodes → your-agent → Launch agent. Watch the agent log for the line 'Agent successfully connected and online'. If it still fails, click the agent log link and read the exact error message for the next fix."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Complete Resolution Command Reference — Run in Order",
+        "code": "# ── STEP 1: Test SSH as jenkins user ──────────────────────────────\nsudo -u jenkins ssh -i /var/lib/jenkins/.ssh/your-key ubuntu@<AGENT_IP>\n\n# ── STEP 2: Fix known_hosts ───────────────────────────────────────\nsudo mkdir -p /var/lib/jenkins/.ssh\nsudo ssh-keyscan -H <AGENT_IP> | sudo tee -a /var/lib/jenkins/.ssh/known_hosts\nsudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh\nsudo chmod 700 /var/lib/jenkins/.ssh\nsudo chmod 644 /var/lib/jenkins/.ssh/known_hosts\n\n# ── STEP 3: Fix private key permissions ──────────────────────────\nsudo mv your-key /var/lib/jenkins/.ssh/\nsudo chown jenkins:jenkins /var/lib/jenkins/.ssh/your-key\nsudo chmod 600 /var/lib/jenkins/.ssh/your-key\n\n# ── STEP 4: Verify key format (before pasting into Jenkins) ──────\nfile /var/lib/jenkins/.ssh/your-key\n# Expected: OpenSSH private key  OR  PEM RSA private key\n\n# ── STEP 5: Fix Java version on agent node ───────────────────────\njava -version                          # check current version\nsudo apt update\nsudo apt install openjdk-21-jdk -y\nsudo update-alternatives --config java  # select Java 21 if needed\njava -version                           # confirm: openjdk 21.x.x\n\n# ── STEP 6: Free disk space on agent ─────────────────────────────\nsudo apt clean\nsudo rm -rf /tmp/*\nsudo journalctl --vacuum-size=100M\ndf -h                                   # confirm >1 GiB free\n\n# ── STEP 7: Verify agent public key is authorized ────────────────\n# On the AGENT node — ensure Jenkins master public key is present:\ncat ~/.ssh/authorized_keys              # should contain the pub key\n# If missing, append it:\necho \"<paste-master-pub-key>\" >> ~/.ssh/authorized_keys\nchmod 600 ~/.ssh/authorized_keys",
+        "explanation": [
+          {
+            "keyword": "sudo -u jenkins ssh",
+            "detail": "Simulates exactly how Jenkins connects. If this works, Jenkins can connect too. Always start here."
+          },
+          {
+            "keyword": "ssh-keyscan -H",
+            "detail": "Fetches and hashes the remote host fingerprint. The -H flag hashes the hostname for security."
+          },
+          {
+            "keyword": "chmod 700 .ssh / chmod 600 key",
+            "detail": "SSH enforces strict permission checks. .ssh must be 700, private keys must be 600, or SSH refuses to use them."
+          },
+          {
+            "keyword": "update-alternatives --config java",
+            "detail": "Interactively selects which Java installation is the system default when multiple are installed."
+          },
+          {
+            "keyword": "authorized_keys",
+            "detail": "File on the agent containing public keys that are allowed to SSH in. The Jenkins master's public key must be here."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "parallel",
     "num": "13",
     "title": "Parallel Execution",
