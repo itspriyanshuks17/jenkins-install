@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+
+        stage('Create Folder'){
+            steps{
+                sh'''
+                mkdir MyFolder
+                '''
+            }
+        }
+        stage('Create File'){
+            steps{
+                sh'''
+                touch MyFolder/Hello.txt
+                '''
+            }
+        }
+        stage('Write Content'){
+            steps{
+                sh'''
+                echo 'Hello World' > MyFolder/Hello.txt
+                '''
+            }
+        }
+        stage('Read Content'){
+            steps{
+                sh'''
+                cat MyFolder/Hello.txt
+                '''
+            }
+        }
+        // stage('Delete Content'){
+        //     steps{
+        //         sh'''
+        //         rm MyFolder/Hello.txt
+        //         '''
+        //     }
+        // }
+        // stage('Delete Folder'){
+        //     steps{
+        //         sh'''
+        //         rmdir MyFolder
+        //         '''
+        //     }
+        // }
+    }
+}
