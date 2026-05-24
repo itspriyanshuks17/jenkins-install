@@ -1601,6 +1601,29 @@ window.JENKINS_NOTES = [
             "detail": "A built-in variable providing absolute server URL link to the current job run dashboard."
           }
         ]
+      },
+      {
+        "type": "code",
+        "title": "Customized HTML Emails with Attachments: emailext",
+        "code": "pipeline {\n    agent any\n    \n    stages {\n        stage('Compile') {\n            steps {\n                sh 'echo \"Compiling codebase...\"'\n            }\n        }\n    }\n    \n    post {\n        always {\n            // Trigger highly customized emails using Email Extension Plugin\n            emailext(\n                to: 'devops-team@company.com, engineering-leads@company.com',\n                subject: \"Jenkins Build Alert: Job '\\${env.JOB_NAME}' - Run #\\${env.BUILD_NUMBER} - Status: \\${currentBuild.currentResult}\",\n                body: \"\"\"<h3>Enterprise Build Notification Report</h3>\n                         <p>The build orchestration pipeline has concluded with status: <strong>\\${currentBuild.currentResult}</strong></p>\n                         <p>To inspect terminal outputs or check artifacts, visit: <a href=\"\\${env.BUILD_URL}\">\\${env.BUILD_URL}</a></p>\n                         <br>\n                         <p><i>Note: Full execution console logs have been attached to this email.</i></p>\n                         <br>\n                         <p>--- System generated message from Jenkins Controller ---</p>\"\"\",\n                mimeType: 'text/html',\n                attachLog: true\n            )\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "emailext",
+            "detail": "Extended mail utility from Email Extension plugin that supports advanced templates and attachments."
+          },
+          {
+            "keyword": "attachLog: true",
+            "detail": "Instructs Jenkins to automatically capture and append raw console build logs to the email."
+          },
+          {
+            "keyword": "currentBuild.currentResult",
+            "detail": "Dynamic variable holding the overall build execution result (e.g. SUCCESS, FAILURE)."
+          },
+          {
+            "keyword": "mimeType: 'text/html'",
+            "detail": "Specifies that the email body contains HTML layout structures rather than simple raw text."
+          }
+        ]
       }
     ]
   },
@@ -1746,7 +1769,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "K8s, ArgoCD & Prometheus GitOps Workflow",
-        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │  Docker Registry│\n└──────────────┘      │(Builds/Tests/Pushes│      │  (Docker Hub)  │\n                      └─────────┬──────────┘      └────────────────┘\n                                │ (Updates Manifest Tag)\n                                ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  ArgoCD Sync │ <─── │   Git (Manifest)   │ <────│   Kubernetes   │\n│  (Auto-Sync) │      └────────────────────┘      │ (Monitored by  │\n└──────┬───────┘                                  │  Prometheus)   │\n       │                                          └────────────────┘\n       └─────────────── (Deploys Pods to Cluster) ───────┘\n"
+        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │ Docker Registry│\n└──────────────┘      │(Builds/Tests/Pushes│      │  (Docker Hub)  │\n                      └─────────┬──────────┘      └────────────────┘\n                                │ (Updates Manifest Tag)\n                                ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  ArgoCD Sync │ <─── │   Git (Manifest)   │ <────│   Kubernetes   │\n│  (Auto-Sync) │      └────────────────────┘      │ (Monitored by  │\n└──────┬───────┘                                  │  Prometheus)   │\n       │                                          └────────────────┘\n       └─────────────── (Deploys Pods to Cluster) ───────┘\n"
       },
       {
         "type": "code",
@@ -1798,7 +1821,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Jenkins CLI Mechanism",
-        "diagram": "\n  ┌─────────────────┐\n  │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]\n  │  (jar file tool) │                                │\n  └─────────────────┘                         (Performs Action)\n                                                      │\n                                                      ▼\n                                              [ System Restart ]\n"
+        "diagram": "\n  ┌─────────────────┐\n  │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]\n  │ (jar file tool) │                                 │\n  └─────────────────┘                         (Performs Action)\n                                                      │\n                                                      ▼\n                                              [ System Restart ]\n"
       },
       {
         "type": "code",
