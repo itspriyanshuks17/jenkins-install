@@ -322,7 +322,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Jenkins UI Mockup Map",
-        "diagram": "\n┌────────────────────────────────────────────────────────┐\n│ Jenkins Logo  [Searchbox...]             [User Profile]│\n├────────────────────────────────────────────────────────┤\n│ ┌───────────────┐ ┌──────────────────────────────────┐ │\n│ │  New Item     │ │  Dashboard > All Jobs            │ │\n│ │  People       │ ├──────────────────────────────────┤ │\n│ │  Build History│ │ Job Name  Status  Last Success   │ │\n│ │ Manage Jenkins│ │ my-app-ci  [Green] 2 mins ago    │ │\n│ │               │ │ test-db    [Red]   1 hour ago    │ │\n│ │ ───────────── │ └──────────────────────────────────┘ │\n│ │ Build Executor│ ┌──────────────────────────────────┐ │\n│ │ [Master Idle] │ │  Console Output Logs             │ │\n│ │ [Agent Busy ] │ │  + git fetch --tags              │ │\n│ └───────────────┘ └──────────────────────────────────┘ │\n└────────────────────────────────────────────────────────┘\n"
+        "diagram": "\n┌────────────────────────────────────────────────────────┐\n│ Jenkins Logo  [Searchbox...]               [User Profile]│\n├────────────────────────────────────────────────────────┤\n│ ┌───────────────┐ ┌──────────────────────────────────┐ │\n│ │  New Item     │ │  Dashboard > All Jobs            │ │\n│ │  People       │ ├──────────────────────────────────┤ │\n│ │  Build History│ │ Job Name  Status  Last Success   │ │\n│ │  Manage Jenkins│ │ my-app-ci  [Green] 2 mins ago     │ │\n│ │               │ │ test-db    [Red]   1 hour ago      │ │\n│ │ ───────────── │ └──────────────────────────────────┘ │\n│ │ Build Executor│ ┌──────────────────────────────────┐ │\n│ │ [Master Idle] │ │  Console Output Logs             │ │\n│ │ [Agent Busy ] │ │  + git fetch --tags              │ │\n│ └───────────────┘ └──────────────────────────────────┘ │\n└────────────────────────────────────────────────────────┘\n"
       },
       {
         "type": "grid",
@@ -520,7 +520,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Structure Comparison",
-        "diagram": "\n┌───────────────────────────────┐ ┌───────────────────────────────┐\n│      Declarative Syntax       │ │        Scripted Syntax        │\n├───────────────────────────────┤ ├───────────────────────────────┤\n│ pipeline {                    │ │ node('linux') {               │\n│   agent any                   │ │   stage('Build') {            │\n│   stages {                    │ │     sh 'make'                 │\n│     stage('Build') {          │ │   }                           │\n│       steps {                 │ │   if (isRelease) {            │\n│         sh 'make'             │ │     stage('Deploy') { ... }   │\n│       }                       │ │   }                           │\n│     }                         │ │ }                             │\n│   }                           │ │                               │\n│ }                             │ │                               │\n└───────────────────────────────┘ └───────────────────────────────┘\n"
+        "diagram": "\n┌───────────────────────────────┐ ┌───────────────────────────────┐\n│      Declarative Syntax       │ │        Scripted Syntax        │\n├───────────────────────────────┤ ├───────────────────────────────┤\n│ pipeline {                    │ │ node('linux') {               │\n│   agent any                   │ │   stage('Build') {            │\n│   stages {                    │ │     sh 'make'                 │\n│     stage('Build') {          │ │   }                           │\n│       steps {                 │ │   if (isRelease) {            │\n│         sh 'make'             │ │     stage('Deploy') { ... }   │\n│       }                       │ │   }                           │\n│     }                         │ │ }                               │\n│   }                           │ │                               │\n│ }                             │ │                               │\n└───────────────────────────────┘ └───────────────────────────────┘\n"
       },
       {
         "type": "table",
@@ -658,6 +658,180 @@ window.JENKINS_NOTES = [
             "detail": "A custom plugin environment wrapper injecting server configs and secrets dynamically to execute quality audits."
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "declarative-keywords",
+    "num": "09-A",
+    "title": "Declarative Pipeline Keywords",
+    "category": "pipelines",
+    "description": "Complete breakdown of every keyword used in a Declarative Pipeline — pipeline, agent, stages, stage, steps, sh, echo, environment, parameters, when, post — plus how to define and use variables.",
+    "tags": [
+      "Declarative",
+      "Keywords",
+      "Variables"
+    ],
+    "search": "declarative pipeline keywords agent stages stage steps sh echo environment parameters when post variables env",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "A Declarative Pipeline is built from a fixed set of structured keywords. Each keyword has a specific role and must appear in the correct place. Understanding each one is the foundation for writing real-world CI/CD pipelines."
+      },
+      {
+        "type": "ascii",
+        "label": "Declarative Pipeline Keyword Structure",
+        "diagram": "\npipeline {                        ← root wrapper block\n  agent any                       ← where to run\n  environment { KEY = \"value\" }   ← global vars\n  parameters { ... }             ← user inputs\n  stages {                        ← list of stages\n    stage('Name') {               ← one stage\n      when { ... }                ← conditional\n      steps {                     ← commands to run\n        sh 'command'\n        echo 'message'\n      }\n      post { ... }                ← stage-level outcomes\n    }\n  }\n  post {                          ← pipeline-level outcomes\n    success { ... }\n    failure { ... }\n    always  { ... }\n  }\n}\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "pipeline { }",
+            "text": "The mandatory outermost block. Every Declarative Pipeline must start with 'pipeline {'. Nothing can live outside this block."
+          },
+          {
+            "title": "agent",
+            "text": "'agent any' runs on any available node. 'agent none' defers agent selection to individual stages. 'agent { label \"linux\" }' targets a specific labelled node."
+          },
+          {
+            "title": "stages { }",
+            "text": "A container that holds all your stage() blocks. There must be at least one stage inside stages. Stages run sequentially by default."
+          },
+          {
+            "title": "stage('Name') { }",
+            "text": "Represents one logical unit of work (e.g. Build, Test, Deploy). Each stage has a name shown in the pipeline visualization graph."
+          },
+          {
+            "title": "steps { }",
+            "text": "Lives inside a stage. Contains the actual commands: sh, echo, checkout, script, etc. All shell work and plugin steps go here."
+          },
+          {
+            "title": "post { }",
+            "text": "Defines what happens after stages complete. Blocks: always, success, failure, unstable, cleanup. Can be at pipeline level or inside a stage."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Step Commands Inside steps { } — Complete Reference",
+        "code": "pipeline {\n    agent any\n    stages {\n        stage('Step Commands Demo') {\n            steps {\n                // Print a message to console output\n                echo 'Starting build process...'\n\n                // Run a single shell command\n                sh 'npm install'\n\n                // Run multiple shell commands in one block\n                sh '''\n                    npm run build\n                    npm run lint\n                    npm test\n                '''\n\n                // Checkout source code from SCM (Git)\n                checkout scm\n\n                // Read a file into a variable\n                def content = readFile('config.json')\n\n                // Write content to a file\n                writeFile file: 'output.txt', text: 'Build complete'\n\n                // Sleep / wait for N seconds\n                sleep 5\n\n                // Run a script block for Groovy logic inside steps\n                script {\n                    def result = sh(script: 'cat version.txt', returnStdout: true).trim()\n                    echo \"App version: ${result}\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "echo",
+            "detail": "Prints a plain text string to the Jenkins console output log."
+          },
+          {
+            "keyword": "sh 'cmd'",
+            "detail": "Runs a single shell command on a Unix/Linux agent. Use triple quotes (sh ''') for multi-line blocks."
+          },
+          {
+            "keyword": "checkout scm",
+            "detail": "Pulls source code from the SCM configured in the job (e.g. GitHub). Shorthand for a full git checkout step."
+          },
+          {
+            "keyword": "readFile / writeFile",
+            "detail": "Built-in pipeline steps to read from and write to files in the workspace directory."
+          },
+          {
+            "keyword": "script { }",
+            "detail": "Escape hatch inside steps that allows free-form Groovy scripting — useful for conditional logic and variable capture."
+          },
+          {
+            "keyword": "returnStdout: true",
+            "detail": "When used with sh(), captures the shell command output as a return value instead of just printing it."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "environment { } — Defining and Using Variables",
+        "code": "pipeline {\n    agent any\n\n    environment {\n        // Static string variable — available throughout the pipeline\n        APP_NAME    = \"my-web-app\"\n        DEPLOY_ENV  = \"production\"\n\n        // Use a shell command to set a variable at runtime\n        GIT_COMMIT_SHORT = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()\n\n        // Reference a Jenkins credential stored securely in Credentials Manager\n        DOCKER_PASS = credentials('docker-hub-password')\n    }\n\n    stages {\n        stage('Use Variables') {\n            steps {\n                // Access environment variables using ${env.VAR_NAME}\n                echo \"App: ${env.APP_NAME}\"\n                echo \"Env: ${env.DEPLOY_ENV}\"\n                echo \"Git SHA: ${env.GIT_COMMIT_SHORT}\"\n\n                // Built-in Jenkins environment variables\n                echo \"Build #:    ${env.BUILD_NUMBER}\"\n                echo \"Job Name:   ${env.JOB_NAME}\"\n                echo \"Workspace:  ${env.WORKSPACE}\"\n                echo \"Node Name:  ${env.NODE_NAME}\"\n                echo \"Build URL:  ${env.BUILD_URL}\"\n\n                // Use vars inside sh commands with double-quotes\n                sh \"docker build -t ${env.APP_NAME}:${env.BUILD_NUMBER} .\"\n            }\n        }\n\n        stage('Stage-level Variable') {\n            environment {\n                // Stage-scoped variable — only available in this stage\n                STAGE_SECRET = credentials('stage-api-key')\n            }\n            steps {\n                echo \"Stage secret is masked in logs: ${env.STAGE_SECRET}\"\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "environment { }",
+            "detail": "Defines key=value variables scoped to the whole pipeline. Also supports credentials() to inject secrets safely."
+          },
+          {
+            "keyword": "env.VAR_NAME",
+            "detail": "The standard way to access any environment variable inside a Groovy string (${env.VAR_NAME})."
+          },
+          {
+            "keyword": "credentials('id')",
+            "detail": "Injects a Jenkins-stored secret (password, token, SSH key) into a variable without exposing it in logs."
+          },
+          {
+            "keyword": "env.BUILD_NUMBER",
+            "detail": "Built-in variable: sequential number of the current build run (e.g. 42)."
+          },
+          {
+            "keyword": "env.WORKSPACE",
+            "detail": "Built-in variable: absolute path to the current job's workspace directory on the agent."
+          },
+          {
+            "keyword": "env.BUILD_URL",
+            "detail": "Built-in variable: full HTTP URL link to the current build's console/status page in Jenkins."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "parameters { } — User Input at Build Time",
+        "code": "pipeline {\n    agent any\n\n    parameters {\n        // Text input — user types a string value\n        string(name: 'VERSION', defaultValue: '1.0.0', description: 'Release version to deploy')\n\n        // Dropdown selection\n        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'production'], description: 'Target environment')\n\n        // Boolean toggle — true/false checkbox\n        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run test suite before deploy?')\n\n        // Password — hidden in the UI\n        password(name: 'API_SECRET', defaultValue: '', description: 'API secret key')\n    }\n\n    stages {\n        stage('Deploy') {\n            steps {\n                // Access parameters via params.NAME\n                echo \"Deploying version: ${params.VERSION}\"\n                echo \"Target env:        ${params.ENVIRONMENT}\"\n\n                script {\n                    if (params.RUN_TESTS) {\n                        sh 'npm test'\n                    }\n                    sh \"deploy.sh --env ${params.ENVIRONMENT} --version ${params.VERSION}\"\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "parameters { }",
+            "detail": "Declares user-facing input fields shown on 'Build with Parameters' page before the build starts."
+          },
+          {
+            "keyword": "string()",
+            "detail": "Creates a free-text input field. Args: name, defaultValue, description."
+          },
+          {
+            "keyword": "choice()",
+            "detail": "Creates a dropdown select. The 'choices' array defines available options; first item is the default."
+          },
+          {
+            "keyword": "booleanParam()",
+            "detail": "Creates a checkbox. Returns true/false, useful for toggling optional pipeline stages."
+          },
+          {
+            "keyword": "params.NAME",
+            "detail": "How you read a parameter value inside the pipeline. Note: use params., not env., for parameters."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "when { } — Conditional Stage Execution",
+        "code": "pipeline {\n    agent any\n    parameters {\n        choice(name: 'BRANCH', choices: ['main', 'dev', 'feature'], description: 'Branch to build')\n    }\n    stages {\n        stage('Build') {\n            steps { sh 'npm run build' }\n        }\n\n        // Only runs when building the main branch\n        stage('Deploy to Production') {\n            when {\n                branch 'main'\n            }\n            steps {\n                echo 'Deploying to production...'\n            }\n        }\n\n        // Only runs when a parameter equals a specific value\n        stage('Integration Tests') {\n            when {\n                expression { params.BRANCH == 'main' }\n            }\n            steps {\n                sh 'npm run test:integration'\n            }\n        }\n\n        // Combines multiple conditions (all must be true)\n        stage('Release') {\n            when {\n                allOf {\n                    branch 'main'\n                    expression { params.BRANCH != 'feature' }\n                }\n            }\n            steps {\n                sh './scripts/release.sh'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "when { }",
+            "detail": "Conditional block inside a stage. The stage only runs if the condition is met."
+          },
+          {
+            "keyword": "branch 'main'",
+            "detail": "Built-in condition that checks if the current Git branch matches the given name."
+          },
+          {
+            "keyword": "expression { }",
+            "detail": "Evaluates any Groovy boolean expression. The stage runs only if it returns true."
+          },
+          {
+            "keyword": "allOf { }",
+            "detail": "Logical AND — all inner conditions must be true for the stage to execute."
+          },
+          {
+            "keyword": "anyOf { }",
+            "detail": "Logical OR — the stage runs if at least one inner condition is true."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "tip",
+        "html": "<strong>Variable scoping rules:</strong> Variables defined in <code>environment { }</code> are accessible via <code>env.NAME</code>. Variables defined with <code>def</code> inside a <code>script { }</code> block are local to that block only. Parameters are accessed via <code>params.NAME</code>, never <code>env.NAME</code>."
       }
     ]
   },
@@ -1725,7 +1899,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "AWS Deployment Pipeline",
-        "diagram": "\n ┌──────────────────┐\n │  Jenkins Server  │ ────── (Deploy Trigger) ───┐\n └──────────────────┘                            │\n                                                 ▼\n ┌──────────────────────────────────────────────────────────────────┐\n │                       AWS EC2 Instance                           │\n │  ┌──────────────────────┐            ┌───────────────────────┐   │\n │  │      SSH Port 22     │ ─────────> │   Docker Deployment   │   │\n │  └──────────────────────┘            └───────────────────────┘   │\n └──────────────────────────────────────────────────────────────────┘\n"
+        "diagram": "\n ┌──────────────────┐\n │  Jenkins Server  │ ────── (Deploy Trigger) ───┐\n └──────────────────┘                            │\n                                                 ▼\n ┌──────────────────────────────────────────────────────────────────┐\n │                       AWS EC2 Instance                           │\n │  ┌──────────────────────┐            ┌───────────────────────┐  │\n │  │      SSH Port 22     │ ─────────> │   Docker Deployment   │  │\n │  └──────────────────────┘            └───────────────────────┘  │\n └──────────────────────────────────────────────────────────────────┘\n"
       },
       {
         "type": "code",
@@ -1769,7 +1943,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "K8s, ArgoCD & Prometheus GitOps Workflow",
-        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │ Docker Registry│\n└──────────────┘      │(Builds/Tests/Pushes│      │  (Docker Hub)  │\n                      └─────────┬──────────┘      └────────────────┘\n                                │ (Updates Manifest Tag)\n                                ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  ArgoCD Sync │ <─── │   Git (Manifest)   │ <────│   Kubernetes   │\n│  (Auto-Sync) │      └────────────────────┘      │ (Monitored by  │\n└──────┬───────┘                                  │  Prometheus)   │\n       │                                          └────────────────┘\n       └─────────────── (Deploys Pods to Cluster) ───────┘\n"
+        "diagram": "\n[ Developer ]\n      │ (Pushes Code)\n      ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  Git (App)   │ ───> │  Jenkins Pipeline  │ ───> │  Docker Registry│\n└──────────────┘      │(Builds/Tests/Pushes│      │  (Docker Hub)  │\n                      └─────────┬──────────┘      └────────────────┘\n                                │ (Updates Manifest Tag)\n                                ▼\n┌──────────────┐      ┌────────────────────┐      ┌────────────────┐\n│  ArgoCD Sync │ <─── │   Git (Manifest)   │ <────│   Kubernetes   │\n│  (Auto-Sync) │      └────────────────────┘      │ (Monitored by  │\n└──────┬───────┘                                  │  Prometheus)   │\n       │                                          └────────────────┘\n       └─────────────── (Deploys Pods to Cluster) ───────┘\n"
       },
       {
         "type": "code",
@@ -1821,7 +1995,7 @@ window.JENKINS_NOTES = [
       {
         "type": "ascii",
         "label": "Jenkins CLI Mechanism",
-        "diagram": "\n  ┌─────────────────┐\n  │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]\n  │ (jar file tool) │                                 │\n  └─────────────────┘                         (Performs Action)\n                                                      │\n                                                      ▼\n                                              [ System Restart ]\n"
+        "diagram": "\n  ┌─────────────────┐\n  │   Jenkins CLI   │ ─── (HTTP request) ───> [ Jenkins Server URL ]\n  │  (jar file tool) │                                │\n  └─────────────────┘                         (Performs Action)\n                                                      │\n                                                      ▼\n                                              [ System Restart ]\n"
       },
       {
         "type": "code",

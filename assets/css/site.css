@@ -862,34 +862,51 @@ td code {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--code);
 }
 
-/* Premium mobile swipe guidance badge */
-.ascii-diagram::after {
-  content: "Swipe ↔";
+/* Gradient right-edge fade that hints at horizontal scrollable content */
+.ascii-diagram::before {
+  content: "";
   position: absolute;
-  right: 12px;
-  bottom: 8px;
-  background: rgba(249, 115, 22, 0.12);
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(to right, transparent, var(--code));
+  border-radius: 0 10px 10px 0;
+  /* Only show on mobile */
+  display: none;
+}
+
+/* "scroll →" pill badge in bottom-right corner on mobile */
+.ascii-diagram::after {
+  content: "scroll →";
+  position: absolute;
+  right: 8px;
+  bottom: 7px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.4);
   color: var(--accent);
   font-family: var(--font);
   font-size: 9px;
   font-weight: 600;
-  padding: 3px 7px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
   pointer-events: none;
-  opacity: 0.9;
   letter-spacing: 0.05em;
-  transition: opacity 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 2;
+  display: none;
 }
 
-@media (min-width: 769px) {
+/* Show scroll hints only on mobile */
+@media (max-width: 768px) {
+  .ascii-diagram::before,
   .ascii-diagram::after {
-    display: none;
+    display: block;
   }
 }
 
@@ -911,50 +928,50 @@ td code {
   margin: 0;
   padding: 1.2rem 1.4rem;
   overflow-x: auto;
+  overflow-y: hidden;
   color: #a3c4e8;
   font-family: ui-monospace, "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, Monaco, "Courier New", Courier, monospace;
   font-size: 13px;
-  line-height: 1.25;
+  line-height: 1.5;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
   white-space: pre;
   -webkit-overflow-scrolling: touch;
+  /* Reserve space for the scroll badge so text doesn't run under it */
+  padding-bottom: 2.2rem;
 }
 
-/* Custom sleek theme scrollbars for ASCII scrolling */
+/* Thin themed scrollbar */
 .ascii-pre::-webkit-scrollbar {
-  height: 5px;
+  height: 4px;
 }
 
 .ascii-pre::-webkit-scrollbar-track {
-  background: var(--code);
+  background: transparent;
 }
 
 .ascii-pre::-webkit-scrollbar-thumb {
   background: var(--border-soft);
-  border-radius: 3px;
+  border-radius: 2px;
 }
 
 .ascii-pre::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
 
+/* On mobile keep font readable — let the box scroll instead */
 @media (max-width: 768px) {
   .ascii-pre {
-    font-size: clamp(8.5px, 2.1vw, 11.5px);
-    padding: 1.1rem 1.2rem;
+    font-size: 12px;
+    padding: 1rem 1rem 2.4rem;
+    line-height: 1.4;
   }
 }
 
 @media (max-width: 480px) {
   .ascii-pre {
-    font-size: clamp(7.2px, 2.3vw, 10.5px);
-    padding: 0.9rem 1.1rem;
-  }
-  
-  /* Hide the Swipe badge on screens where the diagram fits fluidly without scrollbars */
-  .ascii-diagram::after {
-    display: none;
+    font-size: 11.5px;
+    padding: 0.9rem 0.9rem 2.4rem;
   }
 }
 
