@@ -892,6 +892,29 @@ td code {
   white-space: pre;
 }
 
+@media (max-width: 768px) {
+  .ascii-pre {
+    font-size: 10px;
+    padding: 1rem 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .ascii-pre {
+    font-size: 8.2px;
+    line-height: 1.1;
+    padding: 0.8rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ascii-pre {
+    font-size: 6.6px;
+    line-height: 1.05;
+    padding: 0.6rem 0.8rem;
+  }
+}
+
 .note-table {
   width: 100%;
   overflow: auto;
