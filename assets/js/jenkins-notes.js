@@ -2404,6 +2404,382 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "github-job",
+    "num": "M5",
+    "title": "Working with GitHub",
+    "category": "integrations",
+    "description": "Create a Jenkins job that connects to GitHub, checks out source code, and runs project commands from the workspace.",
+    "tags": [
+      "GitHub",
+      "SCM",
+      "Checkout"
+    ],
+    "search": "github working with github jenkins freestyle pipeline checkout scm repository credentials branch clone source code",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Working with GitHub in Jenkins means giving Jenkins a repository URL, choosing the branch to build, configuring credentials when the repository is private, and then running commands inside the checked-out workspace."
+      },
+      {
+        "type": "ascii",
+        "label": "GitHub Checkout Flow",
+        "diagram": "\n[ GitHub Repository ] -> [ Jenkins SCM Config ] -> [ Workspace Checkout ]\n        |                                                        |\n        v                                                        v\n[ Branch / Credentials ]                              [ Build Commands Run Here ]\n"
+      },
+      {
+        "type": "flow",
+        "steps": [
+          {
+            "title": "Create the job",
+            "text": "Go to New Item, create a Freestyle or Pipeline job, then open the job configuration page."
+          },
+          {
+            "title": "Add repository details",
+            "text": "In Source Code Management, select Git, paste the GitHub repository URL, and set the branch such as main or master."
+          },
+          {
+            "title": "Add credentials if needed",
+            "text": "For private repositories, add a GitHub personal access token or SSH private key in Jenkins Credentials and select it in the job."
+          },
+          {
+            "title": "Run workspace commands",
+            "text": "After checkout, Jenkins runs shell or pipeline steps from the repository workspace."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Simple GitHub Pipeline Checkout",
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Checkout from GitHub') {\n            steps {\n                git branch: 'main',\n                    url: 'https://github.com/example-org/example-app.git',\n                    credentialsId: 'github-token'\n            }\n        }\n\n        stage('Inspect Workspace') {\n            steps {\n                sh 'pwd'\n                sh 'ls -la'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "git branch",
+            "detail": "Checks out a specific branch from the configured GitHub repository."
+          },
+          {
+            "keyword": "credentialsId",
+            "detail": "References the stored Jenkins credential used for private repository access."
+          },
+          {
+            "keyword": "WORKSPACE",
+            "detail": "Jenkins clones the repository into the job workspace, then runs build commands from there."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "github-polling",
+    "num": "M6",
+    "title": "Auto GitHub Repo Polling",
+    "category": "integrations",
+    "description": "Configure Jenkins to automatically check a GitHub repository for new commits and trigger builds on changes.",
+    "tags": [
+      "GitHub",
+      "Polling",
+      "Triggers"
+    ],
+    "search": "auto github repo polling poll scm cron trigger build automatically github repository new commit polling schedule",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "SCM polling is a fallback trigger where Jenkins periodically checks GitHub for changes. If a new commit appears, Jenkins starts a build automatically. Use webhooks when possible, and polling when Jenkins cannot receive inbound GitHub webhook requests."
+      },
+      {
+        "type": "ascii",
+        "label": "Polling vs Webhook",
+        "diagram": "\nPolling:\n[ Jenkins Timer ] -> [ Ask GitHub: Any new commit? ] -> [ Build if changed ]\n\nWebhook:\n[ GitHub Push Event ] -> [ Send HTTP request to Jenkins ] -> [ Build now ]\n"
+      },
+      {
+        "type": "code",
+        "title": "Declarative Pipeline Poll SCM Trigger",
+        "code": "pipeline {\n    agent any\n\n    triggers {\n        pollSCM('H/5 * * * *')\n    }\n\n    stages {\n        stage('Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n\n        stage('Build') {\n            steps {\n                sh 'echo \"Build started because Jenkins detected repository changes\"'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "pollSCM",
+            "detail": "Asks Jenkins to check the configured SCM source on a schedule."
+          },
+          {
+            "keyword": "H/5 * * * *",
+            "detail": "Runs roughly every five minutes, with Jenkins hashing the exact minute to spread server load."
+          },
+          {
+            "keyword": "checkout scm",
+            "detail": "Uses the SCM configuration already attached to the pipeline job."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>Best practice:</strong> Prefer GitHub webhooks for instant builds. Use polling only for private labs, firewalled Jenkins servers, or temporary setups where GitHub cannot reach Jenkins."
+      }
+    ]
+  },
+  {
+    "id": "email-notification-job",
+    "num": "M7",
+    "title": "Email Notification from Jenkins",
+    "category": "advanced",
+    "description": "Configure Jenkins SMTP and send success or failure emails from freestyle jobs and pipelines.",
+    "tags": [
+      "Email",
+      "SMTP",
+      "Notification"
+    ],
+    "search": "email notification from jenkins smtp mailer email-ext post build action success failure recipients attach log",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Email notifications help teams know whether a job passed, failed, or needs attention. Configure SMTP once in Manage Jenkins, then use post-build actions or pipeline post blocks to send job-specific messages."
+      },
+      {
+        "type": "ascii",
+        "label": "Email Notification Path",
+        "diagram": "\n[ Jenkins Job Result ] -> [ Post Build Action / post block ] -> [ SMTP Server ] -> [ Team Inbox ]\n"
+      },
+      {
+        "type": "flow",
+        "steps": [
+          {
+            "title": "Configure SMTP",
+            "text": "Go to Manage Jenkins -> System and configure the SMTP server, default sender address, authentication, and TLS settings."
+          },
+          {
+            "title": "Install Email Extension",
+            "text": "Install the Email Extension plugin if you need HTML bodies, log attachments, recipient providers, or advanced templates."
+          },
+          {
+            "title": "Add job notification",
+            "text": "In freestyle jobs, use Post-build Actions. In pipelines, use post success, failure, or always blocks."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Pipeline Email on Success and Failure",
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Build') {\n            steps {\n                sh 'echo \"Running build\"'\n            }\n        }\n    }\n\n    post {\n        success {\n            mail to: 'devops-team@example.com',\n                 subject: \"SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}\",\n                 body: \"Build passed. Open details: ${env.BUILD_URL}\"\n        }\n\n        failure {\n            emailext to: 'devops-team@example.com',\n                     subject: \"FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}\",\n                     body: \"Build failed. Check console logs: ${env.BUILD_URL}\",\n                     attachLog: true\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "mail",
+            "detail": "Basic Jenkins mail step for simple text notifications."
+          },
+          {
+            "keyword": "emailext",
+            "detail": "Advanced email step from Email Extension plugin, useful for templates and log attachments."
+          },
+          {
+            "keyword": "attachLog: true",
+            "detail": "Attaches the build console log to the email for faster debugging."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "remote-server-job",
+    "num": "M8",
+    "title": "Working with Remote Server",
+    "category": "integrations",
+    "description": "Run commands on a remote Linux server from Jenkins using SSH credentials and safe command patterns.",
+    "tags": [
+      "Remote Server",
+      "SSH",
+      "Deploy"
+    ],
+    "search": "working with remote server jenkins ssh remote linux server execute command deploy scp sshagent credentials",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Remote server jobs are used when Jenkins must copy files, restart services, or deploy applications on another machine. The safe pattern is: store the SSH key in Jenkins credentials, test connectivity, then run a small controlled command."
+      },
+      {
+        "type": "ascii",
+        "label": "Remote Execution Flow",
+        "diagram": "\n[ Jenkins Controller / Agent ] -> [ SSH Credential ] -> [ Remote Server ]\n              |                                             |\n              v                                             v\n       [ Build Artifact ]                         [ Copy / Restart / Deploy ]\n"
+      },
+      {
+        "type": "code",
+        "title": "SSH to Remote Server from Pipeline",
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Remote Health Check') {\n            steps {\n                sshagent(credentials: ['remote-server-ssh-key']) {\n                    sh '''\n                      ssh -o StrictHostKeyChecking=no ubuntu@10.0.1.25 \"hostname && uptime\"\n                    '''\n                }\n            }\n        }\n\n        stage('Copy Build Output') {\n            steps {\n                sshagent(credentials: ['remote-server-ssh-key']) {\n                    sh '''\n                      scp -o StrictHostKeyChecking=no target/app.jar ubuntu@10.0.1.25:/opt/apps/app.jar\n                      ssh -o StrictHostKeyChecking=no ubuntu@10.0.1.25 \"sudo systemctl restart app\"\n                    '''\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "sshagent",
+            "detail": "Temporarily injects an SSH private key from Jenkins credentials into the shell environment."
+          },
+          {
+            "keyword": "scp",
+            "detail": "Copies files from the Jenkins workspace to the remote server."
+          },
+          {
+            "keyword": "systemctl restart",
+            "detail": "Restarts a service on the remote machine after files are updated."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>Security tip:</strong> Avoid hardcoding passwords or private keys in shell steps. Store them in Jenkins Credentials and give the remote user only the permissions it actually needs."
+      }
+    ]
+  },
+  {
+    "id": "ansible-playbook-job",
+    "num": "M9",
+    "title": "Ansible Playbook with Job",
+    "category": "integrations",
+    "description": "Run an Ansible playbook from Jenkins to configure or deploy to remote servers in a repeatable way.",
+    "tags": [
+      "Ansible",
+      "Playbook",
+      "Automation"
+    ],
+    "search": "ansible playbook with job jenkins ansible-playbook inventory deploy remote server extra vars credentials",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Jenkins should trigger automation, while Ansible should describe remote server state. This keeps Jenkins jobs short and makes remote configuration repeatable, reviewable, and easier to test."
+      },
+      {
+        "type": "ascii",
+        "label": "Jenkins and Ansible Split",
+        "diagram": "\n[ Jenkins Job ] -> [ ansible-playbook command ] -> [ Inventory Hosts ]\n        |                                                   |\n        v                                                   v\n[ Build Number / Variables ]                     [ Configure / Deploy / Restart ]\n"
+      },
+      {
+        "type": "code",
+        "title": "Run Playbook from Pipeline",
+        "code": "pipeline {\n    agent any\n\n    parameters {\n        choice(name: 'ENVIRONMENT', choices: ['dev', 'stage', 'prod'], description: 'Target environment')\n    }\n\n    stages {\n        stage('Checkout Automation Repo') {\n            steps {\n                git url: 'https://github.com/example-org/infra-automation.git', branch: 'main'\n            }\n        }\n\n        stage('Run Ansible Playbook') {\n            steps {\n                sshagent(credentials: ['ansible-ssh-key']) {\n                    sh '''\n                      ansible-playbook -i inventories/${ENVIRONMENT}.ini playbooks/deploy.yml \\\n                        --extra-vars \"build_number=${BUILD_NUMBER} target_env=${ENVIRONMENT}\"\n                    '''\n                }\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "inventories/${ENVIRONMENT}.ini",
+            "detail": "Selects the target host list based on the Jenkins parameter."
+          },
+          {
+            "keyword": "ansible-playbook",
+            "detail": "Executes the playbook that contains the actual remote automation logic."
+          },
+          {
+            "keyword": "--extra-vars",
+            "detail": "Passes Jenkins runtime values into Ansible as variables."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "success",
+        "html": "<strong>Clean design:</strong> Keep credentials and triggering in Jenkins. Keep remote configuration, package placement, service restart, and validation logic in Ansible playbooks."
+      }
+    ]
+  },
+  {
+    "id": "junit-test-graph",
+    "num": "M10",
+    "title": "Test Result Graph with JUnit",
+    "category": "advanced",
+    "description": "Publish JUnit XML reports in Jenkins so builds show test counts, failures, trends, and result graphs.",
+    "tags": [
+      "JUnit",
+      "Testing",
+      "Reports"
+    ],
+    "search": "test result graph junit jenkins publish test report surefire xml trend graph failed tests unit testing",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Jenkins can display a test result graph when your build produces JUnit-style XML files. The graph helps track passing, failing, and skipped tests over time instead of forcing you to read raw console output."
+      },
+      {
+        "type": "ascii",
+        "label": "JUnit Reporting Flow",
+        "diagram": "\n[ Run Tests ] -> [ Generate XML Reports ] -> [ junit step ] -> [ Jenkins Test Graph ]\n"
+      },
+      {
+        "type": "code",
+        "title": "Publish Maven Surefire JUnit Results",
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Test') {\n            steps {\n                sh 'mvn test'\n            }\n        }\n    }\n\n    post {\n        always {\n            junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: false\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "mvn test",
+            "detail": "Runs Maven tests and creates XML reports under target/surefire-reports."
+          },
+          {
+            "keyword": "junit",
+            "detail": "Publishes JUnit XML files into Jenkins build history and test trend graphs."
+          },
+          {
+            "keyword": "post always",
+            "detail": "Publishes test reports even when the test command fails, so failures still appear in Jenkins UI."
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Freestyle Location",
+            "text": "In freestyle jobs, add Post-build Action -> Publish JUnit test result report and use a pattern like target/surefire-reports/*.xml."
+          },
+          {
+            "title": "Pipeline Location",
+            "text": "In pipelines, call junit inside post always so Jenkins records results even for failed builds."
+          },
+          {
+            "title": "Common Mistake",
+            "text": "Do not point Jenkins to HTML reports for JUnit publishing. Jenkins needs XML files in JUnit-compatible format."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "archive-artifacts-job",
+    "num": "M11",
+    "title": "Archive Artifacts",
+    "category": "advanced",
+    "description": "Save build outputs such as JAR files, ZIP packages, logs, screenshots, and reports in Jenkins build history.",
+    "tags": [
+      "Artifacts",
+      "Reports",
+      "Build Output"
+    ],
+    "search": "archive artifacts jenkins artifact jar zip target reports logs screenshots fingerprint post build action archiveArtifacts",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Archiving artifacts keeps important build outputs attached to a specific Jenkins build. This is useful for downloading JAR files, keeping reports, comparing logs, or passing build outputs into later release steps."
+      },
+      {
+        "type": "ascii",
+        "label": "Artifact Lifecycle",
+        "diagram": "\n[ Build Command ] -> [ target/*.jar or reports/** ] -> [ archiveArtifacts ] -> [ Download from Build Page ]\n"
+      },
+      {
+        "type": "code",
+        "title": "Archive Build Outputs from Pipeline",
+        "code": "pipeline {\n    agent any\n\n    stages {\n        stage('Package') {\n            steps {\n                sh 'mvn clean package'\n            }\n        }\n    }\n\n    post {\n        success {\n            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true\n        }\n\n        always {\n            archiveArtifacts artifacts: 'reports/**, logs/**', allowEmptyArchive: true\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "archiveArtifacts",
+            "detail": "Stores matching files as downloadable artifacts for that Jenkins build."
+          },
+          {
+            "keyword": "fingerprint: true",
+            "detail": "Tracks artifact identity across Jenkins jobs and build history."
+          },
+          {
+            "keyword": "allowEmptyArchive",
+            "detail": "Prevents the build from failing when optional report or log folders are missing."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "info",
+        "html": "<strong>Freestyle equivalent:</strong> Use Post-build Actions -> Archive the artifacts, then enter patterns like <code>target/*.jar</code>, <code>dist/**</code>, or <code>reports/**</code>."
+      }
+    ]
+  },
+  {
     "id": "commands",
     "num": "R1",
     "title": "CLI & Commands",
