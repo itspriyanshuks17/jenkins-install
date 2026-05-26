@@ -2186,6 +2186,224 @@ window.JENKINS_NOTES = [
     ]
   },
   {
+    "id": "mprashant-roadmap",
+    "num": "M1",
+    "title": "MPrashant Jenkins Roadmap",
+    "category": "introduction",
+    "description": "Beginner-to-project roadmap inspired by MPrashant's Jenkins for Beginners 2025 Hindi video.",
+    "tags": [
+      "MPrashant",
+      "Roadmap",
+      "Beginner"
+    ],
+    "search": "mprashant jenkins beginners 2025 hindi roadmap basics cicd install jobs pipeline ansible maven credentials",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "This note converts the MPrashant beginner video into a structured learning path: first understand Jenkins and CI/CD, then install a lab, create jobs, connect credentials, trigger remote work, integrate Ansible, and finally build a Maven-based Java CI/CD project."
+      },
+      {
+        "type": "ascii",
+        "label": "Video Learning Flow",
+        "diagram": "\n[ Jenkins Basics ] -> [ CI/CD Terms ] -> [ Linux Lab Setup ]\n        |                                      |\n        v                                      v\n[ Jobs & Plugins ] -> [ Credentials ] -> [ Remote Server Tasks ]\n        |                                      |\n        v                                      v\n[ Ansible Integration ] -> [ Maven Java CI/CD Project ] -> [ Bonus Checks ]\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Do Not Chase One Tool",
+            "text": "The video emphasizes learning Jenkins fundamentals first. Once the tool flow is clear, Git, Maven, Ansible, Docker, or cloud integrations become easier to plug in."
+          },
+          {
+            "title": "Practical First",
+            "text": "The roadmap is hands-on: create jobs, run builds, publish reports, send status, and deploy to another machine rather than only reading theory."
+          },
+          {
+            "title": "Admin Skills Matter",
+            "text": "User management, permissions, environment variables, plugins, and credentials are part of the beginner path because they appear in real Jenkins ownership."
+          },
+          {
+            "title": "Project Ending",
+            "text": "The final target is a Java/Maven pipeline with source checkout, build, test, approval, artifact handling, and deployment-style stages."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "info",
+        "html": "<strong>Source:</strong> Paraphrased notes from <a href=\"https://www.youtube.com/watch?v=NVaP8qtLm6Q\" target=\"_blank\" rel=\"noreferrer\">JENKINS For Beginners In One Video 2025 [HINDI]</a> by <strong>MPrashant</strong>."
+      }
+    ]
+  },
+  {
+    "id": "mprashant-linux-install",
+    "num": "M2",
+    "title": "Linux Lab Install Flow",
+    "category": "introduction",
+    "description": "CentOS/RHEL-style Jenkins lab setup checklist covering Java, repository setup, service startup, unlock, and plugin installation.",
+    "tags": [
+      "Install",
+      "Linux",
+      "Lab"
+    ],
+    "search": "mprashant linux centos rhel jenkins install java repository service initial admin password plugins lab setup",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "A clean Jenkins lab begins with a Linux machine, Java runtime, Jenkins package repository, service startup, browser unlock, and suggested plugin installation. The important habit is to verify every layer before creating jobs."
+      },
+      {
+        "type": "ascii",
+        "label": "Install Validation Chain",
+        "diagram": "\n[ Linux VM ] -> [ Java Runtime ] -> [ Jenkins Repo ] -> [ Jenkins Package ]\n     |                                                        |\n     v                                                        v\n[ Open 8080 ] <- [ Initial Admin Password ] <- [ systemctl status jenkins ]\n"
+      },
+      {
+        "type": "code",
+        "title": "RHEL / CentOS Jenkins Lab Commands",
+        "code": "# Install Java runtime\nsudo dnf install -y fontconfig java-17-openjdk\njava -version\n\n# Add Jenkins stable repository\nsudo wget -O /etc/yum.repos.d/jenkins.repo \\\n  https://pkg.jenkins.io/redhat-stable/jenkins.repo\nsudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key\n\n# Install and start Jenkins\nsudo dnf install -y jenkins\nsudo systemctl enable --now jenkins\nsudo systemctl status jenkins --no-pager\n\n# Open firewall for lab access\nsudo firewall-cmd --permanent --add-port=8080/tcp\nsudo firewall-cmd --reload\n\n# Unlock Jenkins in browser\nsudo cat /var/lib/jenkins/secrets/initialAdminPassword",
+        "explanation": [
+          {
+            "keyword": "java-17-openjdk",
+            "detail": "Jenkins needs a supported Java runtime before the server process can start."
+          },
+          {
+            "keyword": "jenkins.repo",
+            "detail": "Registers the Jenkins package source so the OS package manager can install and update Jenkins cleanly."
+          },
+          {
+            "keyword": "systemctl enable --now",
+            "detail": "Starts Jenkins immediately and also enables automatic startup after machine reboot."
+          },
+          {
+            "keyword": "initialAdminPassword",
+            "detail": "One-time unlock key used to complete the first browser setup wizard."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "warn",
+        "html": "<strong>Lab habit:</strong> If the browser does not open Jenkins on port <code>8080</code>, check the service status, firewall rule, cloud security group, and Java version before reinstalling."
+      }
+    ]
+  },
+  {
+    "id": "mprashant-freestyle-ops",
+    "num": "M3",
+    "title": "Freestyle Ops & Post Actions",
+    "category": "core_concepts",
+    "description": "Operational freestyle job pattern for build steps, reports, status notifications, and actions on remote servers.",
+    "tags": [
+      "Freestyle",
+      "Reports",
+      "Remote"
+    ],
+    "search": "mprashant freestyle job build post action email notification report remote server ssh ansible website update",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "Freestyle jobs are useful for learning Jenkins execution flow because every step is visible: checkout, shell command, archive, report publishing, notification, and remote action. The same mental model later maps to Pipeline stages."
+      },
+      {
+        "type": "ascii",
+        "label": "Freestyle Job Lifecycle",
+        "diagram": "\n[ Click Build Now ]\n        |\n        v\n[ Workspace Created ] -> [ Source / Files ] -> [ Execute Shell ]\n        |                                      |\n        v                                      v\n[ Archive Artifacts ] -> [ Publish Report ] -> [ Email / Status Action ]\n        |\n        v\n[ Optional SSH / Ansible Task on Remote Server ]\n"
+      },
+      {
+        "type": "grid",
+        "items": [
+          {
+            "title": "Build Step",
+            "text": "Use shell commands for simple automation such as copying files, running scripts, packaging output, or invoking a deployment command."
+          },
+          {
+            "title": "Post Build Action",
+            "text": "Use post actions for artifacts, reports, email notifications, and other actions that should run after the main task finishes."
+          },
+          {
+            "title": "Remote Server Work",
+            "text": "For a live website update, Jenkins should authenticate securely, then copy files or trigger an automation tool on the target server."
+          },
+          {
+            "title": "Bridge to Ansible",
+            "text": "Instead of placing complex remote commands in Jenkins, call an Ansible playbook and let Ansible own remote state changes."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "title": "Freestyle Shell Step Calling Ansible",
+        "code": "# Jenkins freestyle Execute Shell example\nset -e\n\ncd /opt/jenkins-playbooks\nansible-playbook -i inventory.ini update-website.yml \\\n  --extra-vars \"release_version=${BUILD_NUMBER}\"\n\nmkdir -p reports\necho \"Website update completed from Jenkins build ${BUILD_NUMBER}\" > reports/deploy-status.txt",
+        "explanation": [
+          {
+            "keyword": "set -e",
+            "detail": "Fails the job as soon as one command returns an error."
+          },
+          {
+            "keyword": "ansible-playbook",
+            "detail": "Runs the remote server automation from Jenkins while keeping server logic inside Ansible."
+          },
+          {
+            "keyword": "BUILD_NUMBER",
+            "detail": "Built-in Jenkins environment variable that gives every execution a unique run number."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mprashant-maven-cicd",
+    "num": "M4",
+    "title": "Maven Java CI/CD Project",
+    "category": "projects",
+    "description": "Beginner project flow for building a Java application with Maven, test stages, approval, artifact archiving, and deployment handoff.",
+    "tags": [
+      "Maven",
+      "Java",
+      "CI/CD"
+    ],
+    "search": "mprashant maven java cicd project checkout build test approval deploy artifact jar pipeline",
+    "sections": [
+      {
+        "type": "lead",
+        "text": "The practical project target is a Java application pipeline where Jenkins checks out source code, runs Maven build and tests, stores the generated artifact, waits for approval when needed, and hands the release to a deployment step."
+      },
+      {
+        "type": "ascii",
+        "label": "Maven CI/CD Stage Flow",
+        "diagram": "\n[ Git Checkout ] -> [ mvn clean package ] -> [ Unit Tests ] -> [ Archive JAR ]\n        |                                                        |\n        v                                                        v\n[ Build Report ] -> [ Manual Approval Gate ] -> [ Deploy / Remote Handoff ]\n"
+      },
+      {
+        "type": "code",
+        "title": "Declarative Maven Pipeline",
+        "code": "pipeline {\n    agent any\n\n    tools {\n        maven 'maven-3'\n        jdk 'java-17'\n    }\n\n    stages {\n        stage('Checkout') {\n            steps {\n                checkout scm\n            }\n        }\n\n        stage('Build & Test') {\n            steps {\n                sh 'mvn clean test package'\n            }\n        }\n\n        stage('Archive Artifact') {\n            steps {\n                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true\n                junit 'target/surefire-reports/*.xml'\n            }\n        }\n\n        stage('Approval') {\n            steps {\n                input message: 'Deploy this Maven build?', ok: 'Deploy'\n            }\n        }\n\n        stage('Deploy Handoff') {\n            steps {\n                sh 'echo \"Deploy target/*.jar using SSH, Ansible, Docker, or your chosen platform\"'\n            }\n        }\n    }\n}",
+        "explanation": [
+          {
+            "keyword": "tools",
+            "detail": "Asks Jenkins to use configured Maven and JDK installations for this job."
+          },
+          {
+            "keyword": "mvn clean test package",
+            "detail": "Cleans old output, runs tests, and packages the Java project into a build artifact."
+          },
+          {
+            "keyword": "archiveArtifacts",
+            "detail": "Stores generated JAR files against the Jenkins build history for download and traceability."
+          },
+          {
+            "keyword": "input",
+            "detail": "Adds a human approval gate before deployment-style actions."
+          }
+        ]
+      },
+      {
+        "type": "callout",
+        "tone": "success",
+        "html": "<strong>Project takeaway:</strong> Keep the pipeline readable first. Once checkout, build, test, artifact, approval, and deploy handoff are clear, you can replace the final echo with SSH, Ansible, Docker, Kubernetes, or cloud deployment."
+      }
+    ]
+  },
+  {
     "id": "commands",
     "num": "R1",
     "title": "CLI & Commands",
@@ -2363,6 +2581,10 @@ window.JENKINS_NOTES = [
           {
             "title": "Tutorial Video",
             "text": "Watch the complete tutorial guide on YouTube: https://www.youtube.com/watch?v=XaSdKR2fOU4"
+          },
+          {
+            "title": "MPrashant Beginner Video",
+            "text": "Additional beginner-to-project notes source: https://www.youtube.com/watch?v=NVaP8qtLm6Q"
           },
           {
             "title": "Project Repository",
