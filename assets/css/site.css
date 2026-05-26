@@ -902,8 +902,8 @@ td code {
   display: none;
 }
 
-/* Show scroll hints only on mobile */
-@media (max-width: 768px) {
+/* Show scroll hints on tablet and mobile */
+@media (max-width: 900px) {
   .ascii-diagram::before,
   .ascii-diagram::after {
     display: block;
@@ -937,8 +937,6 @@ td code {
   font-variant-numeric: tabular-nums;
   white-space: pre;
   -webkit-overflow-scrolling: touch;
-  /* Reserve space for the scroll badge so text doesn't run under it */
-  padding-bottom: 2.2rem;
 }
 
 /* Thin themed scrollbar */
@@ -959,7 +957,16 @@ td code {
   background: var(--accent);
 }
 
-/* On mobile keep font readable — let the box scroll instead */
+/* Tablet: smaller font + room for scroll badge */
+@media (max-width: 900px) {
+  .ascii-pre {
+    font-size: 12.5px;
+    padding: 1rem 1.2rem 2.4rem;
+    line-height: 1.45;
+  }
+}
+
+/* Mobile: even smaller */
 @media (max-width: 768px) {
   .ascii-pre {
     font-size: 12px;
