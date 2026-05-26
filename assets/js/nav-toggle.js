@@ -46,7 +46,7 @@
     var chevron = sidebarBtn.querySelector('svg');
 
     function applyInitialState() {
-      if (window.innerWidth <= 900) {
+      if (window.innerWidth <= 1100) {
         noteList.classList.add('collapsed');
         sidebarBtn.setAttribute('aria-expanded', 'false');
         if (chevron) chevron.style.transform = 'rotate(-90deg)';

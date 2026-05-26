@@ -905,7 +905,7 @@ td code {
 }
 
 /* Show scroll hints on tablet and mobile */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .ascii-diagram.is-scrollable::before,
   .ascii-diagram.is-scrollable::after {
     display: block;
@@ -961,7 +961,7 @@ td code {
 }
 
 /* Tablet: smaller font + room for scroll badge */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .ascii-pre {
     font-size: clamp(10.25px, 1.35vw, 12px);
     padding: 0.95rem 1rem 2.2rem;
@@ -1225,6 +1225,46 @@ tr:last-child td {
   transition: transform 0.2s ease;
 }
 
+/* ─── Tablet note layout (11-inch tablets and small landscape screens) ─── */
+@media (max-width: 1100px) {
+  .note-layout.page-shell {
+    width: calc(100% - 2.5rem);
+  }
+
+  .note-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .note-sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .note-sidebar-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.25rem 0.7rem;
+    text-transform: uppercase;
+  }
+
+  #noteList.collapsed {
+    display: none;
+  }
+
+  .note-article h1 {
+    font-size: clamp(1.8rem, 4.6vw, 2.6rem);
+  }
+}
+
 /* ─── Tablet / large mobile (≤ 900 px) ─── */
 @media (max-width: 900px) {
   .site-header {
@@ -1286,36 +1326,6 @@ tr:last-child td {
 
   .visible-count {
     justify-content: center;
-  }
-
-  .note-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .note-sidebar {
-    position: static;
-    max-height: none;
-  }
-
-  /* Sidebar collapsible on tablet */
-  .note-sidebar-toggle {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    background: none;
-    border: none;
-    color: var(--dim);
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    padding: 0.2rem 0.25rem 0.7rem;
-    text-transform: uppercase;
-  }
-
-  #noteList.collapsed {
-    display: none;
   }
 
   .hero h1 {

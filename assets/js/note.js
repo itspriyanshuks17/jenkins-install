@@ -168,10 +168,27 @@
     `;
   }
 
+  function toPlainAsciiDiagram(value) {
+    return String(value)
+      .replace(/[┌┐└┘├┤┬┴┼╭╮╰╯╔╗╚╝╠╣╦╩╬]/g, "+")
+      .replace(/[─━═]/g, "-")
+      .replace(/[│┃║]/g, "|")
+      .replace(/→/g, "->")
+      .replace(/←/g, "<-")
+      .replace(/▼/g, "v")
+      .replace(/▲/g, "^")
+      .replace(/•/g, "*");
+  }
+
   function refreshAsciiScrollHints() {
+    const usePlainAscii = window.innerWidth <= 1100;
     document.querySelectorAll(".ascii-diagram").forEach((diagram) => {
       const pre = diagram.querySelector(".ascii-pre");
       if (!pre) return;
+      if (!pre.dataset.originalDiagram) pre.dataset.originalDiagram = pre.textContent;
+      const originalDiagram = pre.dataset.originalDiagram;
+      const nextDiagram = usePlainAscii ? toPlainAsciiDiagram(originalDiagram) : originalDiagram;
+      if (pre.textContent !== nextDiagram) pre.textContent = nextDiagram;
       diagram.classList.toggle("is-scrollable", pre.scrollWidth > pre.clientWidth + 1);
     });
   }
