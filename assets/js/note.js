@@ -168,6 +168,14 @@
     `;
   }
 
+  function refreshAsciiScrollHints() {
+    document.querySelectorAll(".ascii-diagram").forEach((diagram) => {
+      const pre = diagram.querySelector(".ascii-pre");
+      if (!pre) return;
+      diagram.classList.toggle("is-scrollable", pre.scrollWidth > pre.clientWidth + 1);
+    });
+  }
+
   function renderNote() {
     if (!note || !article) return;
     document.title = `${note.title} | Jenkins Notes`;
@@ -180,9 +188,11 @@
     `;
     body.innerHTML = note.sections.map(renderSection).join("");
     if (typeof initCopyButtons === "function") initCopyButtons(body);
+    refreshAsciiScrollHints();
     renderSidebar();
     renderPager();
   }
 
   renderNote();
+  window.addEventListener("resize", refreshAsciiScrollHints);
 })();
