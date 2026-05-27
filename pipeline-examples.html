@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline Examples | Jenkins Notes</title>
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Jenkins Notes home">
+      <span class="brand-mark" style="background:var(--jenkins);">jk</span>
+      <span>Jenkins Notes</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html">Notes</a>
+      <a href="projects.html">Projects</a>
+      <a href="cheat-sheet.html">Cheat Sheet</a>
+      <a href="https://github.com/itspriyanshuks17/jenkins-install" target="_blank" rel="noreferrer">Repo</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1>Pipeline Examples</h1>
+    <p>Two parallel examples: Declarative and Scripted. Use whichever fits your pipeline style.</p>
+
+    <h2>Declarative (parallel stages)</h2>
+    <pre><code class="language-groovy">pipeline {
+  agent any
+
+  stages {
+    stage('Parallel Tests') {
+      parallel {
+        stage('test') {
+          steps {
+            echo 'Running test.py'
+            sh 'python3 test.py'
+          }
+        }
+        stage('test-2') {
+          steps {
+            echo 'Running test-2.py'
+            sh 'python3 test-2.py'
+          }
+        }
+        stage('test-3') {
+          steps {
+            echo 'Running test-3.py'
+            sh 'python3 test-3.py'
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+    <h2>Scripted (parallel map)</h2>
+    <pre><code class="language-groovy">node {
+  stage('Parallel Tests') {
+    def branches = [:]
+    branches['test'] = {
+      stage('test') { sh 'python3 test.py' }
+    }
+    branches['test-2'] = {
+      stage('test-2') { sh 'python3 test-2.py' }
+    }
+    branches['test-3'] = {
+      stage('test-3') { sh 'python3 test-3.py' }
+    }
+    parallel branches
+  }
+}
+</code></pre>
+
+    <p>Place the repository `Jenkinsfile` (Declarative) at the project root and create a Multibranch Pipeline or a Pipeline job that points to this repo.</p>
+  </main>
+
+  <footer class="site-footer">
+    <span>Jenkins One Shot Notes</span>
+  </footer>
+
+  <script src="assets/js/nav-toggle.js"></script>
+</body>
+</html>
